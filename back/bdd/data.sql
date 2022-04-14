@@ -20,7 +20,8 @@ CREATE TABLE `project` (
   `description` text NOT NULL,
   `start_at` date NOT NULL,
   `end_at` date NOT NULL,
-  `due_at` date NOT NULL
+  `due_at` date NOT NULL,
+  `product_owner_id` int
 );
 
 CREATE TABLE `project_user` (
@@ -76,3 +77,5 @@ ALTER TABLE `comment` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `notification` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 ALTER TABLE `file` ADD FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`);
+
+ALTER TABLE `project` ADD FOREIGN KEY (`product_owner_id`) REFERENCES `user` (`id`);
