@@ -5,7 +5,13 @@ CREATE TABLE `ticket` (
   `project_id` int NOT NULL,
   `estimated_time` int NOT NULL,
   `passed_time` int NOT NULL,
-  `state` int NOT NULL
+  `advancement` int NOT NULL,
+  `state_id` int NOT NULL
+);
+
+CREATE TABLE `state` (
+  `id` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL
 );
 
 CREATE TABLE `ticket_user` (
@@ -21,7 +27,8 @@ CREATE TABLE `project` (
   `start_at` date NOT NULL,
   `end_at` date NOT NULL,
   `due_at` date NOT NULL,
-  `product_owner_id` int
+  `product_owner_id` int,
+  `advancement` int NOT NULL
 );
 
 CREATE TABLE `project_user` (
@@ -79,3 +86,5 @@ ALTER TABLE `notification` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 ALTER TABLE `file` ADD FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`);
 
 ALTER TABLE `project` ADD FOREIGN KEY (`product_owner_id`) REFERENCES `user` (`id`);
+
+ALTER TABLE `state` ADD FOREIGN KEY (`id`) REFERENCES `ticket` (`state_id`);
