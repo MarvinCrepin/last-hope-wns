@@ -87,4 +87,4 @@ ALTER TABLE `file` ADD FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`);
 
 ALTER TABLE `project` ADD FOREIGN KEY (`product_owner_id`) REFERENCES `user` (`id`);
 
-ALTER TABLE `state` ADD FOREIGN KEY (`id`) REFERENCES `ticket` (`state_id`);
+ALTER TABLE `ticket` ADD FOREIGN KEY (`state_id`) REFERENCES `state` (`id`);

@@ -19,7 +19,19 @@ if (process.env.NODE_ENV === 'test') {
   };
 }
 
-const connection = mysql.createPool(config);
+const connection = mysql.createConnection({
+  ...config,
+});
+
+const connectDB = () => {
+  connection.connect((err: any) => {
+    if (err) {
+      console.error(`error connecting: ${err.stack}`);
+      return;
+    }
+    console.log(`Connected at database: ${connection.threadId}`);
+  });
+};
 
 const query = (...args: any) =>
   new Promise((resolve, reject) => {
@@ -46,8 +58,9 @@ const closeConnection = () =>
       resolve(true);
     }
   });
+
 module.exports = {
-  connection,
+  connectDB,
   closeConnection,
   query,
 };
