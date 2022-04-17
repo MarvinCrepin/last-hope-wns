@@ -1,34 +1,42 @@
 import express from 'express';
 import cors from 'cors';
 
-const { connectDB } = require('./db_connection');
-// import { graphqlHTTP } from 'express-graphql';
+import { graphqlHTTP } from 'express-graphql';
+import schema from './Schema';
+import dataSource from './db_connect';
 
 require('dotenv').config();
 
-const app = express();
-
-connectDB();
-
 const { PORT } = process.env;
 
-// Middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(cors());
+const main = async () => {
+  await dataSource
+    .initialize()
+    .then(() => {
+      console.log('Data Source has been initialized!');
+    })
+    .catch((err) => {
+      console.error('Error during Data Source initialization:', err);
+    });
 
-// app.use(
-//   '/graphql',
-//   graphqlHTTP({
-//     schema,
-//     graphiql: true,
-//   })
-// );
+  const app = express();
 
-// Routes
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
+  app.use(cors());
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
-// Start Server
-app.listen(PORT, () => console.log(`Server started on ${PORT}`)); // eslint-disable-line no-console
+  // graphql
+  app.use(
+    '/graphql',
+    graphqlHTTP({
+      schema,
+      graphiql: true,
+    })
+  );
+
+  app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
+  });
+};
+
+main().catch((err) => console.error(err));
