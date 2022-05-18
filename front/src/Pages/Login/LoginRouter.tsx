@@ -1,7 +1,17 @@
-import React from "react";
+import { Routes, Route } from "react-router-dom";
 
-type Props = {};
+import Login from "./Login";
+import Register from "./Register";
+import ForgotPassword from "./ForgotPassword";
 
-export default function LoginRouter({}: Props) {
-  return <div>LoginRouter</div>;
+export default function LoginRouter() {
+  return (
+    <>
+      <Routes>
+        <Route path="" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+      </Routes>
+    </>
+  );
 }
