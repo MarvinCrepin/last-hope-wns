@@ -1,21 +1,20 @@
 import ButtonForm from "../../components/Login/ButtonForm";
+import Logo from "../../assets/img/logo_LastHope.png";
 
 export default function Login() {
   return (
-    <div className=" flex min-h-screen justify-center items-center flex-col">
-      <img src="https://via.placeholder.com/470x138" alt="banner" />
-      <h1 className="font-title text-lh-primary text-7xl pt-16 pb-10">
-        LastHope
-      </h1>
+    <div className="flex min-h-screen justify-center items-center flex-col">
+      <img src={Logo} alt="banner" className="pb-10" />
+
       <div className="flex flex-col justify-center items-center">
-        <h2 className="font-title text-lh-dark text-3xl">Log In</h2>
+        <h1 className="font-title text-lh-dark text-3xl">Log In</h1>
         <form className="flex flex-col justify-center items-center">
           <div className="my-4">
             <label className="sr-only" htmlFor="email">
               Username
             </label>
             <input
-              className="w-96 appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none focus:shadow-outline"
+              className="w-full sm:w-96 appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none focus:shadow-outline"
               id="email"
               type="email"
               placeholder="user@gmail.com"
@@ -26,7 +25,7 @@ export default function Login() {
               Password
             </label>
             <input
-              className="w-96  appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none focus:shadow-outline"
+              className="w-full sm:w-96  appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none focus:shadow-outline"
               id="password"
               type="password"
               placeholder="password"
