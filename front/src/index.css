@@ -1,6 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Baloo+Da+2&family=Cabin+Sketch:wght@700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --primary-color: #d66060;
+  --secondary-color: #fe9595;
+  --light-color: #fcfcfc;
+  --dark-color: #4f4f4f;
+  --title-font: "Cabin Sketch";
+  --text-font: "Baloo Da 2";
+}
 
 body {
   margin: 0;
