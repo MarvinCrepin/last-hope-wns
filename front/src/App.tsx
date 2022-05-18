@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "./img/logo.svg";
+import logo from "./img/logo_LastHope_inline.png";
 import "./App.css";
 import TestSpaceX from "./components/launchesPast";
 
