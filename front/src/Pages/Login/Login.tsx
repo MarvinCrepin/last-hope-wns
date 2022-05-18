@@ -9,27 +9,38 @@ export default function Login() {
       </h1>
       <div className="flex flex-col justify-center items-center">
         <h2 className="font-title text-lh-dark text-3xl">Log In</h2>
-        <form className="flex flex-col justify-center items-center space-y-4">
-          <label className="sr-only" htmlFor="email">
-            Username
-          </label>
-          <input
-            className="shadow appearance-none border border-lh-dark rounded-lg w-full py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none focus:shadow-outline"
-            id="email"
-            type="email"
-            placeholder="user@gmail.com"
-          />
-          <label className="sr-only" htmlFor="password">
-            Password
-          </label>
-          <input
-            className="shadow appearance-none border border-lh-dark rounded-lg w-full py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none focus:shadow-outline"
-            id="password"
-            type="password"
-            placeholder="password"
-          />
-          <ButtonForm text="Log In" type="submit" />
+        <form className="flex flex-col justify-center items-center">
+          <div className="my-4">
+            <label className="sr-only" htmlFor="email">
+              Username
+            </label>
+            <input
+              className="w-96 appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none focus:shadow-outline"
+              id="email"
+              type="email"
+              placeholder="user@gmail.com"
+            />
+          </div>
+          <div className="mb-8 relative">
+            <label className="sr-only" htmlFor="password">
+              Password
+            </label>
+            <input
+              className="w-96  appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none focus:shadow-outline"
+              id="password"
+              type="password"
+              placeholder="password"
+            />
+            <div className="absolute text-xs ml-1 text-lh-primary cursor-pointer">
+              Forgot your password? Reset it here
+            </div>
+          </div>
+
+          <ButtonForm text="Log In" type="button" customClass="w-32" />
         </form>
+        <div className=" mt-4 text-xs ml-1 text-lh-primary cursor-pointer">
+          Don't have an account? Sign up
+        </div>
       </div>
     </div>
   );
