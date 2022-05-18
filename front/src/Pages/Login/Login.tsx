@@ -2,7 +2,7 @@ import ButtonForm from "../../components/Login/ButtonForm";
 
 export default function Login() {
   return (
-    <div className=" flex justify-center items-center flex-col">
+    <div className=" flex min-h-screen justify-center items-center flex-col">
       <img src="https://via.placeholder.com/470x138" alt="banner" />
       <h1 className="font-title text-lh-primary text-7xl pt-16 pb-10">
         LastHope

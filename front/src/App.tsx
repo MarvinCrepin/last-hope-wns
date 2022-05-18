@@ -22,7 +22,7 @@ function App() {
         {/*  Learn React*/}
         {/*</a>*/}
       </header>
-      <main>
+      <main className="">
         <BrowserRouter>
           <Routes>
             <Route path="/login/*" element={<LoginRouter />} />
