@@ -46,9 +46,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 interface PropsComponent {
   projectList: Project[];
+  loading: boolean;
 }
 
-export default function TableDashboard({ projectList }: PropsComponent) {
+export default function TableDashboard({
+  projectList,
+  loading,
+}: PropsComponent) {
   return (
     <StyledTableContainer /* component={Paper} */>
       <Table>
@@ -61,35 +65,63 @@ export default function TableDashboard({ projectList }: PropsComponent) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {projectList.map((project: any) => {
-            const color =
-              project.advancement >= 60
-                ? "success"
-                : project.advancement <= 30
-                ? "error"
-                : "warning";
-            return (
-              <StyledTableRow key={project.id}>
-                <StyledTableCell>{project.title}</StyledTableCell>
-                <StyledTableCell className="relative">
-                  <LinearProgress
-                    color={color}
-                    className="linearProgress"
-                    value={project.advancement}
-                    valueBuffer={100}
-                    variant="buffer"
-                  ></LinearProgress>
-                  <span className="percent-status">{project.advancement}</span>
-                </StyledTableCell>
-                <StyledTableCell></StyledTableCell>
-                <StyledTableCell>
-                  <Moment format="YYYY/MM/DD">
-                    {new Date(project.due_at)}
-                  </Moment>
-                </StyledTableCell>
-              </StyledTableRow>
-            );
-          })}
+          {loading &&
+            [1, 2, 3].map((el) => {
+              return (
+                <>
+                  <StyledTableRow key={el}>
+                    <StyledTableCell>
+                      <span className="inline-block opacity-60  h-7 w-52 bg-lh-secondary animate-pulse"></span>
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      <span className="inline-block opacity-60 h-7 w-52 bg-lh-secondary animate-pulse"></span>
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      <span className="inline-block opacity-60 h-7 w-52 bg-lh-secondary animate-pulse"></span>
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      <span className="inline-block  opacity-60 h-7 w-52 bg-lh-secondary animate-pulse"></span>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                </>
+              );
+            })}
+
+          {!loading && projectList.length > 0 ? (
+            projectList.map((project: any) => {
+              const color =
+                project.advancement >= 60
+                  ? "success"
+                  : project.advancement <= 30
+                  ? "error"
+                  : "warning";
+              return (
+                <StyledTableRow key={project.id}>
+                  <StyledTableCell>{project.title}</StyledTableCell>
+                  <StyledTableCell className="relative">
+                    <LinearProgress
+                      color={color}
+                      className="linearProgress"
+                      value={project.advancement}
+                      valueBuffer={100}
+                      variant="buffer"
+                    ></LinearProgress>
+                    <span className="percent-status">
+                      {project.advancement}
+                    </span>
+                  </StyledTableCell>
+                  <StyledTableCell></StyledTableCell>
+                  <StyledTableCell>
+                    <Moment format="YYYY/MM/DD">
+                      {new Date(project.due_at)}
+                    </Moment>
+                  </StyledTableCell>
+                </StyledTableRow>
+              );
+            })
+          ) : (
+            <>Aucun résultat Trouvé</>
+          )}
         </TableBody>
       </Table>
     </StyledTableContainer>

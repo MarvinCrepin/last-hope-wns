@@ -7,6 +7,7 @@ import TableDashboard from "../dashboard/TableDashboard";
 import GetAllProjects from "../../queries/Project/GetAllProject";
 import Error from "../common/Error";
 import Loading from "../common/Loading";
+import { Transition } from "@headlessui/react";
 
 export default function ProjectList() {
   const [list, setList] = useState<Project[]>([]);
@@ -30,11 +31,9 @@ export default function ProjectList() {
     }
   }, [data, searchInput, hideDone]);
 
-  if (loading) return <Loading />;
-  if (error) return <Error />;
   return (
-    <div>
-      <div className="w-full bg-lh-primary z-20 py-8 px-2 rounded-tr-md md:h-30">
+    <div className="min-h-screen">
+      <div className="w-full bg-lh-primary z-20 py-8 px-2 rounded-tr-md md:h-30 ">
         <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
             <div className="mx-2 flex items-center space-x-1">
@@ -68,7 +67,29 @@ export default function ProjectList() {
         </div>
       </div>
       <div>
-        <TableDashboard projectList={list} />
+        <Transition
+          show={error ? true : false}
+          enter="transition-opacity duration-75"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-150"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          {error && <Error />}
+        </Transition>
+
+        <Transition
+          show={!error ? true : false}
+          enter="transition-opacity duration-75"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-150"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          {!error && <TableDashboard projectList={list} loading={loading} />}
+        </Transition>
       </div>
     </div>
   );
