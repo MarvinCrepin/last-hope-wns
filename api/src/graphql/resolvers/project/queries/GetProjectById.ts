@@ -1,7 +1,6 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import {Context} from '../../../../context'
 
-export default async (_: any, { projectId }: { projectId: string }) =>
-  await prisma.project.findUnique({
+export default async (_: any, { projectId }: { projectId: string }, context: Context) =>
+  await context.prisma.project.findUnique({
     where: { id: projectId },
   });

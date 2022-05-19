@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import {Context} from '../../../../context'
 
-export default async (_: any, { projectId }: { projectId: string }) => {
-  const deleteProject = await prisma.project.delete({
+export default async (_: any, { projectId }: { projectId: string }, context:Context) => {
+  const deleteProject = await context.prisma.project.delete({
     where: {
       id: projectId,
     },

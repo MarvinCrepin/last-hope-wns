@@ -1,4 +1,7 @@
-export default (_parent: any, args: { data: any }, context: any) => {
+import {Context} from '../../../../context'
+import {ProjectInput} from '../../../../types'
+
+export default (_parent: any, args: { data: ProjectInput }, context: Context) => {
   return context.prisma.project.create({
     data: {
       title: args.data.title,

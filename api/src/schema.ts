@@ -2,14 +2,14 @@ import { gql } from "apollo-server";
 
 export const typeDefs = gql`
   type Project {
-    id: ID
-    title: String
-    description: String
-    start_at: DateTime
-    end_at: DateTime
-    due_at: DateTime
+    id: ID!
+    title: String!
+    description: String!
+    start_at: DateTime!
+    end_at: DateTime!
+    due_at: DateTime!
     product_owner_id: Int
-    advancement: Int
+    advancement: Int!
   }
 
   type Query {
@@ -18,7 +18,16 @@ export const typeDefs = gql`
   }
 
   input ProjectInput {
-    id: ID
+    title: String!
+    description: String!
+    start_at: DateTime!
+    end_at: DateTime!
+    due_at: DateTime!
+    product_owner_id: Int
+    advancement: Int!
+  }
+
+  input UpdatedProjectInput {
     title: String
     description: String
     start_at: DateTime
@@ -31,7 +40,7 @@ export const typeDefs = gql`
   type Mutation {
     AddProject(data: ProjectInput): Project
     DeleteProject(projectId: String!): Project
-    UpdateProject(data:ProjectInput) : Project
+    UpdateProject(projectId: String!, data:UpdatedProjectInput) : Project
   }
 
   scalar DateTime

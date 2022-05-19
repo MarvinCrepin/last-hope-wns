@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import {Context} from '../../../../context'
 
-export default async () => await prisma.project.findMany();
+export default async ( _obj: any , _args :any, context:Context) => await context.prisma.project.findMany();

@@ -1,17 +1,21 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { Context } from "../../../../context";
 
-export default async (_: any, args: { data: any }) => await prisma.project.update({
+export default async (
+  _: any,
+  { projectId, data }: { projectId: string; data: any },
+  context: Context
+) =>
+  await context.prisma.project.update({
     where: {
-      id: args.data.id,
+      id: projectId,
     },
     data: {
-        title: args.data.title,
-        description: args.data.description,
-        start_at: new Date(args.data.start_at),
-        end_at: new Date(args.data.end_at),
-        due_at: new Date(args.data.due_at),
-        product_owner_id: args.data.product_owner_id,
-        advancement: args.data.advancement,
+      title: data.title,
+      description: data.description,
+      start_at: new Date(data.start_at),
+      end_at: new Date(data.end_at),
+      due_at: new Date(data.due_at),
+      product_owner_id: data.product_owner_id,
+      advancement: data.advancement,
     },
-  })
+  });
