@@ -1,7 +1,6 @@
-
 import TableDashboard from "./TableDashboard";
 import { FaSearch } from "react-icons/fa";
-
+import TableDashboarQuery from "./TableDashboard";
 
 export default function ProjectList() {
   return (

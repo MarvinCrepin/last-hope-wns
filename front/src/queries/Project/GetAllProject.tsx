@@ -1,14 +1,13 @@
 import { gql } from "@apollo/client";
 
 const getAllProjects = gql`
-  query GetAllProjects {
-    Project {
-      title
-      advancement
-      title
-      due_date
-    }
+query ExampleQuery {
+  GetAllProjects {
+    id
+    title
+    advancement
   }
+}
 `;
 
 export default getAllProjects;

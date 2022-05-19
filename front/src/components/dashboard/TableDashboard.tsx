@@ -1,6 +1,6 @@
 import { TableHead, Avatar, Table, TableRow, TableBody, TableCell, TableContainer, tableCellClasses, tableRowClasses, LinearProgress } from '@mui/material';
 import { useQuery } from "@apollo/client";
-import getAllProjects from '../../queries/Project/GetAllProject';
+import GetAllProjects from '../../queries/Project/GetAllProject';
 import { styled } from '@mui/material/styles';
 import { AnyRecord } from 'dns';
 
@@ -32,7 +32,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:last-child": {
         borderRadius: '0.375rem',
     },
-    "&:nth-child(odd)": {
+    "&:nth-of-type(odd)": {
         backgroundColor: '#E5E5E5'
     }
 }));
@@ -41,14 +41,17 @@ const StyledTable = styled(Table)(({ theme }) => ({
     borderRadius: '4px',
 }));
 
-// function fetchData() {
-//     const { loading, error, data } = useQuery(getAllProjects);
-//     if (loading) return null;
-//     if (error) return `Error! ${error}`;
-//     return data;
-// }
 
-export default function TableDashboard(data: any) {
+
+export default function TableDashboard() {
+
+    const Test = async() => {
+        const { loading, error, data } =  useQuery(GetAllProjects);
+        await console.log(data.GetAllProjects)
+        return await data.GetAllProjects
+    }
+    
+    Test()
 
     return (
         <StyledTableContainer /* component={Paper} */>
@@ -63,7 +66,7 @@ export default function TableDashboard(data: any) {
                 </TableHead>
                 <TableBody>
                     {
-                        data.map((data: any) => {
+                        Test().map((data: any) => {
                             const color = data.advancement >= 60 ? "success" : data.advancement <= 30 ? "error" : "warning";
                             <StyledTableRow>
                                 <StyledTableCell>Last Hope</StyledTableCell>
@@ -73,7 +76,6 @@ export default function TableDashboard(data: any) {
                             </StyledTableRow>
                         })
                     }
-
                     <StyledTableRow>
                         <StyledTableCell>Hope Last</StyledTableCell>
                         <StyledTableCell>60%</StyledTableCell>

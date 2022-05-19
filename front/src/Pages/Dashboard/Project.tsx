@@ -1,3 +1,4 @@
+import TableDashboarQuery from "../../components/Dashboard/TableDashboard";
 import TableDashboard from "../../components/Dashboard/TableDashboard";
 
 export default function Project() {
