@@ -1,15 +1,22 @@
-import { ApolloServer } from 'apollo-server'
-import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core'
+import { ApolloServer } from "apollo-server";
+import { context } from "./context";
+import { typeDefs } from "./schema";
+import resolvers from './resolvers/queries/project/project';
 
-import { schema } from './schema'
+const runServer = () => {
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: context,
+  });
 
-const server = new ApolloServer({
-  schema,
-  plugins: [
-    ApolloServerPluginLandingPageGraphQLPlayground()
-  ]
-})
+  const port = process.env.PORT || 4000;
 
-const port = process.env.PORT || 4000
+  server.listen({ port }, () =>
+    console.log(
+      `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`
+    )
+  );
+};
 
-server.listen({ port }, () => console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`))
+runServer();

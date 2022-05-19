@@ -7,6 +7,11 @@ A date string, such as 2007-12-03, compliant with the `full-date` format outline
 """
 scalar Date
 
+type Mutation {
+  createProject: Project
+  removeProject: Project
+}
+
 type Project {
   advancement: Int!
   description: String!
@@ -20,6 +25,11 @@ type Project {
   title: String!
 }
 
+input ProjectWhereUniqueInput {
+  id: ID!
+}
+
 type Query {
-  projects: Project
+  project(where: ProjectWhereUniqueInput!): Project
+  projects: [Project!]
 }

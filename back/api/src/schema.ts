@@ -1,22 +1,36 @@
-import { declarativeWrappingPlugin, makeSchema } from "nexus";
-import * as types from "./resolvers";
-import path from "path";
+import { gql } from "apollo-server";
 
+export const typeDefs = gql`
+  type Project {
+    id: ID
+    title: String
+    description: String
+    start_at: DateTime
+    end_at: DateTime
+    due_at: DateTime
+    product_owner_id: Int
+    advancement: Int
+  }
 
-export const schema = 
-	makeSchema({
-		types,
-		plugins: [declarativeWrappingPlugin({ disable: true })],
-		outputs: {
-			schema: path.join(__dirname, "../schema.graphql"),
-			typegen: path.join(__dirname, "schema-typegen.ts"),
-		},
-		contextType: {
-			module: require.resolve("./context"),
-			alias: "Context",
-			export: "Context",
-		},
-		nonNullDefaults: {
-			output: true,
-		},
-	})
+  type Query {
+    Projects: [Project]
+    GetOneProjectById(projectId: String!): Project
+  }
+
+  input ProjectInput {
+    id: ID
+    title: String
+    description: String
+    start_at: DateTime
+    end_at: DateTime
+    due_at: DateTime
+    product_owner_id: Int
+    advancement: Int
+  }
+
+  type Mutation {
+    AddProject(data: ProjectInput): Project
+  }
+
+  scalar DateTime
+`;
