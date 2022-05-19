@@ -1,28 +1,36 @@
-import { TableHead, Table, TableRow, TableBody, TableCell, TableContainer, tableCellClasses, tableRowClasses } from '@mui/material';
+import { TableHead, Avatar, Table, TableRow, TableBody, TableCell, TableContainer, tableCellClasses, tableRowClasses, LinearProgress } from '@mui/material';
 import { useQuery } from "@apollo/client";
 import getAllProjects from '../../queries/Project/GetAllProject';
 import { styled } from '@mui/material/styles';
+import { AnyRecord } from 'dns';
 
 const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
-    maxWidth: '80%',
-    margin: '0 auto',
-    borderRadius: '4px'
+    margin: '3em auto',
+    borderRadius: '0.375rem',
+    width: '90%',
+    boxShadow: '8px 8px 10px rgba(0, 0, 0, 0.25)',
 }));
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableHeaderCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: '#FE9595',
       color: theme.palette.common.white,
+      fontSize: '1.5em',
+      textAlign: 'center',
     },
+}));
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
+        fontSize: '1em',
+        textAlign: 'center',
+        color: '#4F4F4F',
     },
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:last-child": {
-        borderRadius: '25%  ',
-        border: "1px solid transparent"
+        borderRadius: '0.375rem',
     },
     "&:nth-child(odd)": {
         backgroundColor: '#E5E5E5'
@@ -40,49 +48,50 @@ const StyledTable = styled(Table)(({ theme }) => ({
 //     return data;
 // }
 
-export default function TableDashboard() {
+export default function TableDashboard(data: any) {
+
     return (
         <StyledTableContainer /* component={Paper} */>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell>Project</StyledTableCell>
-                        <StyledTableCell>Status</StyledTableCell>
-                        <StyledTableCell>Project Manager</StyledTableCell>
-                        <StyledTableCell>Due date</StyledTableCell>
+                        <StyledTableHeaderCell>Project</StyledTableHeaderCell>
+                        <StyledTableHeaderCell>Status</StyledTableHeaderCell>
+                        <StyledTableHeaderCell>Project Manager</StyledTableHeaderCell>
+                        <StyledTableHeaderCell>Due date</StyledTableHeaderCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
+                    {
+                        data.map((data: any) => {
+                            const color = data.advancement >= 60 ? "success" : data.advancement <= 30 ? "error" : "warning";
+                            <StyledTableRow>
+                                <StyledTableCell>Last Hope</StyledTableCell>
+                                <StyledTableCell className='relative'><LinearProgress color={color} className='linearProgress' value={data.advancement} valueBuffer={100} variant='buffer'></LinearProgress><span className='percent-status'>80%</span></StyledTableCell>
+                                <StyledTableCell>John Doe</StyledTableCell>
+                                <StyledTableCell>12/12/2020</StyledTableCell>
+                            </StyledTableRow>
+                        })
+                    }
+
                     <StyledTableRow>
-                        <TableCell>Last Hope</TableCell>
-                        <TableCell>80%</TableCell>
-                        <TableCell>John Doe</TableCell>
-                        <TableCell>12/12/2020</TableCell>
+                        <StyledTableCell>Hope Last</StyledTableCell>
+                        <StyledTableCell>60%</StyledTableCell>
+                        <StyledTableCell>John Doe</StyledTableCell>
+                        <StyledTableCell>12/10/2021</StyledTableCell>
                     </StyledTableRow>
                     <StyledTableRow>
-                        <TableCell>Hope Last</TableCell>
-                        <TableCell>60%</TableCell>
-                        <TableCell>John Doe</TableCell>
-                        <TableCell>12/10/2021</TableCell>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                        <TableCell>Avengers</TableCell>
-                        <TableCell>40%</TableCell>
-                        <TableCell>John Doe</TableCell>
-                        <TableCell>17/12/2020</TableCell>
-                    </StyledTableRow>
-                    <StyledTableRow>
-                        <TableCell>Jack et Mich</TableCell>
-                        <TableCell>50%</TableCell>
-                        <TableCell>John Doe</TableCell>
-                        <TableCell>21/08/2022</TableCell>
+                        <StyledTableCell>Avengers</StyledTableCell>
+                        <StyledTableCell>40%</StyledTableCell>
+                        <StyledTableCell>John Doe</StyledTableCell>
+                        <StyledTableCell>17/12/2020</StyledTableCell>
                     </StyledTableRow>
                 {/* {fetchData().map((data: {title: string, advancement: number, due_date: Date }) => {
                     <TableRow>
-                        <TableCell>{data.title}</TableCell>
-                        <TableCell>{data.advancement}</TableCell>
-                        <TableCell>{data.title}</TableCell>
-                        <TableCell>{data.due_date.toString()}</TableCell>
+                        <StyledTableCell>{data.title}</StyledTableCell>
+                        <StyledTableCell>{data.advancement}</StyledTableCell>
+                        <StyledTableCell>{data.title}</StyledTableCell>
+                        <StyledTableCell>{data.due_date.toString()}</StyledTableCell>
                     </TableRow>
                 })} */}
                 </TableBody>

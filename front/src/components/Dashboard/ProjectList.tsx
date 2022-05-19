@@ -1,3 +1,5 @@
+import TableDashboard from "./TableDashboard";
+
 export default function ProjectList() {
   return (
     <div>
@@ -25,7 +27,7 @@ export default function ProjectList() {
         </div>
         <div></div>
       </div>
-      <div>Project list</div>
+      <div><TableDashboard /></div>
     </div>
   );
 }

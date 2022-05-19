@@ -11,4 +11,4 @@ const getAllProjects = gql`
   }
 `;
 
-export default getAllProjects
+export default getAllProjects;
