@@ -6,7 +6,7 @@ import ProjectList from "../../components/Dashboard/ProjectList";
 
 import { FaPencilAlt } from "react-icons/fa";
 
-export default function Dashboard({}) {
+export default function Dashboard() {
   const ContainerRadiux = {
     boxShadow: "8px 8px 10px rgba(0, 0, 0, 0.25)",
   };

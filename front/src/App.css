@@ -1,4 +1,4 @@
-/* .App {
+ .App {
   text-align: center;
 }
 
@@ -35,4 +35,18 @@
   to {
     transform: rotate(360deg);
   }
-} */
+} 
+
+
+.linearProgress {
+  height: 40px !important;
+}
+
+.percent-status {
+  position: absolute;
+  top: 36%;
+  right: 10%;
+  z-index: 10;
+  color: white;
+}
+
