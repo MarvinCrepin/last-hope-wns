@@ -1,7 +1,7 @@
 import { ApolloServer } from "apollo-server";
 import { context } from "./context";
 import { typeDefs } from "./schema";
-import resolvers from './resolvers/queries/project/project';
+import resolvers from './graphql/resolvers/resolvers';
 
 const runServer = () => {
   const server = new ApolloServer({

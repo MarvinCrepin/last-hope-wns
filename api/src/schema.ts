@@ -13,8 +13,8 @@ export const typeDefs = gql`
   }
 
   type Query {
-    Projects: [Project]
-    GetOneProjectById(projectId: String!): Project
+    GetAllProjects: [Project]
+    GetProjectById(projectId: String!): Project
   }
 
   input ProjectInput {
@@ -30,6 +30,8 @@ export const typeDefs = gql`
 
   type Mutation {
     AddProject(data: ProjectInput): Project
+    DeleteProject(projectId: String!): Project
+    UpdateProject(data:ProjectInput) : Project
   }
 
   scalar DateTime

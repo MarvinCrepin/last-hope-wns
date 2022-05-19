@@ -1,4 +1,4 @@
-import {projectResolvers} from './projectResolvers';
+import projectResolvers from './project/project';
 
 const resolvers = [projectResolvers];
 
