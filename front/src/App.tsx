@@ -1,6 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginRouter from "./Pages/Login/LoginRouter";
+import TableDashboard from "./components/dashboard/TableDashboard";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         {/*>*/}
         {/*  Learn React*/}
         {/*</a>*/}
+        <TableDashboard />
       </header>
       <main className="">
         <BrowserRouter>

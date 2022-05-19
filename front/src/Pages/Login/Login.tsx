@@ -5,7 +5,6 @@ export default function Login() {
   return (
     <div className="flex min-h-screen justify-center items-center flex-col">
       <img src={Logo} alt="banner" className="pb-10" />
-
       <div className="flex flex-col justify-center items-center">
         <h1 className="font-title text-lh-dark text-3xl">Log In</h1>
         <form className="flex flex-col justify-center items-center">
