@@ -10,7 +10,7 @@ On the back side we used Express and Apollo Server to expose a GraphQL API to po
 
 # ⌨️ Installation and Setup Instructions
 
-Example:
+Example    test:
 Clone down this repository. You will need node and npm installed globally on your machine.
 
 Installation:
