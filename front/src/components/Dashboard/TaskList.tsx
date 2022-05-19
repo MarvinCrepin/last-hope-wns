@@ -29,7 +29,7 @@ export default function TaskList({}: Props) {
         </div>
         <div></div>
       </div>
-      <div>tab</div>
+      <div>Tasks Tab</div>
     </div>
   );
 }
