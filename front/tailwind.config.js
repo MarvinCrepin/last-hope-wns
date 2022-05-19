@@ -11,6 +11,7 @@ module.exports = {
         "lh-secondary": "#fe9595",
         "lh-light": "#fcfcfc",
         "lh-dark": "#4f4f4f",
+        "lh-gray": "#e5e5e5",
       },
     },
   },

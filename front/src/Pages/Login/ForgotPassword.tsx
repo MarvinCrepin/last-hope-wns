@@ -7,7 +7,7 @@ export default function ForgotPassword() {
       <img src={Logo} alt="banner" className="pb-10" />
 
       <div className="flex flex-col justify-center items-center">
-        <h1 className="font-title text-lh-dark text-3xl">
+        <h1 className="font-title text-lh-dark text-5xl">
           Reset your password
         </h1>
         <form className="flex flex-col justify-center items-center">
