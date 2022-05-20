@@ -7,6 +7,14 @@
   pointer-events: none;
 }
 
+.nav-font{
+  font-family: var(--text-font);
+}
+
+.logo-Navbar{
+  width: 15vmin;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
