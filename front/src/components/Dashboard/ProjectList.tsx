@@ -4,7 +4,7 @@ import { Transition } from "@headlessui/react";
 
 import { FaSearch } from "react-icons/fa";
 
-import TableDashboard from "./TableDashboard";
+import TableDashboard from "../dashboard/TableDashboard";
 import GetAllProjects from "../../queries/Project/GetAllProject";
 import Error from "../common/Error";
 import Loading from "../common/Loading";
