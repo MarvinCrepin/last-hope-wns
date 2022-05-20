@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "mysql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -11,12 +11,26 @@ generator client {
 }
 
 model Project {
-  id String @id @default(cuid())
-  title String
-  description String
-  start_at DateTime
-  due_at DateTime
-  end_at DateTime
-  product_owner_id Int
-  advancement Int
+  id               String   @id @default(cuid())
+  title            String
+  description      String
+  start_at         DateTime
+  due_at           DateTime
+  end_at           DateTime
+  advancement      Int
+  product_owner    User     @relation(fields: [product_owner_id], references: [id])
+  product_owner_id String
+
+}
+
+model User {
+  id        String @id @default(cuid())
+  lastname  String
+  firstname String
+  mail      String @unique
+  roles     String
+  password  String
+
+
+  Project Project[]
 }
