@@ -9,3 +9,10 @@ type Project = {
   advancement: number;
   __typename: string;
 };
+
+interface Column {
+  id: string;
+  label: string;
+  style: string;
+  metadata?: any;
+}
