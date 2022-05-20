@@ -9,7 +9,6 @@ const getAllProjects = gql`
       start_at
       end_at
       due_at
-      product_owner_id
       advancement
     }
   }

@@ -1,3 +1,4 @@
+
 import {
   TableHead,
   Table,
@@ -7,9 +8,12 @@ import {
   TableContainer,
   tableCellClasses,
   LinearProgress,
+  TablePagination,
+  TableFooter
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Moment from "react-moment";
+import React from 'react';
 
 const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
   margin: "3em auto",
@@ -53,7 +57,22 @@ export default function TableDashboard({
   projectList,
   loading,
 }: PropsComponent) {
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  
+    const handleChangePage = (event: unknown, newPage: number) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setRowsPerPage(+event.target.value);
+      setPage(0);
+    };
+ 
+      // Avoid a layout jump when reaching the last page with empty rows.
+      const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - projectList.length) : 0;
   return (
+    <div>
     <StyledTableContainer /* component={Paper} */>
       <Table>
         <TableHead>
@@ -107,7 +126,7 @@ export default function TableDashboard({
                       variant="buffer"
                     ></LinearProgress>
                     <span className="percent-status">
-                      {project.advancement}
+                      {project.advancement} % 
                     </span>
                   </StyledTableCell>
                   <StyledTableCell></StyledTableCell>
@@ -123,7 +142,48 @@ export default function TableDashboard({
             <>Aucun résultat Trouvé</>
           )}
         </TableBody>
-      </Table>
+        <TableFooter>
+          {/* <TableRow>
+          <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                count={projectList.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                SelectProps={{
+                  inputProps: {
+                    "aria-label": "rows per page"
+                  }
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                //ActionsComponent={TablePaginationActions}
+                //component={Box}
+                labelDisplayedRows={({ page }) => {
+                  return `Page: ${page}`;
+                }}
+                backIconButtonProps={{
+                  color: "secondary"
+                }}
+                nextIconButtonProps={{ color: "secondary" }}
+                showFirstButton={true}
+                showLastButton={true}
+                labelRowsPerPage={<span>Rows:</span>}
+              />
+          </TableRow> */}
+        </TableFooter>
+      </Table>      
+      <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={projectList.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
     </StyledTableContainer>
+
+    
+    </div>
   );
 }
