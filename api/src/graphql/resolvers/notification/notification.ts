@@ -1,5 +1,7 @@
+import GetNotificationByUserId from "./queries/GetNotificationByUserId";
+
 export default {
-  Query: {},
+  Query: { GetNotificationByUserId },
 
   Mutation: {},
 };

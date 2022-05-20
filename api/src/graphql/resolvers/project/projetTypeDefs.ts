@@ -1,6 +1,6 @@
 import { gql } from "apollo-server";
 
-export const typeDefs = gql`
+export default gql`
   type Project {
     id: ID!
     title: String!
@@ -13,19 +13,9 @@ export const typeDefs = gql`
     product_owner: User
   }
 
-  type User {
-    id: ID
-    lastname: String
-    firstname: String
-    mail: String
-    roles: String
-    password: String
-  }
-
   type Query {
     GetAllProjects: [Project]
     GetProjectById(projectId: String!): Project
-    GetUserById(userId: String!): User
   }
 
   input ProjectInput {
