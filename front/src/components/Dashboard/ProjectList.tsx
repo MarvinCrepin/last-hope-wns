@@ -8,6 +8,23 @@ import TableDashboard from "./TableDashboard";
 import GetAllProjects from "../../queries/Project/GetAllProject";
 import Error from "../common/Error";
 
+const columns: Column[] = [
+  { id: "title", label: "Project", style: "text", metadata: {} },
+  { id: "advancement", label: "Status", style: "linear-bar", metadata: {} },
+  {
+    id: "product_owner",
+    label: "Project Manager",
+    style: "multitext",
+    metadata: { property: ["firstname", "lastname"] },
+  },
+  {
+    id: "due_at",
+    label: "Due date",
+    style: "date",
+    metadata: { format: "YYYY/MM/DD" },
+  },
+];
+
 export default function ProjectList() {
   const [list, setList] = useState<Project[]>([]);
   const [searchInput, setSearchInput] = useState("");
@@ -31,7 +48,7 @@ export default function ProjectList() {
   }, [data, searchInput, hideDone]);
 
   return (
-    <div className="min-h-screen">
+    <div className="">
       <div className="w-full bg-lh-primary z-20 py-8 px-2 rounded-tr-md md:h-30 ">
         <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
@@ -87,7 +104,13 @@ export default function ProjectList() {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          {!error && <TableDashboard projectList={list} loading={loading} />}
+          {!error && (
+            <TableDashboard
+              dataList={list}
+              loading={loading}
+              columns={columns}
+            />
+          )}
         </Transition>
       </div>
     </div>

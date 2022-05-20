@@ -48,40 +48,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 interface PropsComponent {
-  projectList: Project[];
+  dataList: Project[];
   loading: boolean;
-}
-
-interface Column {
-  id: string;
-  label: string;
-  style: string;
-  metadata: any;
+  columns: Column[];
 }
 
 export default function TableDashboard({
-  projectList,
+  dataList,
   loading,
+  columns,
 }: PropsComponent) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const columns: Column[] = [
-    { id: "title", label: "Project", style: "text", metadata: {} },
-    { id: "advancement", label: "Status", style: "linear-bar", metadata: {} },
-    {
-      id: "product_owner",
-      label: "Project Manager",
-      style: "multitext",
-      metadata: { property: ["firstname", "lastname"] },
-    },
-    {
-      id: "due_at",
-      label: "Due date",
-      style: "date",
-      metadata: { format: "YYYY/MM/DD" },
-    },
-  ];
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -128,8 +106,8 @@ export default function TableDashboard({
                 );
               })}
 
-            {!loading && projectList.length > 0 ? (
-              projectList
+            {!loading && dataList.length > 0 ? (
+              dataList
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((project: any) => {
                   const color =
@@ -204,7 +182,7 @@ export default function TableDashboard({
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={projectList.length}
+          count={dataList.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
