@@ -10,6 +10,10 @@ const getAllProjects = gql`
       end_at
       due_at
       advancement
+      product_owner {
+        lastname
+        firstname
+      }
     }
   }
 `;

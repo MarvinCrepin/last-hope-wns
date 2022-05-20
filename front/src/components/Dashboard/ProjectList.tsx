@@ -20,7 +20,7 @@ export default function ProjectList() {
       let dataFiltered: Project[] = [...data.GetAllProjects];
       if (searchInput.length > 0) {
         dataFiltered = dataFiltered.filter((el: Project) =>
-          el.title.includes(searchInput)
+          el.title.toLowerCase().includes(searchInput.toLowerCase())
         );
       }
       if (hideDone) {
