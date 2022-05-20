@@ -32,5 +32,17 @@ model User {
   password  String
 
 
-  Project Project[]
+  Project       Project[]
+  Notifications Notfications[]
+}
+
+model Notfications {
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    String
+  is_read    Boolean  @default(false)
+  data       Json
+
+
 }
