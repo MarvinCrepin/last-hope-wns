@@ -3,7 +3,7 @@ import { Routes, Route, NavLink, Navigate } from "react-router-dom";
 import TaskList from "../../components/Dashboard/TaskList";
 import EmployeesList from "../../components/Dashboard/EmployeesList";
 import ProjectList from "../../components/Dashboard/ProjectList";
-
+import DropDownNavBar from "../../components/Navbar/DropDownNavBar";
 import { FaPencilAlt } from "react-icons/fa";
 
 export default function Dashboard() {
@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex items-centers flex-col justify-self-stretch">
-      <header className=""></header>
+      <header className=""><DropDownNavBar/></header>
 
       <div className="py-4 flex items-center justify-center space-x-4 text-6xl text-lh-dark font-title">
         <span>Dashboard</span>
