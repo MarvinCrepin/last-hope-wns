@@ -1,7 +1,12 @@
 import { ApolloServer } from "apollo-server";
+
+import * as dotenv from "dotenv";
+
+import typeDefs from "./typeDefs";
 import { context } from "./context";
-import { typeDefs } from "./schema";
-import resolvers from './graphql/resolvers/resolvers';
+import resolvers from "./graphql/resolvers/resolvers";
+
+dotenv.config(); // Load the environment variables
 
 const runServer = () => {
   const server = new ApolloServer({
