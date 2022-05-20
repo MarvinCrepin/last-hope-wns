@@ -1,13 +1,13 @@
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
+import { Transition } from "@headlessui/react";
 
 import { FaSearch } from "react-icons/fa";
 
-import TableDashboard from "../dashboard/TableDashboard";
+import TableDashboard from "./TableDashboard";
 import GetAllProjects from "../../queries/Project/GetAllProject";
 import Error from "../common/Error";
 import Loading from "../common/Loading";
-import { Transition } from "@headlessui/react";
 
 export default function ProjectList() {
   const [list, setList] = useState<Project[]>([]);
