@@ -9,6 +9,7 @@ import TableDashboard from "../common/TableDashboard";
 import GetAllProjects from "../../queries/Project/GetAllProject";
 import Error from "../common/Error";
 import { role } from "../../slicer/authSlice";
+import ProjectDetail from "./Modal/ProjectDetail";
 
 const columns: Column[] = [
   { id: "title", label: "Project", style: "text", metadata: {} },
@@ -28,13 +29,27 @@ const columns: Column[] = [
 ];
 
 export default function ProjectList() {
+  const { loading, error, data } = useQuery(GetAllProjects);
   const userRole = useSelector(role);
+
   const [list, setList] = useState<Project[]>([]);
   const [beMy, setByMe] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [hideDone, setHideDone] = useState(false);
+  const [displayModalProjectDetails, setDisplayModalProjectDetails] =
+    useState(false);
+  const [selectedProject, setSelectedProject] = useState<Project | null>();
 
-  const { loading, error, data } = useQuery(GetAllProjects);
+  const openProject = (el: Project) => {
+    setSelectedProject(el);
+    setDisplayModalProjectDetails(true);
+  };
+
+  const closeModalProjectDetails = () => {
+    console.log("clique");
+    setDisplayModalProjectDetails(false);
+    setSelectedProject(null);
+  };
 
   useEffect(() => {
     if (data) {
@@ -52,7 +67,13 @@ export default function ProjectList() {
   }, [data, searchInput, hideDone]);
 
   return (
-    <div className="">
+    <div className="relative">
+      {displayModalProjectDetails && selectedProject && (
+        <ProjectDetail
+          project={selectedProject}
+          closeModal={() => closeModalProjectDetails()}
+        />
+      )}
       <div className="w-full bg-lh-primary z-20 py-8 px-2 rounded-tr-md md:h-30 ">
         <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
@@ -136,8 +157,8 @@ export default function ProjectList() {
               dataList={list}
               loading={loading}
               columns={columns}
-              clickHandlerRow={function (el): void {
-                console.log(el);
+              clickHandlerRow={(el): void => {
+                openProject(el);
               }}
             />
           )}
