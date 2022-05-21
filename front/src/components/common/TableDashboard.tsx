@@ -74,6 +74,10 @@ export default function TableDashboard({
     setPage(0);
   };
 
+  React.useEffect(() => {
+    setPage(0);
+  }, [dataList]);
+
   return (
     <div>
       <StyledTableContainer /* component={Paper} */>
