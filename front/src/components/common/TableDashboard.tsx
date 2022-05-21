@@ -51,12 +51,14 @@ interface PropsComponent {
   dataList: Project[];
   loading: boolean;
   columns: Column[];
+  clickHandlerRow: (project: Project) => void;
 }
 
 export default function TableDashboard({
   dataList,
   loading,
   columns,
+  clickHandlerRow,
 }: PropsComponent) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -118,7 +120,10 @@ export default function TableDashboard({
                       : "warning";
 
                   return (
-                    <StyledTableRow key={project.id}>
+                    <StyledTableRow
+                      key={project.id}
+                      onClick={() => clickHandlerRow(project)}
+                    >
                       {columns.map((column, index) => {
                         const value = project[column.id];
                         return (

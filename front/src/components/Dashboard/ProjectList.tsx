@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 import { FaSearch, FaPlus } from "react-icons/fa";
 
-import TableDashboard from "./TableDashboard";
+import TableDashboard from "../common/TableDashboard";
 import GetAllProjects from "../../queries/Project/GetAllProject";
 import Error from "../common/Error";
 import { role } from "../../slicer/authSlice";
@@ -136,6 +136,9 @@ export default function ProjectList() {
               dataList={list}
               loading={loading}
               columns={columns}
+              clickHandlerRow={function (el): void {
+                console.log(el);
+              }}
             />
           )}
         </Transition>
