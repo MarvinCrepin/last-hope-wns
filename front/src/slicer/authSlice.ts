@@ -21,8 +21,7 @@ export const authSlice = createSlice({
   reducers: {},
 });
 
-export const {} = authSlice.actions;
-
-export const authSliceState = (state: { appStore: { app: {} } }) => state;
+export const role = (state: { authSlice: TypeState }) =>
+  state.authSlice.user.role;
 
 export default authSlice.reducer;
