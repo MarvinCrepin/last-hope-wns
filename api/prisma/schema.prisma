@@ -21,6 +21,7 @@ model Project {
   product_owner    User     @relation(fields: [product_owner_id], references: [id])
   product_owner_id String
 
+  participants UserProject[]
 }
 
 model User {
@@ -31,9 +32,18 @@ model User {
   roles     String
   password  String
 
-
-  Project       Project[]
+  projects      UserProject[]
+  owner         Project[]
   Notifications Notfications[]
+}
+
+model UserProject {
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId String
+
+  @@id([userId])
 }
 
 model Notfications {
@@ -43,6 +53,4 @@ model Notfications {
   user_id    String
   is_read    Boolean  @default(false)
   data       Json
-
-
 }
