@@ -77,7 +77,7 @@ export default function ProjectList() {
       <div className="w-full bg-lh-primary z-20 py-8 px-2 rounded-tr-md md:h-30 ">
         <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
-            {/* A cablers sur le filtre de la liste  */}
+            {/* A cabler sur le filtre de la liste  */}
             {userRole === "product_owner" && (
               <div className="mx-2 flex items-center space-x-1">
                 <input

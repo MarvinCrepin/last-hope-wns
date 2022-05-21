@@ -51,7 +51,7 @@ interface PropsComponent {
   dataList: Project[];
   loading: boolean;
   columns: Column[];
-  clickHandlerRow: (project: Project) => void;
+  clickHandlerRow?: (project: Project) => void;
 }
 
 export default function TableDashboard({
@@ -121,8 +121,11 @@ export default function TableDashboard({
 
                   return (
                     <StyledTableRow
+                      className={clickHandlerRow && "cursor-pointer"}
                       key={project.id}
-                      onClick={() => clickHandlerRow(project)}
+                      onClick={() =>
+                        clickHandlerRow && clickHandlerRow(project)
+                      }
                     >
                       {columns.map((column, index) => {
                         const value = project[column.id];
