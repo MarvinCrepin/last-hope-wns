@@ -6,9 +6,7 @@
   "scripts": {
     "postinstall": "npm -s run generate",
     "dev": "ts-node-dev -r dotenv/config --no-notify --respawn --transpile-only src",
-    "generate": "npm -s run generate:nexus && npm -s run generate:prisma",
-    "generate:nexus": "ts-node --transpile-only src/schema",
-    "generate:prisma": "prisma generate"
+    "prisma:migrate": "npx prisma format && npx prisma migrate dev"
   },
   "author": "",
   "license": "ISC",
