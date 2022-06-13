@@ -16,3 +16,13 @@ interface Column {
   style: string;
   metadata?: any;
 }
+
+type TaskInList = {
+  id: string;
+  subject: string;
+  advancement: number;
+  due_at: Date;
+  project_name: string;
+  assignee: string;
+  assignee_id: string;
+};

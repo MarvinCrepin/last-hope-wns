@@ -48,7 +48,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 interface PropsComponent {
-  dataList: Project[];
+  dataList: Project[] | TaskInList[];
   loading: boolean;
   columns: Column[];
   clickHandlerRow?: (project: Project) => void;
@@ -132,12 +132,13 @@ export default function TableDashboard({
                       }
                     >
                       {columns.map((column, index) => {
-                        const value = project[column.id];
+                        let value = project[column.id];
+
                         return (
                           <>
                             {column.style === "text" && (
                               <StyledTableCell key={column.id + project.id}>
-                                {value}
+                                {value ? value : "Not defined"}
                               </StyledTableCell>
                             )}
                             {column.style === "linear-bar" && (
@@ -148,27 +149,33 @@ export default function TableDashboard({
                                 <LinearProgress
                                   color={color}
                                   className="linearProgress"
-                                  value={value}
+                                  value={value ? value : 0}
                                   valueBuffer={100}
                                   variant="buffer"
                                 ></LinearProgress>
                                 <span className="percent-status text-lh-light">
-                                  {value} %
+                                  {value ? value : 0} %
                                 </span>
                               </StyledTableCell>
                             )}
                             {column.style === "multitext" && (
                               <StyledTableCell key={column.id + project.id}>
-                                {column.metadata.property.map((el: string) => {
-                                  return (
-                                    <span
-                                      className="ml-2"
-                                      key={value[el] + column.id + project.id}
-                                    >
-                                      {value[el]}
-                                    </span>
-                                  );
-                                })}
+                                {value
+                                  ? column.metadata.property.map(
+                                      (el: string) => {
+                                        return (
+                                          <span
+                                            className="ml-2"
+                                            key={
+                                              value[el] + column.id + project.id
+                                            }
+                                          >
+                                            {value[el]}
+                                          </span>
+                                        );
+                                      }
+                                    )
+                                  : "Not defined"}
                               </StyledTableCell>
                             )}
                             {column.style === "date" && (

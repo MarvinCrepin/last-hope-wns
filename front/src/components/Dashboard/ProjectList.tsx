@@ -46,7 +46,6 @@ export default function ProjectList() {
   };
 
   const closeModalProjectDetails = () => {
-    console.log("clique");
     setDisplayModalProjectDetails(false);
     setSelectedProject(null);
   };
@@ -152,7 +151,7 @@ export default function ProjectList() {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          {!error && (
+          {!error && !loading && (
             <TableDashboard
               dataList={list}
               loading={loading}
