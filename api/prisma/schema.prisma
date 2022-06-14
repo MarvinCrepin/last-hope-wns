@@ -51,8 +51,8 @@ model User {
 model Notfications {
   id         String   @id @default(cuid())
   created_at DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    String    
   is_read    Boolean  @default(false)
   data       Json
 }
@@ -76,7 +76,7 @@ model Ticket {
   estimated_time Int?
   passed_time    Int?
   advancement    Int?
-  state          State     @relation(fields: [state_id], references: [id])
+  state          State     @relation(fields: [state_id], references: [id], onDelete: Cascade)
   state_id       String
 
   ticketUser TicketUser[]
