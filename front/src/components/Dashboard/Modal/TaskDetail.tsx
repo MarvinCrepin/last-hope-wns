@@ -73,6 +73,80 @@ function TaskDetail({ task, closeModal }: Props) {
                   </div>
                 </div>
 
+                {/* Document */}
+                <div className="space-y-4">
+                  <h3 className="text-lh-primary font-title text-4xl">
+                    Documents
+                  </h3>
+                  <div className="font_weight_400 font-text text-xl	flex items-center space-x-2">
+                    No documents found
+                  </div>
+                </div>
+
+                {/* Edit */}
+                <div className="space-y-4">
+                  <h3 className="text-lh-primary font-title text-4xl">Edit</h3>
+                  <div className="font_weight_400 font-text text-xl	flex items-center space-x-2">
+                    <div className="flex items-center">
+                      <div className=" space-y-4">
+                        <div>From</div>
+                        <div>To</div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="flex">
+                          <input
+                            className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light block"
+                            min={0}
+                            max={24}
+                            type="number"
+                            name="fromTimeHour"
+                            id="fromTimeHour"
+                          />
+                          <div>:</div>
+                          <input
+                            min={0}
+                            max={59}
+                            className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light"
+                            type="number"
+                            name="fromTimeMin"
+                            id="fromTimeMin"
+                          />
+                        </div>
+
+                        <div className="flex">
+                          <input
+                            min={0}
+                            max={24}
+                            className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light"
+                            type="number"
+                            name="toTimeHour"
+                            id="toTimeHour"
+                          />
+                          <div>:</div>
+                          <input
+                            min={0}
+                            max={59}
+                            className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light"
+                            type="number"
+                            name="toTimeMin"
+                            id="toTimeMin"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <button className="bg-lh-secondary text-lh-light px-4 py-1.5 rounded-lg">
+                          Add to Spent Time
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <select name="" id=""></select>
+                    </div>
+                  </div>
+                </div>
+
                 {/* <div>ASSIGNE</div>
               <div>DOCUMENT</div>
               <div>EDIT</div> */}
