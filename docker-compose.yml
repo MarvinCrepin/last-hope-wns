@@ -1,0 +1,15 @@
+services:
+  api:
+    build: ./api
+    ports:
+      - 4000:4000
+    command: npm run dev
+    volumes:
+      - ./api/src/:/app/src/
+  front:
+    build: ./front
+    ports:
+      - 3000:3000
+    command: npm start
+    volumes:
+      - ./front/src/:/app/src/
