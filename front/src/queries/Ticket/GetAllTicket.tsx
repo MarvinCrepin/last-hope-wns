@@ -8,6 +8,7 @@ const getAllTickets = gql`
       project {
         title
       }
+      description
       due_at
       advancement
       ticketUser {
