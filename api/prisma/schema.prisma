@@ -59,9 +59,9 @@ model Notfications {
 
 model TicketUser {
   id       String @id @default(cuid())
-  user     User   @relation(fields: [userId], references: [id])
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String
-  ticket   Ticket @relation(fields: [ticketId], references: [id])
+  ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
   ticketId String
 
 }
@@ -71,7 +71,7 @@ model Ticket {
   title          String
   ticket_user_id String
   due_at         DateTime?
-  project        Project   @relation(fields: [project_id], references: [id])
+  project        Project   @relation(fields: [project_id], references: [id], onDelete: Cascade)
   project_id     String
   estimated_time Int?
   passed_time    Int?
