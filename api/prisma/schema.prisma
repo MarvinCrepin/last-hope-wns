@@ -69,7 +69,6 @@ model TicketUser {
 model Ticket {
   id             String    @id @default(cuid())
   title          String
-  ticket_user_id String
   due_at         DateTime?
   project        Project   @relation(fields: [project_id], references: [id], onDelete: Cascade)
   project_id     String
