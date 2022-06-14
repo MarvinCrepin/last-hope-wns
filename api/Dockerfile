@@ -1,12 +1,10 @@
-FROM node:16.15.1-alpine
+FROM node:alpine
 
 RUN mkdir /app
 WORKDIR /app
 
-COPY package.json ./
-COPY prisma prisma
-COPY src src
-COPY tsconfig.json ./
+COPY package.json .
+COPY . .
 
 RUN npm install
 RUN npx prisma generate

@@ -1,13 +1,11 @@
-FROM node:16
+FROM node:alpine
 
-WORKDIR /front
+RUN mkdir /app
+WORKDIR /app
 
 COPY package*.json ./
-COPY tsconfig.json ./
+COPY . .
 
-RUN npm install --silent
-RUN npm install react-scripts@3.4.1 -g --silent
-
-COPY . ./
+RUN npm install 
 
 CMD ["npm", "start"]
