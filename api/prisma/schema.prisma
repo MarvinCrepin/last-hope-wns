@@ -28,7 +28,7 @@ model Project {
 
 model UserProject {
   id        String  @id @default(cuid())
-  user      User    @relation(fields: [userId], references: [id])
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId String
@@ -51,15 +51,15 @@ model User {
 model Notfications {
   id         String   @id @default(cuid())
   created_at DateTime @default(now())
-  user       User     @relation(fields: [user_id], references: [id])
-  user_id    String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
   is_read    Boolean  @default(false)
   data       Json
 }
 
 model TicketUser {
   id       String @id @default(cuid())
-  user     User   @relation(fields: [userId], references: [id])
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String
   ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
   ticketId String
