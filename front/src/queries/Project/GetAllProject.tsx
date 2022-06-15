@@ -14,6 +14,13 @@ const getAllProjects = gql`
         lastname
         firstname
       }
+      participants {
+        user {
+          id
+          firstname
+          lastname
+        }
+      }
     }
   }
 `;

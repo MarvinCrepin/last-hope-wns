@@ -11,7 +11,7 @@ export default gql`
     product_owner_id: String
     advancement: Int!
     product_owner: User
-    userProject: [UserProject]
+    participants: [UserProject]
   }
 
   type Query {

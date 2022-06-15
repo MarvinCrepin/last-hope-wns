@@ -42,7 +42,9 @@ function ProjectDetail({ project, closeModal }: Props) {
               <div>
                 <h3 className="text-2xl lh-primary font-bold mb-2">Members</h3>
                 <ul className="list-disc list-inside">
-                  
+                  {project.participants.map((participant: Participant) => (
+                    <li key={participant.user.id}>{participant.user.firstname} {participant.user.lastname}</li>
+                  ))}
                 </ul>
               </div>
             </div>

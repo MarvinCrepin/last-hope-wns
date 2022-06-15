@@ -9,7 +9,18 @@ type Project = {
   product_owner_id: number;
   advancement: number;
   __typename: string;
+  participants: User[Participant];
 };
+
+interface Participant {
+  user: UserParticipant;
+}
+
+interface UserParticipant {
+  id: string;
+  firstname: string;
+  lastname: string;
+}
 
 interface Column {
   id: string;
