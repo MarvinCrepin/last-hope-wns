@@ -1,6 +1,4 @@
 import { UserInputError } from "apollo-server";
-import { Context } from "../../../../context";
-// import { ProjectInput } from "../../../../global";
 
 export default async (_parent: any, args: { data: any }, context: Context) => {
   let errors = null;
