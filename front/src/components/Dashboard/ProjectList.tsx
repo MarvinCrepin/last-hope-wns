@@ -156,7 +156,7 @@ export default function ProjectList() {
               dataList={list}
               loading={loading}
               columns={columns}
-              clickHandlerRow={(el): void => {
+              clickHandlerRow={(el: Project): void => {
                 openProject(el);
               }}
             />

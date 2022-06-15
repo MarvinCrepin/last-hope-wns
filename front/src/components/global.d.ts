@@ -25,4 +25,7 @@ type TaskInList = {
   project_name: string;
   assignee: string;
   assignee_id: string;
+  description: string | null;
 };
+
+type RowElement = any;

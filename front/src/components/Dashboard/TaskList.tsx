@@ -9,6 +9,7 @@ import { myId } from "../../slicer/authSlice";
 
 import TableDashboard from "../common/TableDashboard";
 import Error from "../common/Error";
+import TaskDetail from "./Modal/TaskDetail";
 
 const columns: Column[] = [
   { id: "subject", label: "Subject", style: "text", metadata: {} },
@@ -41,8 +42,20 @@ export default function TaskList() {
   const [hideDone, setHideDone] = useState(false);
   const [myTask, setMyTask] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [displayModalTaskDetails, setDisplayModalTaskDetails] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<TaskInList | null>();
 
   const [list, setList] = useState<TaskInList[]>([]);
+
+  const openTask = (el: TaskInList) => {
+    setSelectedTask(el);
+    setDisplayModalTaskDetails(true);
+  };
+
+  const closeModalTaskDetails = () => {
+    setSelectedTask(null);
+    setDisplayModalTaskDetails(true);
+  };
 
   const formatDate = (entries: any[]) => {
     let result: TaskInList[] = [];
@@ -58,6 +71,7 @@ export default function TaskList() {
           " " +
           element.ticketUser[0].user.lastname,
         assignee_id: element.ticketUser[0].user.id,
+        description: element.description,
       };
       result.push(newData);
     });
@@ -86,7 +100,14 @@ export default function TaskList() {
   }, [data, hideDone, myTask, searchInput]);
 
   return (
-    <div>
+    <div className="relative">
+      {displayModalTaskDetails && selectedTask && (
+        <TaskDetail
+          task={selectedTask}
+          closeModal={() => closeModalTaskDetails()}
+        />
+      )}
+
       <div className="w-full bg-lh-primary z-20 py-8 px-2 rounded-tr-md md:h-30">
         <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
@@ -170,9 +191,9 @@ export default function TaskList() {
             dataList={list}
             loading={loading}
             columns={columns}
-            // clickHandlerRow={(el): void => {
-            //   openProject(el);
-            // }}
+            clickHandlerRow={(el: TaskInList): void => {
+              openTask(el);
+            }}
           />
         )}
         {/* </Transition> */}

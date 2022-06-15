@@ -51,7 +51,7 @@ interface PropsComponent {
   dataList: Project[] | TaskInList[];
   loading: boolean;
   columns: Column[];
-  clickHandlerRow?: (project: Project) => void;
+  clickHandlerRow?: (params: RowElement) => void;
 }
 
 export default function TableDashboard({
