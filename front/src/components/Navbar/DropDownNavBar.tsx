@@ -12,11 +12,20 @@ import { FaLaptopCode } from "react-icons/fa";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { IoIosNotifications } from "react-icons/io";
 // import {MdMenuBook} from "react-icons/md";
+
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function DropDownNavBar() {
+  const [menuType, setMenuType] = React.useState("NOTIFICATION");
+
+  const toggleMenu = (type: string) => {
+    setTimeout(() => {
+      setMenuType(type);
+    }, 75);
+  };
+
   return (
     <nav className="py-4 px-10 shadow-md flex justify-between mb-10">
       <Link to="/dashboard">
@@ -25,10 +34,16 @@ export default function DropDownNavBar() {
       <div>
         <Menu as="div" className="relative inline-block text-left">
           <div className="flex ">
-            <Menu.Button className="account rounded-l-lg inline-flex justify-center gap-x-2 items-center p-3 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-lh-primary">
+            <Menu.Button
+              onClick={() => toggleMenu("PROFILE")}
+              className="account rounded-l-lg inline-flex justify-center gap-x-2 items-center p-3 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-lh-primary"
+            >
               <FaLaptopCode color="var(--primary-color)" size={18} /> John Doe
             </Menu.Button>
-            <Menu.Button className="notifications rounded-r-lg inline-flex justify-center gap-x-1 items-center shadow-sm p-3 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-lh-primary">
+            <Menu.Button
+              onClick={() => toggleMenu("NOTIFICATION")}
+              className="notifications rounded-r-lg inline-flex justify-center gap-x-1 items-center shadow-sm p-3 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-lh-primary"
+            >
               <span className="relative">
                 <IoIosNotifications size={25} />
                 <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
@@ -40,7 +55,7 @@ export default function DropDownNavBar() {
 
           <Transition
             as={Fragment}
-            enter="transition ease-out duration-100"
+            enter="transition ease-out duration-75"
             enterFrom="transform opacity-0 scale-95"
             enterTo="transform opacity-100 scale-100"
             leave="transition ease-in duration-75"
@@ -48,7 +63,9 @@ export default function DropDownNavBar() {
             leaveTo="transform opacity-0 scale-95"
           >
             <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-              <div className="py-1">
+              {menuType === "NOTIFICATION" && <div>Notif</div>}
+              {menuType === "PROFILE" && <div>profile</div>}
+              {/* <div className="py-1">
                 <Menu.Item>
                   {({ active }) => (
                     <a
@@ -79,7 +96,7 @@ export default function DropDownNavBar() {
                     )}
                   </Menu.Item>
                 </form>
-              </div>
+              </div> */}
             </Menu.Items>
           </Transition>
         </Menu>
