@@ -8,14 +8,13 @@ import DropDownNavBar from "../../components/Navbar/DropDownNavBar";
 import { role } from "../../slicer/authSlice";
 
 import { FaPencilAlt } from "react-icons/fa";
+import { titleByRole } from "../../components/common/Utils";
 
 export default function Dashboard() {
-  const userRole = useSelector(role);
-
+  const userRole: string = useSelector(role);
   const ContainerRadiux = {
     boxShadow: "8px 8px 10px rgba(0, 0, 0, 0.25)",
   };
-
   return (
     <div className="flex items-centers flex-col justify-self-stretch">
       <header className="">
@@ -23,8 +22,7 @@ export default function Dashboard() {
       </header>
 
       <div className="py-4 flex items-center justify-center space-x-4 text-6xl text-lh-dark font-title text- ">
-        <span>{userRole === "dev" && "Dashboard"}</span>
-        <span>{userRole === "product_owner" && "Dashboard manager"}</span>
+        <span>{titleByRole(userRole)}</span>
         <FaPencilAlt size={45} />
       </div>
       <main className="mx-2 md:mx-12 lg:mx-28">
@@ -33,8 +31,8 @@ export default function Dashboard() {
             to="/dashboard/task"
             className={(el) =>
               "py-1.5 px-2 font-title rounded-t-md" +
-              (el.isActive
-                ? " bg-lh-primary text-lh-light"
+              (el.isActive && userRole == "administrator"
+                ? " bg-lh-dark text-lh-light"
                 : " bg-lh-gray text-lh-dark")
             }
           >
@@ -44,8 +42,8 @@ export default function Dashboard() {
             to="/dashboard/projects"
             className={(el) =>
               "py-1.5 px-2 font-title rounded-t-md" +
-              (el.isActive
-                ? " bg-lh-primary text-lh-light"
+              (el.isActive && userRole == "administrator"
+                ? " bg-lh-dark text-lh-light"
                 : " bg-lh-gray text-lh-dark")
             }
           >
@@ -55,8 +53,8 @@ export default function Dashboard() {
             to="/dashboard/employees"
             className={(el) =>
               "py-1.5 px-2 font-title rounded-t-md" +
-              (el.isActive
-                ? " bg-lh-primary text-lh-light"
+              (el.isActive && userRole == "administrator"
+                ? " bg-lh-dark text-lh-light"
                 : " bg-lh-gray text-lh-dark")
             }
           >

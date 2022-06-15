@@ -10,6 +10,8 @@ import GetAllProjects from "../../queries/Project/GetAllProject";
 import Error from "../common/Error";
 import { role } from "../../slicer/authSlice";
 import ProjectDetail from "./Modal/ProjectDetail";
+import { Column, Project } from "../global";
+import { theme } from "../common/Utils";
 
 const columns: Column[] = [
   { id: "title", label: "Project", style: "text", metadata: {} },
@@ -73,7 +75,7 @@ export default function ProjectList() {
           closeModal={() => closeModalProjectDetails()}
         />
       )}
-      <div className="w-full bg-lh-primary z-20 py-8 px-2 rounded-tr-md md:h-30 ">
+      <div className={`w-full ${theme(userRole, "dashboard")} z-20 py-8 px-2 rounded-tr-md md:h-30`}>
         <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
             {/* A cabler sur le filtre de la liste  */}

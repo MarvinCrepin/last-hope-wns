@@ -1,3 +1,5 @@
+import { StoreReaderConfig } from "@apollo/client/cache/inmemory/readFromStore";
+
 type Project = {
   id: string;
   title: string;
@@ -9,6 +11,14 @@ type Project = {
   advancement: number;
   __typename: string;
 };
+
+type User = {
+  id: string;
+  firstname: string;
+  lastname: string;
+  role: string;
+  mail: string;
+}
 
 interface Column {
   id: string;

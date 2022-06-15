@@ -1,15 +1,15 @@
 import { useQuery } from "@apollo/client";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-
 import { FaSearch } from "react-icons/fa";
-
+import { role } from "../../slicer/authSlice";
 import getAllTickets from "../../queries/Ticket/GetAllTicket";
 import { myId } from "../../slicer/authSlice";
-
 import TableDashboard from "../common/TableDashboard";
 import Error from "../common/Error";
 import TaskDetail from "./Modal/TaskDetail";
+import { Column, TaskInList } from "../global";
+import { theme } from "../common/Utils";
 
 const columns: Column[] = [
   { id: "subject", label: "Subject", style: "text", metadata: {} },
@@ -38,6 +38,7 @@ const columns: Column[] = [
 export default function TaskList() {
   const { loading, error, data } = useQuery(getAllTickets);
   const me = useSelector(myId);
+  const userRole = useSelector(role);
 
   const [hideDone, setHideDone] = useState(false);
   const [myTask, setMyTask] = useState(false);
@@ -108,7 +109,7 @@ export default function TaskList() {
         />
       )}
 
-      <div className="w-full bg-lh-primary z-20 py-8 px-2 rounded-tr-md md:h-30">
+      <div className={`w-full ${theme(userRole, "dashboard")}  z-20 py-8 px-2 rounded-tr-md md:h-30`}>
         <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
             <label className="sr-only" htmlFor="filterSelect">
@@ -118,7 +119,7 @@ export default function TaskList() {
             <select
               name="filterSelect"
               id="filterSelect"
-              className="w-36 rounded-md bg-lh-secondary text-lh-light p-2 mx-2"
+              className="w-36 rounded-md bg-lh-primary text-lh-light p-2 mx-2"
             >
               <option value="allProject">All Projects</option>
             </select>

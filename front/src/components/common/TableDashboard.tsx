@@ -12,6 +12,7 @@ import {
 import { styled } from "@mui/material/styles";
 import Moment from "react-moment";
 import React from "react";
+import { Column, Project, RowElement, TaskInList, User } from "../global";
 
 const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
   margin: "3em auto",
@@ -48,7 +49,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 interface PropsComponent {
-  dataList: Project[] | TaskInList[];
+  dataList: Project[] | TaskInList[] | User[];
   loading: boolean;
   columns: Column[];
   clickHandlerRow?: (params: RowElement) => void;
