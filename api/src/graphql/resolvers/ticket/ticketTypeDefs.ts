@@ -13,6 +13,7 @@ export default gql`
     state: State
     state_id: String
     ticketUser: [TicketUser]
+    description: String
   }
 
   type Query {

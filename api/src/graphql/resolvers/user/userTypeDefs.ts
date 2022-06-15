@@ -12,5 +12,19 @@ export default gql`
 
   type Query {
     GetUserById(userId: String!): User
+    GetAllUsers: [User]
   }
+
+  type Mutation {
+    DeleteUser(userId: String!): User
+    UpdateUser(userId: String!, data: UpdateUserInput): User
+  }
+
+  input UpdateUserInput {
+  lastname: String
+  firstname: String
+  mail: String
+  roles: String
+  }
+
 `;
