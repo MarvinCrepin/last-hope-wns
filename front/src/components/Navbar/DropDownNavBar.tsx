@@ -1,16 +1,21 @@
 import { Link } from "react-router-dom";
 import { Fragment } from "react";
+import { useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Menu, Transition } from "@headlessui/react";
 
 import Logo from "../../assets/img/logo_LastHope_inline.png";
 import "../../assets/styles/navbar.css";
 import NotificationItem from "./NotificationItem";
+import GetAllNotifications from "../../queries/Notification/GetAllNotifications";
 
 import { FaLaptopCode } from "react-icons/fa";
 import { VscAccount } from "react-icons/vsc";
 // import { IoIosLogIn } from "react-icons/io";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { IoIosNotifications } from "react-icons/io";
+import { myId } from "../../slicer/authSlice";
 // import {MdMenuBook} from "react-icons/md";
 
 function classNames(...classes: string[]) {
@@ -18,6 +23,12 @@ function classNames(...classes: string[]) {
 }
 
 export default function DropDownNavBar() {
+  const userId = useSelector(myId);
+  console.log(userId)
+  const { loading, error, data } = useQuery(GetAllNotifications, {
+    variables: { userId : userId },
+  });
+  console.log(data);
   return (
     <nav className="py-4 px-10 shadow-md flex justify-between mb-10">
       <Link to="/dashboard">
@@ -60,9 +71,7 @@ export default function DropDownNavBar() {
                       <button
                         type="submit"
                         className={classNames(
-                          active
-                            ? "bg-gray-100 text-lh-dark"
-                            : "text-gray-700",
+                          active ? "bg-gray-100 text-lh-dark" : "text-gray-700",
                           "flex items-center gap-x-2 w-full text-left px-4 py-2 text-md"
                         )}
                       >
@@ -115,7 +124,6 @@ export default function DropDownNavBar() {
                     <NotificationItem />
                   )}
                 </Menu.Item>
-                
               </div>
               <div className="py-1">
                 <Menu.Item>
@@ -132,9 +140,7 @@ export default function DropDownNavBar() {
                     <NotificationItem />
                   )}
                 </Menu.Item>
-                
               </div>
-              
             </Menu.Items>
           </Transition>
         </Menu>
