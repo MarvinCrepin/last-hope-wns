@@ -32,7 +32,7 @@ function TaskDetail({ task, closeModal }: Props) {
           <div className=" bg-lh-primary text-xl h-14  font-text text-lh-light w-fit p-4 rounded-t-lg">
             <div>{`Task detail - ${task.subject}`}</div>
           </div>
-          <div className=" bg-white rounded-b-lg rounded-tr-lg grid grid-cols-2 py-4">
+          <div className=" bg-white rounded-b-lg rounded-tr-lg flex flex-col lg:grid lg:grid-cols-2 py-4 ">
             <div className="flex flex-col items-center justify-center">
               <div className="space-y-8 py-4 w-4/5">
                 {/* ZONE TIME */}
@@ -86,67 +86,123 @@ function TaskDetail({ task, closeModal }: Props) {
                 {/* Edit */}
                 <div className="space-y-4">
                   <h3 className="text-lh-primary font-title text-4xl">Edit</h3>
-                  <div className="font_weight_400 font-text text-xl	flex items-center space-x-2">
-                    <div className="flex items-center">
-                      <div className=" space-y-4">
-                        <div>From</div>
-                        <div>To</div>
-                      </div>
-
-                      <div className="space-y-4">
-                        <div className="flex">
-                          <input
-                            className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light block"
-                            min={0}
-                            max={24}
-                            type="number"
-                            name="fromTimeHour"
-                            id="fromTimeHour"
-                          />
-                          <div>:</div>
-                          <input
-                            min={0}
-                            max={59}
-                            className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light"
-                            type="number"
-                            name="fromTimeMin"
-                            id="fromTimeMin"
-                          />
+                  <div className="flex  flex-col lg:grid  lg:grid-cols-5 gap-4">
+                    <div className="font_weight_400 font-text text-xl	flex items-center space-x-2  lg:col-span-2 ">
+                      <div className="flex items-center">
+                        <div className=" space-y-4">
+                          <div>From</div>
+                          <div>To</div>
                         </div>
 
-                        <div className="flex">
-                          <input
-                            min={0}
-                            max={24}
-                            className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light"
-                            type="number"
-                            name="toTimeHour"
-                            id="toTimeHour"
-                          />
-                          <div>:</div>
-                          <input
-                            min={0}
-                            max={59}
-                            className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light"
-                            type="number"
-                            name="toTimeMin"
-                            id="toTimeMin"
-                          />
-                        </div>
-                      </div>
+                        <div className="space-y-4">
+                          <div className="flex">
+                            <input
+                              className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light block"
+                              min={0}
+                              max={24}
+                              type="number"
+                              name="fromTimeHour"
+                              id="fromTimeHour"
+                            />
+                            <div>:</div>
+                            <input
+                              min={0}
+                              max={59}
+                              className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light"
+                              type="number"
+                              name="fromTimeMin"
+                              id="fromTimeMin"
+                            />
+                          </div>
 
-                      <div className="space-y-4">
-                        <button className="bg-lh-secondary text-lh-light px-4 py-1.5 rounded-lg">
-                          Add to Spent Time
-                        </button>
+                          <div className="flex">
+                            <input
+                              min={0}
+                              max={24}
+                              className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light"
+                              type="number"
+                              name="toTimeHour"
+                              id="toTimeHour"
+                            />
+                            <div>:</div>
+                            <input
+                              min={0}
+                              max={59}
+                              className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light"
+                              type="number"
+                              name="toTimeMin"
+                              id="toTimeMin"
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div>
-                      <select name="" id=""></select>
+                    <div className="space-y-4 flex items-center justify-start lg:col-span-3">
+                      <button className="bg-lh-secondary text-lh-light px-2 py-1.5 rounded-lg">
+                        Add to Spent Time
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Advancement */}
+                  <div className="flex  flex-col lg:grid  lg:grid-cols-5 gap-4">
+                    <div className="font_weight_400 font-text text-xl	flex items-center space-x-2 lg:col-span-2">
+                      <select
+                        name="advancement"
+                        id="advancement"
+                        className="bg-lh-light w-1/2 border-2 border-lh-dark rounded-lg px-1.5"
+                      >
+                        <option value="0">0%</option>
+                        <option value="10">10%</option>
+                        <option value="20">20%</option>
+                        <option value="30">30%</option>
+                        <option value="40">40%</option>
+                        <option value="50">50%</option>
+                        <option value="60">60%</option>
+                        <option value="70">70%</option>
+                        <option value="80">80%</option>
+                        <option value="90">90%</option>
+                        <option value="100">100%</option>
+                      </select>
+                      <div></div>
+                    </div>
+                    <div className="space-y-4 flex items-center justify-start lg:col-span-3">
+                      <label htmlFor="advancement">Advancement</label>
+                    </div>
+                  </div>
+
+                  {/* Advancement */}
+                  <div className="flex  flex-col lg:grid  lg:grid-cols-5 gap-4">
+                    <div className="font_weight_400 font-text text-xl	flex items-center space-x-2 lg:col-span-2">
+                      <select
+                        name="status"
+                        id="status"
+                        className="bg-lh-light w-1/2 border-2 border-lh-dark rounded-lg px-1.5"
+                      >
+                        <option value="0">In Progress</option>
+                        <option value="10">stat 2</option>
+                        <option value="20">20%</option>
+                      </select>
+                      <div></div>
+                    </div>
+                    <div className="space-y-4 flex items-center justify-start lg:col-span-3">
+                      <label htmlFor="status">Status</label>
                     </div>
                   </div>
                 </div>
 
+                {/* <div className="space-y-4">
+                        <button className="bg-lh-secondary text-lh-light px-4 py-1.5 rounded-lg">
+                          Add to Spent Time
+                        </button>
+                      </div> */}
+
+                {/* 
+                <div>
+                    <select name="" id=""> 
+                    </select>
+                    <label htmlFor="">Advancement</label>
+                  </div> */}
                 {/* <div>ASSIGNE</div>
               <div>DOCUMENT</div>
               <div>EDIT</div> */}
