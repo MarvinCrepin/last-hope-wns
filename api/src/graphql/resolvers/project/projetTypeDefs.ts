@@ -10,6 +10,7 @@ export default gql`
     due_at: DateTime!
     product_owner_id: String
     advancement: Int!
+    estimated_time: Int
     product_owner: User
   }
 

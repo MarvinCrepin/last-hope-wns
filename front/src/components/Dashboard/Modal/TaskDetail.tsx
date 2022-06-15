@@ -49,7 +49,9 @@ function TaskDetail({ task, closeModal }: Props) {
                   </div>
                   <div className="space-y-2">
                     <div className="text-lh-dark font-semibold ">{`1 Hours`}</div>
-                    <div className="text-lh-primary font-semibold">{`${task.advancement} Hours (46,45%)`}</div>
+                    <div className="text-lh-primary font-semibold">{`${
+                      task.advancement
+                    } Hours (${task.advancement * 100})`}</div>
                   </div>
                 </div>
 
