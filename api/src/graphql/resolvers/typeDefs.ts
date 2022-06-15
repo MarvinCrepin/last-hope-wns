@@ -4,6 +4,7 @@ import notificationTypeDefs from "./notification/notificationTypeDefs";
 import ticketTypeDefs from "./ticket/ticketTypeDefs";
 import stateTypeDefs from "./state/stateTypeDefs";
 import ticketUserTypeDefs from "./ticketUser/ticketUserTypeDefs";
+import projectUserTypeDefs from "./userProject/userProjectTypeDefs";
 
 const typeDefs = [
   projectType,
@@ -12,6 +13,7 @@ const typeDefs = [
   ticketTypeDefs,
   stateTypeDefs,
   ticketUserTypeDefs,
+  projectUserTypeDefs,
 ];
 
 export default typeDefs;

@@ -1,4 +1,5 @@
 type Project = {
+  product_owner: any;
   id: string;
   title: string;
   description: string;
