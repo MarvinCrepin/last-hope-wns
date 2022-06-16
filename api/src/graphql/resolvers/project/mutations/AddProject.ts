@@ -9,8 +9,7 @@ export default async (_parent: any, args: { data: any }, context: Context) => {
       errors = "Description must not be empty.";
     if (!args.data.end_at) errors = "'End_at' must not be empty.";
     if (!args.data.due_at) errors = "'Due_at' must not be empty.";
-    if (args.data.product_owner_id.trim() === "")
-      errors = "Product must not be empty.";
+
     if (!args.data.advancement) errors = "Advancement must not be empty.";
 
     if (errors) throw errors;
@@ -26,6 +25,8 @@ export default async (_parent: any, args: { data: any }, context: Context) => {
         advancement: args.data.advancement,
       },
     });
+
+    console.log(project);
 
     return project;
   } catch (err) {
