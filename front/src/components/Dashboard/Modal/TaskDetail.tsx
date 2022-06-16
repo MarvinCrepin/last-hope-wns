@@ -1,5 +1,10 @@
+import { useState } from "react";
+
+import moment from "moment";
+
 import { BsHourglass, BsHourglassBottom } from "react-icons/bs";
 import { FaPaperPlane, FaRegUserCircle } from "react-icons/fa";
+import { AiOutlineClose } from "react-icons/ai";
 
 type Props = {
   task: TaskInList;
@@ -7,11 +12,32 @@ type Props = {
 };
 
 function TaskDetail({ task, closeModal }: Props) {
+  const [hourFrom, setHourFrom] = useState({ hourFrom: 0, minFrom: 0 });
+  const [hourTo, setHourTo] = useState({ hourTo: 0, minTo: 0 });
+
+  const changehourFrom = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHourFrom({ ...hourFrom, [e.target.name]: e.target.value });
+  };
+
+  const changehourTo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHourTo({ ...hourTo, [e.target.name]: e.target.value });
+  };
+
+  const addSpentTime = () => {
+    const timeFrom = moment().hour(hourFrom.hourFrom).minute(hourFrom.minFrom);
+    const timeTo = moment().hour(hourTo.hourTo).minute(hourTo.minTo);
+
+    const diff = timeTo.diff(timeFrom);
+    const duration = moment.duration(diff);
+
+    const differenceInHour = duration.hours() + duration.minutes() / 60;
+  };
+
   console.log(task);
 
   return (
     <div
-      className="fixed z-10 inset-0 overflow-y-auto"
+      className="task-detail fixed z-10 inset-0 overflow-y-auto"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
@@ -32,7 +58,13 @@ function TaskDetail({ task, closeModal }: Props) {
           <div className=" bg-lh-primary text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
             <div>{`Task detail - ${task.subject}`}</div>
           </div>
-          <div className=" bg-white rounded-b-lg rounded-tr-lg flex flex-col lg:grid lg:grid-cols-2 py-8 ">
+          <div className="relative bg-white rounded-b-lg rounded-tr-lg flex flex-col lg:grid lg:grid-cols-2 py-8 ">
+            <div
+              className="absolute right-2 top-2 text-lh-primary cursor-pointer"
+              onClick={() => closeModal()}
+            >
+              <AiOutlineClose size={30} />
+            </div>
             {/* Left column */}
             <div className="flex flex-col items-center justify-center">
               <div className="space-y-8 py-4 w-4/5">
@@ -98,56 +130,69 @@ function TaskDetail({ task, closeModal }: Props) {
                     <div className="font_weight_400 font-text text-xl	flex items-center space-x-2  lg:col-span-2 ">
                       <div className="flex items-center">
                         <div className=" space-y-4">
-                          <div>From</div>
-                          <div>To</div>
+                          <div className="h-10">From</div>
+                          <div className="h-10">To</div>
                         </div>
 
                         <div className="space-y-4">
                           <div className="flex">
                             <input
-                              className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light block"
+                              defaultValue={hourFrom.hourFrom}
+                              onChange={(e) => changehourFrom(e)}
+                              className="bg-lh-primary w-10 h-10 mx-2 rounded-lg text-lh-light  text-center  "
                               min={0}
                               max={24}
                               type="number"
-                              name="fromTimeHour"
-                              id="fromTimeHour"
+                              name="hourFrom"
+                              id="hourFrom"
                             />
-                            <div>:</div>
+                            <div className="h-10 flex items-center">:</div>
                             <input
+                              defaultValue={hourFrom.minFrom}
+                              onChange={(e) => changehourFrom(e)}
                               min={0}
                               max={59}
-                              className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light"
+                              className="bg-lh-primary w-10 h-10 mx-2 rounded-lg text-lh-light text-center "
                               type="number"
-                              name="fromTimeMin"
-                              id="fromTimeMin"
+                              name="minFrom"
+                              id="minFrom"
                             />
                           </div>
 
                           <div className="flex">
                             <input
+                              defaultValue={hourTo.hourTo}
+                              onChange={(e) => changehourTo(e)}
                               min={0}
                               max={24}
-                              className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light"
+                              className="bg-lh-primary w-10 h-10 mx-2 rounded-lg text-lh-light flex items-center text-center "
                               type="number"
-                              name="toTimeHour"
-                              id="toTimeHour"
+                              name="hourTo"
+                              id="hourTo"
                             />
-                            <div>:</div>
+                            <div className="h-10 flex items-center">:</div>
+
                             <input
+                              defaultValue={hourTo.minTo}
+                              onChange={(e) => changehourTo(e)}
                               min={0}
                               max={59}
-                              className="bg-lh-primary w-10 mx-2 rounded-lg text-lh-light"
+                              className="bg-lh-primary w-10 h-10 mx-2 rounded-lg text-lh-light text-center "
                               type="number"
-                              name="toTimeMin"
-                              id="toTimeMin"
+                              name="minTo"
+                              id="minTo"
                             />
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="space-y-4 flex items-center justify-start lg:col-span-3">
-                      <button className="bg-lh-secondary text-lh-light px-2 py-1.5 rounded-lg">
-                        Add to Spent Time
+                      <button
+                        className="bg-lh-secondary font-text text-lh-light py-1.5 px-3 flex space-x-2 items-center rounded-lg "
+                        onClick={() => addSpentTime()}
+                      >
+                        <BsHourglassBottom />
+                        <div>Add to Spent Time</div>
                       </button>
                     </div>
                   </div>
@@ -216,7 +261,7 @@ function TaskDetail({ task, closeModal }: Props) {
                       rows={5}
                       cols={5}
                     />
-                    <button className="bg-lh-secondary font-text text-lh-light py-2 px-3 flex space-x-2 items-center rounded-lg w-fit">
+                    <button className="bg-lh-secondary font-text text-lh-light py-1.5 px-3 flex space-x-2 items-center rounded-lg w-fit">
                       <div>Post</div>
                       <FaPaperPlane />
                     </button>

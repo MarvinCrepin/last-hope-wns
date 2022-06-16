@@ -26,7 +26,6 @@ function ProjectDetail({ project, closeModal }: Props) {
         <div className="p-8 inline-block align-bottom text-left transform transition-all  sm:align-middle  sm:w-full">
           <div className=" bg-white  rounded-lg  flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
             <div className=" relative bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all   sm:w-full ">
-              {" "}
               {project.title}
             </div>
           </div>
