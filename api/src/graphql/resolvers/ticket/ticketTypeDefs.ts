@@ -8,7 +8,7 @@ export default gql`
     project_id: String
     estimated_time: Int
     due_at: DateTime
-    passed_time: Int
+    passed_time: Float
     advancement: Int
     state: State
     state_id: String
@@ -20,7 +20,7 @@ export default gql`
     title: String
     estimated_time: Int
     due_at: DateTime
-    passed_time: Int
+    passed_time: Float
     advancement: Int
     state_id: String
     description: String
