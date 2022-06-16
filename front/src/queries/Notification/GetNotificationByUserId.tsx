@@ -1,14 +1,13 @@
 import { gql } from "@apollo/client";
 
-const getAllNotifications = gql`
+const GetNotificationByUserId = gql`
   query Query($userId: String!) {
     GetNotificationByUserId(userId: $userId) {
       id
       is_read
       data
-      created_at
     }
   }
 `;
 
-export default getAllNotifications;
+export default GetNotificationByUserId;

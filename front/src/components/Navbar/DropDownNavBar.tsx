@@ -8,27 +8,44 @@ import { Menu, Transition } from "@headlessui/react";
 import Logo from "../../assets/img/logo_LastHope_inline.png";
 import "../../assets/styles/navbar.css";
 import NotificationItem from "./NotificationItem";
-import GetAllNotifications from "../../queries/Notification/GetAllNotifications";
+import GetNotificationByUserId from "../../queries/Notification/GetNotificationByUserId";
 
 import { FaLaptopCode } from "react-icons/fa";
 import { VscAccount } from "react-icons/vsc";
-// import { IoIosLogIn } from "react-icons/io";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { IoIosNotifications } from "react-icons/io";
 import { myId } from "../../slicer/authSlice";
-// import {MdMenuBook} from "react-icons/md";
+
+type Notification = {
+  id: string;
+  is_read: Boolean;
+  data: JSON;
+};
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function DropDownNavBar() {
+  const [notificationsList, setNotificationsList] = useState<Notification[]>(
+    []
+  );
   const userId = useSelector(myId);
-  console.log(userId)
-  const { loading, error, data } = useQuery(GetAllNotifications, {
-    variables: { userId : userId },
+  const { loading, error, data } = useQuery(GetNotificationByUserId, {
+    variables: { userId: "userId" },
   });
-  console.log(data);
+  const [notificationsUnread, setNotificationsUnread] = useState<Number>(0);
+
+  useEffect(() => {
+    if (data) {
+      const notifications = [...data.GetNotificationByUserId];
+      setNotificationsList(notifications);
+      setNotificationsUnread(
+        notifications.filter((el: Notification) => el.is_read === false).length
+      );
+    }
+  }, [data]);
+
   return (
     <nav className="py-4 px-10 shadow-md flex justify-between mb-10">
       <Link to="/dashboard">
@@ -94,7 +111,7 @@ export default function DropDownNavBar() {
             <span className="relative">
               <IoIosNotifications size={26} />
               <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
-                99
+                {notificationsUnread.toString()}
               </span>
             </span>
           </Menu.Button>
@@ -109,38 +126,19 @@ export default function DropDownNavBar() {
             leaveTo="transform opacity-0 scale-95"
           >
             <Menu.Items className="z-50 origin-top-right absolute right-0 mt-2 w-96 rounded-md shadow-sm bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-              <div className="py-1 border-b-2">
-                <Menu.Item>
-                  {({ active }) => (
-                    // <a
-                    //   href="/"
-                    //   className={classNames(
-                    //     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                    //     "block px-4 py-2 text-sm"
-                    //   )}
-                    // >
-                    //   Profil
-                    // </a>
-                    <NotificationItem />
-                  )}
-                </Menu.Item>
-              </div>
-              <div className="py-1">
-                <Menu.Item>
-                  {({ active }) => (
-                    // <a
-                    //   href="/"
-                    //   className={classNames(
-                    //     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-                    //     "block px-4 py-2 text-sm"
-                    //   )}
-                    // >
-                    //   Profil
-                    // </a>
-                    <NotificationItem />
-                  )}
-                </Menu.Item>
-              </div>
+              {notificationsList.length > 0 && !loading && !error ? (
+                notificationsList.map((notification: Notification) => {
+                  return (
+                    <div className="py-1 border-b-2">
+                      <NotificationItem notification={notification} />
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="text-lh-dark flex items-center gap-x-2 px-4 py-2 text-md">
+                  Aucune notification disponible
+                </div>
+              )}
             </Menu.Items>
           </Transition>
         </Menu>

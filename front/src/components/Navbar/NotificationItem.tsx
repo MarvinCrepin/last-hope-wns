@@ -1,4 +1,14 @@
-export default function NotificationItem() {
+interface IMyProps {
+  notification: Notification;
+}
+
+type Notification = {
+  id: string;
+  is_read: Boolean;
+  data: JSON
+}
+
+export default function NotificationItem({notification} : IMyProps ) {
   return (
     <div className="w-full flex flex-col items-center space-y-4 sm:items-end">
       <div className="max-w-sm w-full bg-white pointer-events-auto overflow-hidden">
@@ -10,13 +20,13 @@ export default function NotificationItem() {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="2"
+                strokeWidth="2"
                 stroke="currentColor"
                 aria-hidden="true"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
                 />
               </svg>
@@ -25,10 +35,9 @@ export default function NotificationItem() {
               <p className="text-sm font-medium text-lh-primary">
                 Discussion moved
               </p>
-              <p className="mt-1 text-sm text-lh-dark">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit
-                oluptatum tenetur.
-              </p>
+              {/* <p className="mt-1 text-sm text-lh-dark">
+               {notification.data}
+              </p> */}
               <div className="mt-3 flex justify-between">
                 <button
                   type="button"
@@ -36,7 +45,9 @@ export default function NotificationItem() {
                 >
                   Mark as read
                 </button>
-              <span className="text-sm text-lh-gray">15 juin 2022 - 14:56</span>
+                <span className="text-sm text-lh-gray">
+                  15 juin 2022 - 14:56
+                </span>
               </div>
             </div>
             <div className="ml-4 flex-shrink-0 flex">
@@ -54,9 +65,9 @@ export default function NotificationItem() {
                   aria-hidden="true"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                   />
                 </svg>
               </button>
