@@ -1,19 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { useMutation } from "@apollo/client";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+
+import UpdateTicket from "../../../mutation/Ticket/UpdateTicket";
+import getAllTickets from "../../../queries/Ticket/GetAllTicket";
 
 import { BsHourglass, BsHourglassBottom } from "react-icons/bs";
 import { FaPaperPlane, FaRegUserCircle } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
 
+import { loading as load, TOOGLE_LOAD } from "../../../slicer/appSlice";
+
 type Props = {
-  task: TaskInList;
+  taskPassed: TaskInList;
   closeModal: () => void;
 };
 
-function TaskDetail({ task, closeModal }: Props) {
+function TaskDetail({ taskPassed, closeModal }: Props) {
+  const loadingInStore = useSelector(load);
+  const dispatch = useDispatch();
+  const [task, setTask] = useState<TaskInList | any>({});
+
   const [hourFrom, setHourFrom] = useState({ hourFrom: 0, minFrom: 0 });
   const [hourTo, setHourTo] = useState({ hourTo: 0, minTo: 0 });
+
+  const [updateTicket, { data, loading, error }] = useMutation(UpdateTicket, {
+    refetchQueries: [{ query: getAllTickets }],
+  });
+
+  useEffect(() => {
+    if (taskPassed) {
+      setTask(taskPassed);
+    }
+  }, [taskPassed]);
+
+  useEffect(() => {
+    if (data) {
+      setTask(data.UpdateTicket);
+    }
+  }, [data]);
 
   const changehourFrom = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name.includes("hour")) {
@@ -52,10 +79,24 @@ function TaskDetail({ task, closeModal }: Props) {
 
     const newPassedTime = task.passed_time + differenceInHour;
 
-    console.log(newPassedTime);
+    dispatch(TOOGLE_LOAD(true));
+    updateTicket({
+      variables: {
+        ticketId: task.id,
+        data: { passed_time: newPassedTime },
+      },
+    });
   };
 
-  console.log(task);
+  const changeEnum = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(TOOGLE_LOAD(true));
+    updateTicket({
+      variables: {
+        ticketId: task.id,
+        data: { [e.target.name]: parseInt(e.target.value) },
+      },
+    });
+  };
 
   return (
     <div
@@ -78,7 +119,7 @@ function TaskDetail({ task, closeModal }: Props) {
 
         <div className="p-8 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full">
           <div className=" bg-lh-primary text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
-            <div>{`Task detail - ${task.subject}`}</div>
+            <div>{`Task detail - ${task.title}`}</div>
           </div>
           <div className="relative bg-white rounded-b-lg rounded-tr-lg flex flex-col lg:grid lg:grid-cols-2 py-8 ">
             <div
@@ -104,10 +145,10 @@ function TaskDetail({ task, closeModal }: Props) {
                   </div>
                   <div className="space-y-2">
                     <div className="text-lh-dark font-semibold ">
-                      {task.passed_time}
+                      {task.estimated_time} Hours
                     </div>
                     <div className="text-lh-primary font-semibold">{`${
-                      task.advancement
+                      task.passed_time
                     } Hours ( ${(
                       (task.passed_time * 100) /
                       task.estimated_time
@@ -118,7 +159,7 @@ function TaskDetail({ task, closeModal }: Props) {
                 {/* Description */}
                 <div className="space-y-4">
                   <h3 className="text-lh-primary font-title text-4xl">
-                    {task.subject}
+                    {task.title}
                   </h3>
                   <p className="font_weight_400 font-text text-xl	">
                     {task.description}
@@ -223,21 +264,23 @@ function TaskDetail({ task, closeModal }: Props) {
                   <div className="flex  flex-col lg:grid  lg:grid-cols-5 gap-4">
                     <div className="font_weight_400 font-text text-xl	flex items-center space-x-2 lg:col-span-2">
                       <select
+                        value={task.advancement}
+                        onChange={(e) => changeEnum(e)}
                         name="advancement"
                         id="advancement"
                         className="bg-lh-light w-1/2 border-2 border-lh-dark rounded-lg px-1.5"
                       >
-                        <option value="0">0%</option>
-                        <option value="10">10%</option>
-                        <option value="20">20%</option>
-                        <option value="30">30%</option>
-                        <option value="40">40%</option>
-                        <option value="50">50%</option>
-                        <option value="60">60%</option>
-                        <option value="70">70%</option>
-                        <option value="80">80%</option>
-                        <option value="90">90%</option>
-                        <option value="100">100%</option>
+                        <option value={0}>0%</option>
+                        <option value={10}>10%</option>
+                        <option value={20}>20%</option>
+                        <option value={30}>30%</option>
+                        <option value={40}>40%</option>
+                        <option value={50}>50%</option>
+                        <option value={60}>60%</option>
+                        <option value={70}>70%</option>
+                        <option value={80}>80%</option>
+                        <option value={90}>90%</option>
+                        <option value={100}>100%</option>
                       </select>
                       <div></div>
                     </div>

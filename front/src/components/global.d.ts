@@ -19,7 +19,7 @@ interface Column {
 
 type TaskInList = {
   id: string;
-  subject: string;
+  title: string;
   advancement: number;
   due_at: Date;
   project_name: string;
