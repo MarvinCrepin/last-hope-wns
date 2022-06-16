@@ -1,4 +1,4 @@
-export const theme = (userRole: string, type: string) => {
+export const theme = (userRole: string, type: string, meta: any = {}) => {
   if (type === "dashboard") {
     if(userRole === "administrator") {
       return "bg-lh-dark"
@@ -9,14 +9,16 @@ export const theme = (userRole: string, type: string) => {
   }
   else if(type === "nav-link") {
     if(userRole === "administrator") {
-      return "bg-lh-dark text-lh-light"
+      return meta.isActive ? " bg-lh-dark text-lh-light" :
+      " bg-lh-gray text-lh-dark"
     } 
     else {
-      return "bg-lh-primary text-lh-light"
+      return meta.isActive ? " bg-lh-primary text-lh-light" :
+      " bg-lh-gray text-lh-dark"
     }
   }
 };
-
+export const roleList = ["Développeur", "Project Manager", "Administrateur"]
 export const titleByRole = (userRole: string) => {
   const dashboardTitle: any = {
     dev: "Dashboard",

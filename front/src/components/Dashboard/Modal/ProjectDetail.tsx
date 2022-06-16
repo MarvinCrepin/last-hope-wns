@@ -1,3 +1,5 @@
+import { Project } from "../../global";
+
 type Props = {
   project: Project;
   closeModal: () => void;

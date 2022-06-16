@@ -1,5 +1,6 @@
 import { BsHourglass, BsHourglassBottom } from "react-icons/bs";
 import { FaRegUserCircle } from "react-icons/fa";
+import { TaskInList } from "../../global";
 
 type Props = {
   task: TaskInList;

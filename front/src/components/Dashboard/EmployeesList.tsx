@@ -11,8 +11,8 @@ import getAllUsers from "../../queries/User/GetAllUsers";
 import { theme } from "../common/Utils";
 
 const columns: Column[] = [
-  { id: "User", label: "User", style: "text", metadata: {} },
-  { id: "roles", label: "Role", style: "text", metadata: {} },
+  { id: "user", label: "User", style: "text", metadata: {} },
+  { id: "roles", label: "Role", style: "select", metadata: {} },
 ];
 
 export default function EmployeesList() {
@@ -20,10 +20,11 @@ export default function EmployeesList() {
   const userRole = useSelector(role);
   const [list, setList] = useState<User[]>([]);
   const [searchInput, setSearchInput] = useState("");
-
+  const check = () => userRole === "administrator" && !columns[2] ? columns.push({ id: "actions", label: "Actions", style: "actions", metadata: {} }) : null
+  check()
   useEffect(() => {
     if (data) {
-      const dataObject = data.GetAllUsers.map((user: any) => ({ ...user, User: user.firstname.concat(' ', user.lastname)}))
+      const dataObject = data.GetAllUsers.map((user: any) => ({ ...user, user: user.firstname.concat(' ', user.lastname)}))
       let dataFiltered: User[] = [...dataObject];
       if (searchInput.length > 0) {
         dataFiltered = dataFiltered.filter((el: User) =>
@@ -36,11 +37,8 @@ export default function EmployeesList() {
 
   return (
     <div className="relative">
-      <div className={`w-full ${theme(userRole, "dashboard")} z-20 py-8 px-2 rounded-tr-md md:h-30`}>
+     <div className={`w-full ${theme(userRole, "dashboard")}  z-20 py-8 px-2 rounded-tr-md md:h-30`}>
         <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
-          <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
-            {/* A cabler sur le filtre de la liste  */}
-          </div>
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
             <label className="sr-only" htmlFor="filterSelect">
               Filter:
@@ -48,26 +46,26 @@ export default function EmployeesList() {
             <select
               name="filterSelect"
               id="filterSelect"
-              className="w-36 rounded-md  bg-lh-primary text-lh-light p-2 mx-2"
+              className="w-36 rounded-md bg-lh-primary text-lh-light p-2 mx-2"
             >
               <option value="allProject">All Users</option>
             </select>
-            </div>
-          <div className="flex items-center space-x-1 mr-2">
-            <div className="relative flex item-centers">
-              <label htmlFor="searchInput" className="sr-only">
-                Recherche
-              </label>
-              <input
-                type="text"
-                id="searchInput"
-                name="searchInput"
-                placeholder="Search"
-                className="rounded-md h-8 mx-2 px-8"
-                onChange={(e) => setSearchInput(e.target.value)}
-              />
-              <FaSearch className="absolute top-2 left-4 text-gray-500" />
-            </div>
+            
+          </div>
+
+          <div className="relative flex item-centers">
+            <label htmlFor="searchInput" className="sr-only">
+              Recherche
+            </label>
+            <input
+              type="text"
+              id="searchInput"
+              name="searchInput"
+              placeholder="Search"
+              className="rounded-md h-8 mx-2 px-8"
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+            <FaSearch className="absolute top-2 left-4 text-gray-500" />
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@ import DropDownNavBar from "../../components/Navbar/DropDownNavBar";
 import { role } from "../../slicer/authSlice";
 
 import { FaPencilAlt } from "react-icons/fa";
-import { titleByRole } from "../../components/common/Utils";
+import { theme, titleByRole } from "../../components/common/Utils";
 
 export default function Dashboard() {
   const userRole: string = useSelector(role);
@@ -31,9 +31,7 @@ export default function Dashboard() {
             to="/dashboard/task"
             className={(el) =>
               "py-1.5 px-2 font-title rounded-t-md" +
-              (el.isActive && userRole == "administrator"
-                ? " bg-lh-dark text-lh-light"
-                : " bg-lh-gray text-lh-dark")
+              (theme(userRole, "nav-link", {'isActive': el.isActive}))
             }
           >
             Tasks
@@ -42,9 +40,7 @@ export default function Dashboard() {
             to="/dashboard/projects"
             className={(el) =>
               "py-1.5 px-2 font-title rounded-t-md" +
-              (el.isActive && userRole == "administrator"
-                ? " bg-lh-dark text-lh-light"
-                : " bg-lh-gray text-lh-dark")
+              (theme(userRole, "nav-link", {'isActive': el.isActive}))
             }
           >
             Projects
@@ -53,9 +49,7 @@ export default function Dashboard() {
             to="/dashboard/employees"
             className={(el) =>
               "py-1.5 px-2 font-title rounded-t-md" +
-              (el.isActive && userRole == "administrator"
-                ? " bg-lh-dark text-lh-light"
-                : " bg-lh-gray text-lh-dark")
+              (theme(userRole, "nav-link", {'isActive': el.isActive}))
             }
           >
             Employees
@@ -68,7 +62,7 @@ export default function Dashboard() {
             <Route path="/projects" element={<ProjectList />} />
             <Route path="/employees" element={<EmployeesList />} />
           </Routes>
-          <div className="h-5 bg-lh-primary rounded-b-md"></div>
+          <div className={`h-5 ${theme(userRole, "dashboard")} rounded-b-md`}></div>
         </div>
       </main>
     </div>

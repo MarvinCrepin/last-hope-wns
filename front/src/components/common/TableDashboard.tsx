@@ -12,7 +12,11 @@ import {
 import { styled } from "@mui/material/styles";
 import Moment from "react-moment";
 import React from "react";
+import Actions from "../Dashboard/Actions";
 import { Column, Project, RowElement, TaskInList, User } from "../global";
+import { roleList } from "./Utils";
+import { role } from "../../slicer/authSlice";
+import { useSelector } from "react-redux";
 
 const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
   margin: "3em auto",
@@ -63,6 +67,7 @@ export default function TableDashboard({
 }: PropsComponent) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const userRole = useSelector(role);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -133,7 +138,7 @@ export default function TableDashboard({
                       }
                     >
                       {columns.map((column, index) => {
-                        let value = project[column.id];
+                        const value = project[column.id];
 
                         return (
                           <>
@@ -184,6 +189,21 @@ export default function TableDashboard({
                                 <Moment format={column.metadata.format}>
                                   {new Date(value)}
                                 </Moment>
+                              </StyledTableCell>
+                            )}
+                            {column.style === "actions" && (
+                              <StyledTableCell key={column.id + project.id}>
+                                <Actions />
+                              </StyledTableCell>
+                            )}
+                            {column.style === "select" && (
+                              <StyledTableCell key={column.id + project.id}>
+                                {userRole === "dev" ? <span>{userRole}</span> : 
+                                <select className="w-36 rounded-md bg-lh-light text-lh-dark p-2 mx-2">
+                                   {roleList.map((roleName) => (
+                                    <option value={roleName}>{roleName}</option>
+                                  ))}
+                                </select>}
                               </StyledTableCell>
                             )}
                           </>
