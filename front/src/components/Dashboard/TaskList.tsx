@@ -72,6 +72,7 @@ export default function TaskList() {
           element.ticketUser[0].user.lastname,
         assignee_id: element.ticketUser[0].user.id,
         description: element.description,
+        passed_time: element.passed_time,
       };
       result.push(newData);
     });

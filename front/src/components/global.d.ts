@@ -23,6 +23,7 @@ type TaskInList = {
   advancement: number;
   due_at: Date;
   project_name: string;
+  passed_time: number;
   assignee: string;
   assignee_id: string;
   description: string | null;

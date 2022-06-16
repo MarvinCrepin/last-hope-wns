@@ -11,6 +11,7 @@ export default gql`
     product_owner_id: String
     advancement: Int!
     estimated_time: Int
+    passed_time: Int
     product_owner: User
   }
 

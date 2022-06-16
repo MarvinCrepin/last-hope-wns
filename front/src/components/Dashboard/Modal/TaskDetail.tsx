@@ -33,6 +33,7 @@ function TaskDetail({ task, closeModal }: Props) {
             <div>{`Task detail - ${task.subject}`}</div>
           </div>
           <div className=" bg-white rounded-b-lg rounded-tr-lg flex flex-col lg:grid lg:grid-cols-2 py-4 ">
+            {/* Left column */}
             <div className="flex flex-col items-center justify-center">
               <div className="space-y-8 py-4 w-4/5">
                 {/* ZONE TIME */}
@@ -51,7 +52,7 @@ function TaskDetail({ task, closeModal }: Props) {
                     <div className="text-lh-dark font-semibold ">{`1 Hours`}</div>
                     <div className="text-lh-primary font-semibold">{`${
                       task.advancement
-                    } Hours (${task.advancement * 100})`}</div>
+                    } Hours (${task.advancement * 100} %)`}</div>
                   </div>
                 </div>
 
@@ -192,25 +193,12 @@ function TaskDetail({ task, closeModal }: Props) {
                     </div>
                   </div>
                 </div>
-
-                {/* <div className="space-y-4">
-                        <button className="bg-lh-secondary text-lh-light px-4 py-1.5 rounded-lg">
-                          Add to Spent Time
-                        </button>
-                      </div> */}
-
-                {/* 
-                <div>
-                    <select name="" id=""> 
-                    </select>
-                    <label htmlFor="">Advancement</label>
-                  </div> */}
-                {/* <div>ASSIGNE</div>
-              <div>DOCUMENT</div>
-              <div>EDIT</div> */}
               </div>
             </div>
-            <div className="flex justify-center"></div>
+            {/* Right column */}
+            <div className="flex justify-center">
+              <div className="space-y-8 py-4 w-4/5"></div>
+            </div>
           </div>
           {/* <div className=" bg-white  rounded-lg  flex items-end sm:items-center justify-center p-4 text-center sm:p-0 h-full">
             <div className=" relative bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:w-full">
