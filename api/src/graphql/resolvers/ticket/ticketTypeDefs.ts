@@ -16,8 +16,22 @@ export default gql`
     description: String
   }
 
+  input TicketInputPatch {
+    title: String
+    estimated_time: Int
+    due_at: DateTime
+    passed_time: Int
+    advancement: Int
+    state_id: String
+    description: String
+  }
+
   type Query {
     GetAllTickets: [Ticket]
+  }
+
+  type Mutation {
+    UpdateTicket(ticketId: String!, data: TicketInputPatch): Ticket
   }
 
   scalar DateTime

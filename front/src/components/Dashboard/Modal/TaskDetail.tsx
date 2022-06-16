@@ -16,11 +16,29 @@ function TaskDetail({ task, closeModal }: Props) {
   const [hourTo, setHourTo] = useState({ hourTo: 0, minTo: 0 });
 
   const changehourFrom = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setHourFrom({ ...hourFrom, [e.target.name]: e.target.value });
+    if (e.target.name.includes("hour")) {
+      if (parseInt(e.target.value) <= 24) {
+        setHourFrom({ ...hourFrom, [e.target.name]: e.target.value });
+      }
+    }
+    if (e.target.name.includes("min")) {
+      if (parseInt(e.target.value) <= 59) {
+        setHourFrom({ ...hourFrom, [e.target.name]: e.target.value });
+      }
+    }
   };
 
   const changehourTo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setHourTo({ ...hourTo, [e.target.name]: e.target.value });
+    if (e.target.name.includes("hour")) {
+      if (parseInt(e.target.value) <= 24) {
+        setHourTo({ ...hourTo, [e.target.name]: e.target.value });
+      }
+    }
+    if (e.target.name.includes("min")) {
+      if (parseInt(e.target.value) <= 59) {
+        setHourTo({ ...hourTo, [e.target.name]: e.target.value });
+      }
+    }
   };
 
   const addSpentTime = () => {
@@ -31,6 +49,10 @@ function TaskDetail({ task, closeModal }: Props) {
     const duration = moment.duration(diff);
 
     const differenceInHour = duration.hours() + duration.minutes() / 60;
+
+    const newPassedTime = task.passed_time + differenceInHour;
+
+    console.log(newPassedTime);
   };
 
   console.log(task);
@@ -137,7 +159,7 @@ function TaskDetail({ task, closeModal }: Props) {
                         <div className="space-y-4">
                           <div className="flex">
                             <input
-                              defaultValue={hourFrom.hourFrom}
+                              value={hourFrom.hourFrom}
                               onChange={(e) => changehourFrom(e)}
                               className="bg-lh-primary w-10 h-10 mx-2 rounded-lg text-lh-light  text-center  "
                               min={0}
@@ -148,7 +170,7 @@ function TaskDetail({ task, closeModal }: Props) {
                             />
                             <div className="h-10 flex items-center">:</div>
                             <input
-                              defaultValue={hourFrom.minFrom}
+                              value={hourFrom.minFrom}
                               onChange={(e) => changehourFrom(e)}
                               min={0}
                               max={59}
@@ -161,7 +183,7 @@ function TaskDetail({ task, closeModal }: Props) {
 
                           <div className="flex">
                             <input
-                              defaultValue={hourTo.hourTo}
+                              value={hourTo.hourTo}
                               onChange={(e) => changehourTo(e)}
                               min={0}
                               max={24}
@@ -173,7 +195,7 @@ function TaskDetail({ task, closeModal }: Props) {
                             <div className="h-10 flex items-center">:</div>
 
                             <input
-                              defaultValue={hourTo.minTo}
+                              value={hourTo.minTo}
                               onChange={(e) => changehourTo(e)}
                               min={0}
                               max={59}
