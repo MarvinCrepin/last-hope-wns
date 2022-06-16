@@ -1,5 +1,5 @@
 import { BsHourglass, BsHourglassBottom } from "react-icons/bs";
-import { FaRegUserCircle } from "react-icons/fa";
+import { FaPaperPlane, FaRegUserCircle } from "react-icons/fa";
 
 type Props = {
   task: TaskInList;
@@ -29,10 +29,10 @@ function TaskDetail({ task, closeModal }: Props) {
         </span>
 
         <div className="p-8 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full">
-          <div className=" bg-lh-primary text-xl h-14  font-text text-lh-light w-fit p-4 rounded-t-lg">
+          <div className=" bg-lh-primary text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
             <div>{`Task detail - ${task.subject}`}</div>
           </div>
-          <div className=" bg-white rounded-b-lg rounded-tr-lg flex flex-col lg:grid lg:grid-cols-2 py-4 ">
+          <div className=" bg-white rounded-b-lg rounded-tr-lg flex flex-col lg:grid lg:grid-cols-2 py-8 ">
             {/* Left column */}
             <div className="flex flex-col items-center justify-center">
               <div className="space-y-8 py-4 w-4/5">
@@ -49,10 +49,15 @@ function TaskDetail({ task, closeModal }: Props) {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <div className="text-lh-dark font-semibold ">{`1 Hours`}</div>
+                    <div className="text-lh-dark font-semibold ">
+                      {task.passed_time}
+                    </div>
                     <div className="text-lh-primary font-semibold">{`${
                       task.advancement
-                    } Hours (${task.advancement * 100} %)`}</div>
+                    } Hours ( ${(
+                      (task.passed_time * 100) /
+                      task.estimated_time
+                    ).toFixed(2)} % )`}</div>
                   </div>
                 </div>
 
@@ -197,7 +202,27 @@ function TaskDetail({ task, closeModal }: Props) {
             </div>
             {/* Right column */}
             <div className="flex justify-center">
-              <div className="space-y-8 py-4 w-4/5"></div>
+              <div className="space-y-8 py-4 w-4/5">
+                <div className="space-y-4">
+                  <h3 className="text-lh-primary font-title text-4xl">
+                    Comments
+                  </h3>
+                  <form className="flex flex-col items-end  space-y-4">
+                    <textarea
+                      placeholder="Write a comment"
+                      id="commentarea"
+                      name="commentarea"
+                      className="rounded-lg border-2 border-lh-gray p-2 text-lh-dark font-text w-full"
+                      rows={5}
+                      cols={5}
+                    />
+                    <button className="bg-lh-secondary font-text text-lh-light py-2 px-3 flex space-x-2 items-center rounded-lg w-fit">
+                      <div>Post</div>
+                      <FaPaperPlane />
+                    </button>
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
           {/* <div className=" bg-white  rounded-lg  flex items-end sm:items-center justify-center p-4 text-center sm:p-0 h-full">

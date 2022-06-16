@@ -26,6 +26,7 @@ type TaskInList = {
   passed_time: number;
   assignee: string;
   assignee_id: string;
+  estimated_time: number;
   description: string | null;
 };
 

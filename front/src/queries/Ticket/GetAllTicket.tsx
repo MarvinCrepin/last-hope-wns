@@ -11,6 +11,7 @@ const getAllTickets = gql`
       description
       due_at
       passed_time
+      estimated_time
       advancement
       ticketUser {
         user {
