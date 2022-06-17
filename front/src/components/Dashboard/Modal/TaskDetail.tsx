@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -21,6 +21,8 @@ type Props = {
 function TaskDetail({ taskPassed, closeModal }: Props) {
   const loadingInStore = useSelector(load);
   const dispatch = useDispatch();
+  // const { loading, data } = useQuery(getAllState);
+
   const [task, setTask] = useState<TaskInList | any>({});
 
   const [hourFrom, setHourFrom] = useState({ hourFrom: 0, minFrom: 0 });
@@ -297,6 +299,11 @@ function TaskDetail({ taskPassed, closeModal }: Props) {
                         id="status"
                         className="bg-lh-light w-1/2 border-2 border-lh-dark rounded-lg px-1.5"
                       >
+                        {/* {!loading && data &&
+                          .forEach((state)=>{
+                            <option value={state.id}>{state.name}</option>
+                          })
+                        }                         */}
                         <option value="0">In Progress</option>
                         <option value="10">stat 2</option>
                         <option value="20">20%</option>

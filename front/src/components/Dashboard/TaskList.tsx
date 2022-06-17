@@ -110,7 +110,7 @@ export default function TaskList() {
   }, [data, hideDone, myTask, searchInput]);
 
   return (
-    <div className="relative">
+    <div className="relative ">
       {displayModalTaskDetails && selectedTask && (
         <TaskDetail
           taskPassed={selectedTask}
