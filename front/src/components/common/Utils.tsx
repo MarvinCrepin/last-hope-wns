@@ -20,12 +20,12 @@ export const theme = (userRole: string, type: string, meta: any = {}) => {
     }
   }
 };
-export const roleList = ["Développeur", "Project Manager", "Administrateur"]
+export const roleList = ["Developer", "Project Manager", "Admin"]
 export const titleByRole = (userRole: string) => {
   const dashboardTitle: any = {
-    dev: "Dashboard",
-    product_owner: "Dashboard Manager",
-    administrator: "Admin Dashboard",
+    Developer: "Dashboard",
+    Project_Manager: "Dashboard Manager",
+    Admin: "Admin Dashboard",
   };
   return dashboardTitle[userRole]
 };
@@ -36,7 +36,7 @@ export const columnsByRole =  (userRole: string, type: string, meta: any = {}): 
     const columns: Column[] =  
     [{ id: "user", label: "User", style: "text", metadata: {} },
     { id: "roles", label: "Role", style: "select", metadata: {} }]
-    if(userRole !== "dev" /* && roleList.includes(userRole) */) {
+    if(userRole !== "Developer" /* && roleList.includes(userRole) */) {
       columns.push({id: "actions", label: "Actions", style: "actions", metadata: {}})
     }
     return columns
