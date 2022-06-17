@@ -1,6 +1,7 @@
 import { StoreReaderConfig } from "@apollo/client/cache/inmemory/readFromStore";
 
 type Project = {
+  product_owner: any;
   id: string;
   title: string;
   description: string;
@@ -10,7 +11,20 @@ type Project = {
   product_owner_id: number;
   advancement: number;
   __typename: string;
+  participants: User[Participant];
+  children: JSX.Element|JSX.Element[];
 };
+
+interface Participant {
+  user: UserParticipant;
+}
+
+interface UserParticipant {
+  id: string;
+  firstname: string;
+  lastname: string;
+  roles: string;
+}
 
 type User = {
   id: string;

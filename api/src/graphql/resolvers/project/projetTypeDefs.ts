@@ -13,6 +13,7 @@ export default gql`
     estimated_time: Int
     passed_time: Int
     product_owner: User
+    participants: [UserProject]
   }
 
   type Query {

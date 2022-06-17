@@ -14,7 +14,7 @@ export type IActions = {
 }
 
 
-export default function Actions({deleteItem, updateItem, viewItem}: IActions)  {
+const Actions = ({deleteItem, updateItem, viewItem}: IActions) => {
     return (
         <div>
         <IconButton
@@ -37,3 +37,5 @@ export default function Actions({deleteItem, updateItem, viewItem}: IActions)  {
         </div>
     )
 }
+
+export default Actions;
