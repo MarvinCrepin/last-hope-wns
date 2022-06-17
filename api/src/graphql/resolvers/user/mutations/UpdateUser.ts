@@ -1,5 +1,3 @@
-import { Context } from "../../../../context";
-
 export default async (
   _: any,
   { userId, data }: { userId: string; data: any },
@@ -13,6 +11,6 @@ export default async (
       lastname: data.lastname,
       firstname: data.lastname,
       mail: data.mail,
-      roles: data.roles
+      roles: data.roles,
     },
   });
