@@ -32,7 +32,7 @@ export default function DropDownNavBar() {
   );
   const userId = useSelector(myId);
   const { loading, error, data } = useQuery(GetNotificationByUserId, {
-    variables: { userId: "userId" },
+    variables: { userId: userId },
   });
   const [notificationsUnread, setNotificationsUnread] = useState<Number>(0);
 
@@ -135,7 +135,7 @@ export default function DropDownNavBar() {
                   );
                 })
               ) : (
-                <div className="text-lh-dark flex items-center gap-x-2 px-4 py-2 text-md">
+                <div className="text-lh-dark flex items-center justify-center gap-x-2 p-8 text-md">
                   Aucune notification disponible
                 </div>
               )}

@@ -9,6 +9,9 @@ type Notification = {
 }
 
 export default function NotificationItem({notification} : IMyProps ) {
+  const markAsRead = ()=>{
+    
+  }
   return (
     <div className="w-full flex flex-col items-center space-y-4 sm:items-end">
       <div className="max-w-sm w-full bg-white pointer-events-auto overflow-hidden">
