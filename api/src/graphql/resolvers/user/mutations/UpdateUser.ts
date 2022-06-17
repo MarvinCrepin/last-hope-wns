@@ -1,16 +1,20 @@
+
+import {Context} from '../../../resolvers/types'
 export default async (
   _: any,
   { userId, data }: { userId: string; data: any },
   context: Context
-) =>
-  await context.prisma.user.update({
+) => {
+  const oldData = await context.prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+
+  const newData = { ...oldData, ...data };
+  return await context.prisma.user.update({
     where: {
       id: userId,
     },
-    data: {
-      lastname: data.lastname,
-      firstname: data.lastname,
-      mail: data.mail,
-      roles: data.roles,
-    },
+    data: newData,
   });
+};

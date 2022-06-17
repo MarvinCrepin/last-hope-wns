@@ -4,6 +4,7 @@ import Moment from "react-moment";
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import "../../../assets/css/projectDetail.css";
+import { Participant, Project } from "../../global";
 Chart.register(...registerables);
 
 const projectStats = {
@@ -47,8 +48,6 @@ type Props = {
 };
 
 function ProjectDetail({ project, closeModal }: Props) {
-  console.log(project);
-
   return (
     <div
       className="fixed z-10 inset-0 overflow-y-auto"

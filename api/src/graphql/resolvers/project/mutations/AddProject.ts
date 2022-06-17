@@ -1,4 +1,5 @@
 import { UserInputError } from "apollo-server";
+import {Context} from '../../../resolvers/types'
 
 export default async (_parent: any, args: { data: any }, context: Context) => {
   let errors = null;
@@ -9,8 +10,7 @@ export default async (_parent: any, args: { data: any }, context: Context) => {
       errors = "Description must not be empty.";
     if (!args.data.end_at) errors = "'End_at' must not be empty.";
     if (!args.data.due_at) errors = "'Due_at' must not be empty.";
-    if (args.data.product_owner_id.trim() === "")
-      errors = "Product must not be empty.";
+
     if (!args.data.advancement) errors = "Advancement must not be empty.";
 
     if (errors) throw errors;

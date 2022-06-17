@@ -1,3 +1,5 @@
+import { StoreReaderConfig } from "@apollo/client/cache/inmemory/readFromStore";
+
 type Project = {
   product_owner: any;
   id: string;
@@ -24,6 +26,14 @@ interface UserParticipant {
   roles: string;
 }
 
+type User = {
+  id: string;
+  firstname: string;
+  lastname: string;
+  role: string;
+  mail: string;
+}
+
 interface Column {
   id: string;
   label: string;
@@ -33,13 +43,22 @@ interface Column {
 
 type TaskInList = {
   id: string;
-  subject: string;
+  title: string;
   advancement: number;
   due_at: Date;
   project_name: string;
+  passed_time: number;
   assignee: string;
   assignee_id: string;
+  estimated_time: number;
   description: string | null;
+  state_id: string;
+  state: State;
 };
+
+interface State {
+  id: string;
+  name: String;
+}
 
 type RowElement = any;

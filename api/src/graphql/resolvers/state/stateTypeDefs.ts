@@ -4,6 +4,9 @@ export default gql`
   type State {
     id: ID
     name: String
-    tickets: [Ticket]
+  }
+
+  type Query {
+    GetAllState: [State]
   }
 `;

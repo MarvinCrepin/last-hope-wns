@@ -1,18 +1,19 @@
 import { useQuery } from "@apollo/client";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-
 import { FaSearch } from "react-icons/fa";
-
+import { role } from "../../slicer/authSlice";
 import getAllTickets from "../../queries/Ticket/GetAllTicket";
 import { myId } from "../../slicer/authSlice";
-
+import { loading as load, TOOGLE_LOAD } from "../../slicer/appSlice";
 import TableDashboard from "../common/TableDashboard";
 import Error from "../common/Error";
 import TaskDetail from "./Modal/TaskDetail";
+import { Column, TaskInList } from "../global";
+import { theme } from "../common/Utils";
 
 const columns: Column[] = [
-  { id: "subject", label: "Subject", style: "text", metadata: {} },
+  { id: "title", label: "Subject", style: "text", metadata: {} },
   {
     id: "project_name",
     label: "Project",
@@ -36,9 +37,11 @@ const columns: Column[] = [
 ];
 
 export default function TaskList() {
+  const dispatch = useDispatch();
   const { loading, error, data } = useQuery(getAllTickets);
   const me = useSelector(myId);
-
+  const userRole = useSelector(role);
+  const loadingInStore = useSelector(load);
   const [hideDone, setHideDone] = useState(false);
   const [myTask, setMyTask] = useState(false);
   const [searchInput, setSearchInput] = useState("");
@@ -62,7 +65,7 @@ export default function TaskList() {
     entries.forEach((element) => {
       let newData = {
         id: element.id,
-        subject: element.title,
+        title: element.title,
         advancement: element.advancement,
         due_at: element.due_at,
         project_name: element.project.title,
@@ -72,6 +75,10 @@ export default function TaskList() {
           element.ticketUser[0].user.lastname,
         assignee_id: element.ticketUser[0].user.id,
         description: element.description,
+        passed_time: element.passed_time,
+        estimated_time: element.estimated_time,
+        state: element.state,
+        state_id: element.state_id,
       };
       result.push(newData);
     });
@@ -79,13 +86,17 @@ export default function TaskList() {
   };
 
   useEffect(() => {
-    if (data) {
+    if (data) dispatch(TOOGLE_LOAD(false));
+  }, [data]);
+
+  useEffect(() => {
+    if (data && !loadingInStore) {
       let dataFiltered: TaskInList[] = [...formatDate(data.GetAllTickets)];
 
       if (searchInput.length > 0) {
         dataFiltered = dataFiltered.filter(
           (el: TaskInList) =>
-            el.subject.toLowerCase().includes(searchInput.toLowerCase()) ||
+            el.title.toLowerCase().includes(searchInput.toLowerCase()) ||
             el.assignee.toLowerCase().includes(searchInput.toLowerCase())
         );
       }
@@ -100,15 +111,15 @@ export default function TaskList() {
   }, [data, hideDone, myTask, searchInput]);
 
   return (
-    <div className="relative">
+    <div className="relative ">
       {displayModalTaskDetails && selectedTask && (
         <TaskDetail
-          task={selectedTask}
+          taskPassed={selectedTask}
           closeModal={() => closeModalTaskDetails()}
         />
       )}
 
-      <div className="w-full bg-lh-primary z-20 py-8 px-2 rounded-tr-md md:h-30">
+      <div className={`w-full ${theme(userRole, "dashboard")}  z-20 py-8 px-2 rounded-tr-md md:h-30`}>
         <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
             <label className="sr-only" htmlFor="filterSelect">
@@ -118,7 +129,7 @@ export default function TaskList() {
             <select
               name="filterSelect"
               id="filterSelect"
-              className="w-36 rounded-md bg-lh-secondary text-lh-light p-2 mx-2"
+              className="w-36 rounded-md bg-lh-primary text-lh-light p-2 mx-2"
             >
               <option value="allProject">All Projects</option>
             </select>
@@ -189,7 +200,7 @@ export default function TaskList() {
         {!error && (
           <TableDashboard
             dataList={list}
-            loading={loading}
+            loading={loading || loadingInStore}
             columns={columns}
             clickHandlerRow={(el: TaskInList): void => {
               openTask(el);
