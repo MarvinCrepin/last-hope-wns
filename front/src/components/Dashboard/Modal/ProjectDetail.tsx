@@ -73,15 +73,21 @@ function ProjectDetail({ project, closeModal }: Props) {
               <div className="project-modal-infos py-8 px-2 sm:pl-6 sm:pr-10">
                 <div>
                   <h2 className="text-4xl font-title text-lh-primary ">{"{ " + project.title + " }"}</h2>
+                  {(project.description) === "null" ? (<p className="pt-4 pb-6">No description defined</p>) : (
                   <p className="text-gray-700 pt-4 pb-6 text-xl">
-                    {(project.description) === "null" ? "No description defined" : project.description}
-                  </p>
+                   {project.description}
+                  </p>)
+                  }
                 </div>
                 <div>
                   <h2 className="text-4xl font-title text-lh-primary ">Project Owner</h2>
                   <div className="pt-4 pb-6 flex items-center">
-                    <MdOutlineAccountCircle size={30} /><p className="text-gray-700 font-title pl-3 text-xl">{(project.product_owner) ? project.product_owner.firstname + ' ' + project.product_owner.lastname : 'No project manager defined'}</p>
-                  </div>
+                  {
+                  (project.product_owner) ?
+                    (<><MdOutlineAccountCircle size={30} /><p className="text-gray-700 font-title pl-3 text-xl">{project.product_owner.firstname + ' ' + project.product_owner.lastname}</p></>)
+                    : 'No project manager defined'
+                  }
+                    </div>
                 </div>
                 <div>
                   <h2 className="text-4xl font-title text-lh-primary ">Members</h2>
