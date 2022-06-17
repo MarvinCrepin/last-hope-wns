@@ -44,11 +44,11 @@ model User {
 
   projects      UserProject[]
   owner         Project[]
-  Notifications Notfications[]
+  Notifications Notifications[]
   ticketUser    TicketUser[]
 }
 
-model Notfications {
+model Notifications {
   id         String   @id @default(cuid())
   created_at DateTime @default(now())
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
