@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
-
 import { useMutation, useQuery } from "@apollo/client";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-
 import UpdateTicket from "../../../mutation/Ticket/UpdateTicket";
 import getAllTickets from "../../../queries/Ticket/GetAllTicket";
 import GetAllState from "../../../queries/State/GetAllState";
-
 import { BsHourglass, BsHourglassBottom } from "react-icons/bs";
+import { State, TaskInList } from "../../global";
 import { FaPaperPlane, FaRegUserCircle } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
 
 import { loading as load, TOOGLE_LOAD } from "../../../slicer/appSlice";
+
 
 type Props = {
   taskPassed: TaskInList;

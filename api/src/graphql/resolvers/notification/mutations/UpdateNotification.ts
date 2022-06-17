@@ -1,3 +1,5 @@
+import { Context } from "../../../resolvers/types";
+
 export default async (
   _: any,
   { notificationId, data }: { notificationId: string; data: any },
