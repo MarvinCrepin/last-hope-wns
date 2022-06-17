@@ -127,22 +127,25 @@ export default function DropDownNavBar() {
           >
             <Menu.Items className="z-50 origin-top-right absolute right-0 mt-2 w-96 rounded-md shadow-sm bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
               {notificationsList.length > 0 && !loading && !error ? (
-                notificationsList.map((notification: Notification) => {
-                  return (
-                    <>
-                      {notification.is_read === false && (
-                        <div className="py-1 border-b-2">
-                          <NotificationItem notification={notification} />
-                        </div>
-                      )}
-                      {notification.is_read && (
-                        <div className="text-lh-dark flex items-center justify-center gap-x-2 p-8 text-md">
-                          Aucune notification disponible
-                        </div>
-                      )}
-                    </>
-                  );
-                })
+                <div>
+                  {notificationsList.map((notification: Notification) => {
+                    return (
+                      <div>
+                        {notification.is_read === false && (
+                          <div className="py-1 border-b-2">
+                            <NotificationItem notification={notification} />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                  {notificationsList.filter((el) => el.is_read === true)
+                    .length === notificationsList.length && (
+                    <div className="text-lh-dark flex items-center justify-center gap-x-2 p-8 text-md">
+                      Aucune notification disponible
+                    </div>
+                  )}
+                </div>
               ) : (
                 <div className="text-lh-dark flex items-center justify-center gap-x-2 p-8 text-md">
                   Aucune notification disponible
