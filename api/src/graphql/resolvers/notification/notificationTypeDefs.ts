@@ -18,7 +18,7 @@ export default gql`
   }
 
   type Mutation {
-    MarkAsRead(id: ID): Notification
+    UpdateNotification(id: ID, data: UpdatedNotificationInput): Notification
   }
 
   scalar JSON

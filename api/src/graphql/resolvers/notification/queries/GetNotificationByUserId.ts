@@ -1,5 +1,3 @@
-import { Context } from "../../../../context";
-
 export default async (
   _obj: any,
   { userId }: { userId: string },

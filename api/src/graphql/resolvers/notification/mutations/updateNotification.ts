@@ -1,17 +1,15 @@
-import { Context } from "../../../../context";
-
 export default async (
   _: any,
   { notificationId, data }: { notificationId: string; data: NotificationInput },
   context: Context
 ) => {
-  const oldData = await context.prisma.notifications.findUnique({
+  const oldData = await context.prisma.notification.findUnique({
     where: { id: notificationId },
   });
-
+console.log(oldData)
   const newData = { ...oldData, ...data };
-
-  return await context.prisma.notifications.update({
+  console.log(newData)
+  return await context.prisma.notification.update({
     where: {
       id: notificationId,
     },
