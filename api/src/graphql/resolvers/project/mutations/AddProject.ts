@@ -26,8 +26,6 @@ export default async (_parent: any, args: { data: any }, context: Context) => {
       },
     });
 
-    console.log(project);
-
     return project;
   } catch (err) {
     throw new UserInputError("Bad Request", { errors: err });
