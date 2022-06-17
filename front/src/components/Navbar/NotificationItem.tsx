@@ -48,8 +48,6 @@ export default function NotificationItem({ notification }: IMyProps) {
               <div className="mt-3 flex justify-between">
                 <button
                   onClick={() => {
-                    console.log(notification.id)
-                    console.log(UpdateNotification)
                     UpdateNotification({
                       variables: {
                         notificationId: notification.id,
