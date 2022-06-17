@@ -1,4 +1,5 @@
 import { UserInputError } from "apollo-server";
+import {Context} from '../../../resolvers/types'
 
 export default async (_parent: any, args: { data: any }, context: Context) => {
   let errors = null;
