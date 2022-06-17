@@ -8,8 +8,17 @@ export default gql`
     data: JSON
   }
 
+  input UpdatedNotificationInput {
+    is_read: Boolean
+    data: JSON
+   }
+
   type Query {
     GetNotificationByUserId(userId: String!): [Notification]
+  }
+
+  type Mutation {
+    UpdateNotification(notificationId: String!, data: UpdatedNotificationInput): Notification
   }
 
   scalar JSON
