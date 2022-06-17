@@ -12,7 +12,7 @@ import {
 import { styled } from "@mui/material/styles";
 import Moment from "react-moment";
 import React, { ChangeEventHandler, useState } from "react";
-import Actions, { IActions } from "../Dashboard/Actions";
+import Actions from "../Dashboard/Actions";
 import { roleList } from "./Utils";
 import { role } from "../../slicer/authSlice";
 import { useSelector } from "react-redux";
