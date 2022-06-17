@@ -1,3 +1,5 @@
+import { Column } from "../global";
+
 export const theme = (userRole: string, type: string, meta: any = {}) => {
   if (type === "dashboard") {
     if(userRole === "administrator") {
@@ -27,3 +29,16 @@ export const titleByRole = (userRole: string) => {
   };
   return dashboardTitle[userRole]
 };
+
+export const columnsByRole =  (userRole: string, type: string, meta: any = {}): any => {
+
+  if(type === "actions") {
+    const columns: Column[] =  
+    [{ id: "user", label: "User", style: "text", metadata: {} },
+    { id: "roles", label: "Role", style: "select", metadata: {} }]
+    if(userRole !== "dev" /* && roleList.includes(userRole) */) {
+      columns.push({id: "actions", label: "Actions", style: "actions", metadata: {}})
+    }
+    return columns
+  } 
+}

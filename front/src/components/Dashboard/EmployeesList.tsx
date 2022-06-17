@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { useSelector } from "react-redux";
@@ -8,23 +8,36 @@ import Error from "../common/Error";
 import { role } from "../../slicer/authSlice";
 import { Column, User } from "../global";
 import getAllUsers from "../../queries/User/GetAllUsers";
-import { theme } from "../common/Utils";
-
-const columns: Column[] = [
-  { id: "user", label: "User", style: "text", metadata: {} },
-  { id: "roles", label: "Role", style: "select", metadata: {} },
-];
+import { columnsByRole, theme } from "../common/Utils";
+import { cp } from "fs/promises";
+import UpdateUser from "../../queries/User/UpdateUser";
+import GetAllUsers from "../../queries/User/GetAllUsers";
+import DeleteUser from "../../queries/User/DeleteUser";
 
 export default function EmployeesList() {
   const { loading, error, data } = useQuery(getAllUsers);
   const userRole = useSelector(role);
+  const columns = columnsByRole(userRole, "actions");
   const [list, setList] = useState<User[]>([]);
   const [searchInput, setSearchInput] = useState("");
-  const check = () => userRole === "administrator" && !columns[2] ? columns.push({ id: "actions", label: "Actions", style: "actions", metadata: {} }) : null
-  check()
+  const [updateUser] = useMutation(UpdateUser, {
+    refetchQueries: [
+      {query: getAllUsers}
+    ]
+  });
+
+  const [deleteUser] = useMutation(DeleteUser, {
+    refetchQueries: [
+      {query: getAllUsers}
+    ]
+  });
+  
   useEffect(() => {
     if (data) {
-      const dataObject = data.GetAllUsers.map((user: any) => ({ ...user, user: user.firstname.concat(' ', user.lastname)}))
+      const dataObject = data.GetAllUsers.map((user: any) => ({
+        ...user,
+        user: user.firstname.concat(" ", user.lastname),
+      }));
       let dataFiltered: User[] = [...dataObject];
       if (searchInput.length > 0) {
         dataFiltered = dataFiltered.filter((el: User) =>
@@ -35,9 +48,28 @@ export default function EmployeesList() {
     }
   }, [data, searchInput]);
 
+  const changeStatus = (user: any) => {
+    const UserId = user.project.id;
+    const newRole = user.value;
+    
+    updateUser({variables: {userId: UserId, data: {
+      roles: newRole}}})
+  };
+
+  const deleteEmployee = (user: any) => {
+    const UserId = user.id;
+  
+    deleteUser({variables: {userId: UserId}})
+  };
+
   return (
     <div className="relative">
-     <div className={`w-full ${theme(userRole, "dashboard")}  z-20 py-8 px-2 rounded-tr-md md:h-30`}>
+      <div
+        className={`w-full ${theme(
+          userRole,
+          "dashboard"
+        )}  z-20 py-8 px-2 rounded-tr-md md:h-30`}
+      >
         <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
             <label className="sr-only" htmlFor="filterSelect">
@@ -50,7 +82,6 @@ export default function EmployeesList() {
             >
               <option value="allProject">All Users</option>
             </select>
-            
           </div>
 
           <div className="relative flex item-centers">
@@ -96,6 +127,10 @@ export default function EmployeesList() {
               dataList={list}
               loading={loading}
               columns={columns}
+              handleChangeSelect={(user) => changeStatus(user)}
+              deleteAction={(user) => deleteEmployee(user)}
+              updateAction={(user) => console.log(user)}
+              viewAction={(user) => console.log(user)}
             />
           )}
         </Transition>

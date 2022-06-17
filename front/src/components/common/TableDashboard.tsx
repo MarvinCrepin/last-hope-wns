@@ -11,12 +11,13 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Moment from "react-moment";
-import React from "react";
-import Actions from "../Dashboard/Actions";
+import React, { ChangeEventHandler, useState } from "react";
+import Actions, { IActions } from "../Dashboard/Actions";
 import { Column, Project, RowElement, TaskInList, User } from "../global";
 import { roleList } from "./Utils";
 import { role } from "../../slicer/authSlice";
 import { useSelector } from "react-redux";
+import { StateFromReducersMapObject } from "@reduxjs/toolkit";
 
 const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
   margin: "3em auto",
@@ -57,6 +58,10 @@ interface PropsComponent {
   loading: boolean;
   columns: Column[];
   clickHandlerRow?: (params: RowElement) => void;
+  handleChangeSelect?: (params: RowElement) => void;
+  deleteAction?: (params: RowElement) => void ;
+  viewAction?: (params: RowElement) => void;
+  updateAction?: (params: RowElement) => void;
 }
 
 export default function TableDashboard({
@@ -64,10 +69,14 @@ export default function TableDashboard({
   loading,
   columns,
   clickHandlerRow,
+  handleChangeSelect,
+  deleteAction,
+  viewAction,
+  updateAction
 }: PropsComponent) {
+  const userRole = useSelector(role);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const userRole = useSelector(role);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -139,7 +148,6 @@ export default function TableDashboard({
                     >
                       {columns.map((column, index) => {
                         const value = project[column.id];
-
                         return (
                           <>
                             {column.style === "text" && (
@@ -193,17 +201,40 @@ export default function TableDashboard({
                             )}
                             {column.style === "actions" && (
                               <StyledTableCell key={column.id + project.id}>
-                                <Actions />
+                                {deleteAction && viewAction && updateAction &&
+                                <Actions updateItem={()=>console.log(project)} viewItem={()=>console.log(project)} deleteItem={()=> deleteAction(project)}/>
+                              }
                               </StyledTableCell>
                             )}
                             {column.style === "select" && (
                               <StyledTableCell key={column.id + project.id}>
-                                {userRole === "dev" ? <span>{userRole}</span> : 
-                                <select className="w-36 rounded-md bg-lh-light text-lh-dark p-2 mx-2">
-                                   {roleList.map((roleName) => (
-                                    <option value={roleName}>{roleName}</option>
-                                  ))}
-                                </select>}
+                                {userRole === "dev" ? (
+                                  <span>{userRole}</span>
+                                ) : (
+                                  <select
+                                    onChange={(
+                                      e: React.ChangeEvent<HTMLSelectElement>
+                                    ) =>
+                                      handleChangeSelect &&
+                                      handleChangeSelect({
+                                        project,
+                                        value: e.target.value,
+                                      })
+                                    }
+                                    id={project.id}
+                                    className="w-36 rounded-md bg-lh-light text-lh-dark p-2 mx-2"
+                                  >
+                                    {roleList.map((roleName) => (
+                                      project.roles === roleName ? 
+                                      <option selected value={roleName}>
+                                        {roleName}
+                                      </option> : 
+                                        <option value={roleName}>
+                                        {roleName}
+                                      </option> 
+                                    ))}
+                                  </select>
+                                )}
                               </StyledTableCell>
                             )}
                           </>
