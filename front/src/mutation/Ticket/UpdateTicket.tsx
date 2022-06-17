@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-const getAllTickets = gql`
-  query Query {
-    GetAllTickets {
+const UpdateTicket = gql`
+  mutation Mutation($ticketId: String!, $data: TicketInputPatch) {
+    UpdateTicket(ticketId: $ticketId, data: $data) {
       id
       title
       project {
@@ -20,12 +20,8 @@ const getAllTickets = gql`
           firstname
         }
       }
-      state_id
-      state {
-        name
-      }
     }
   }
 `;
 
-export default getAllTickets;
+export default UpdateTicket;
