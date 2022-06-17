@@ -13,8 +13,7 @@ type Notification = {
 };
 
 export default function NotificationItem({ notification }: IMyProps) {
-  const [UpdateNotification, { data, loading, error }] =
-    useMutation(UPDATE_NOTIFICATION);
+  const [UpdateNotification] = useMutation(UPDATE_NOTIFICATION);
 
   return (
     <div className="w-full flex flex-col items-center space-y-4 sm:items-end">

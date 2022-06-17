@@ -11,12 +11,11 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Moment from "react-moment";
-import React, { ChangeEventHandler, useState } from "react";
+import React from "react";
 import Actions from "../Dashboard/Actions";
 import { roleList } from "./Utils";
 import { role } from "../../slicer/authSlice";
 import { useSelector } from "react-redux";
-import { StateFromReducersMapObject } from "@reduxjs/toolkit";
 import { Project, User, Column, TaskInList, RowElement } from "../global";
 
 const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
@@ -59,7 +58,7 @@ interface PropsComponent {
   columns: Column[];
   clickHandlerRow?: (params: RowElement) => void;
   handleChangeSelect?: (params: RowElement) => void;
-  deleteAction?: (params: RowElement) => void ;
+  deleteAction?: (params: RowElement) => void;
   viewAction?: (params: RowElement) => void;
   updateAction?: (params: RowElement) => void;
 }
@@ -72,7 +71,7 @@ export default function TableDashboard({
   handleChangeSelect,
   deleteAction,
   viewAction,
-  updateAction
+  updateAction,
 }: PropsComponent) {
   const userRole = useSelector(role);
   const [page, setPage] = React.useState(0);
@@ -201,9 +200,13 @@ export default function TableDashboard({
                             )}
                             {column.style === "actions" && (
                               <StyledTableCell key={column.id + project.id}>
-                                {deleteAction && viewAction && updateAction &&
-                                <Actions updateItem={()=>console.log(project)} viewItem={()=>console.log(project)} deleteItem={()=> deleteAction(project)}/>
-                              }
+                                {deleteAction && viewAction && updateAction && (
+                                  <Actions
+                                    updateItem={() => console.log(project)}
+                                    viewItem={() => console.log(project)}
+                                    deleteItem={() => deleteAction(project)}
+                                  />
+                                )}
                               </StyledTableCell>
                             )}
                             {column.style === "select" && (
@@ -224,15 +227,17 @@ export default function TableDashboard({
                                     id={project.id}
                                     className="w-36 rounded-md bg-lh-light text-lh-dark p-2 mx-2"
                                   >
-                                    {roleList.map((roleName) => (
-                                      project.roles === roleName ? 
-                                      <option selected value={roleName}>
-                                        {roleName}
-                                      </option> : 
+                                    {roleList.map((roleName) =>
+                                      project.roles === roleName ? (
+                                        <option selected value={roleName}>
+                                          {roleName}
+                                        </option>
+                                      ) : (
                                         <option value={roleName}>
-                                        {roleName}
-                                      </option> 
-                                    ))}
+                                          {roleName}
+                                        </option>
+                                      )
+                                    )}
                                   </select>
                                 )}
                               </StyledTableCell>

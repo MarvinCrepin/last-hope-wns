@@ -31,9 +31,11 @@ export default function DropDownNavBar() {
     []
   );
   const userId = useSelector(myId);
+
   const { loading, error, data } = useQuery(GetNotificationByUserId, {
-    variables: { userId: "2018" },
+    variables: { userId: userId },
   });
+
   const [notificationsUnread, setNotificationsUnread] = useState<Number>(0);
 
   useEffect(() => {
