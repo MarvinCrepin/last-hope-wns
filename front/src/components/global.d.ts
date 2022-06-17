@@ -1,5 +1,3 @@
-import { StoreReaderConfig } from "@apollo/client/cache/inmemory/readFromStore";
-
 type Project = {
   product_owner: any;
   id: string;
