@@ -1,6 +1,4 @@
-import { StoreReaderConfig } from "@apollo/client/cache/inmemory/readFromStore";
-
-type Project = {
+export type Project = {
   product_owner: any;
   id: string;
   title: string;
@@ -12,36 +10,36 @@ type Project = {
   advancement: number;
   __typename: string;
   participants: User[Participant];
-  children: JSX.Element|JSX.Element[];
+  children: JSX.Element | JSX.Element[];
 };
 
-interface Participant {
+export interface Participant {
   user: UserParticipant;
 }
 
-interface UserParticipant {
+export interface UserParticipant {
   id: string;
   firstname: string;
   lastname: string;
   roles: string;
 }
 
-type User = {
+export type User = {
   id: string;
   firstname: string;
   lastname: string;
   role: string;
   mail: string;
-}
+};
 
-interface Column {
+export interface Column {
   id: string;
   label: string;
   style: string;
   metadata?: any;
 }
 
-type TaskInList = {
+export type TaskInList = {
   id: string;
   title: string;
   advancement: number;
@@ -56,9 +54,9 @@ type TaskInList = {
   state: State;
 };
 
-interface State {
+export interface State {
   id: string;
   name: String;
 }
 
-type RowElement = any;
+export type RowElement = any;
