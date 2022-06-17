@@ -1,15 +1,12 @@
 import { gql } from "@apollo/client";
 
-type NotificationInput = {
-  is_read?: Boolean;
-  data?: JSON;
-};
-
 const UPDATE_NOTIFICATION = gql`
-  mutation UpdateNotification($notificationId: String!, $data: any) {
+  mutation Mutation($notificationId: String!, $data: UpdatedNotificationInput) {
     UpdateNotification(notificationId: $notificationId, data: $data) {
       is_read
+      user_id
       data
+      id
     }
   }
 `;

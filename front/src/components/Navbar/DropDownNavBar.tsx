@@ -129,9 +129,18 @@ export default function DropDownNavBar() {
               {notificationsList.length > 0 && !loading && !error ? (
                 notificationsList.map((notification: Notification) => {
                   return (
-                    <div className="py-1 border-b-2">
-                      <NotificationItem notification={notification} />
-                    </div>
+                    <>
+                      {notification.is_read === false && (
+                        <div className="py-1 border-b-2">
+                          <NotificationItem notification={notification} />
+                        </div>
+                      )}
+                      {notification.is_read && (
+                        <div className="text-lh-dark flex items-center justify-center gap-x-2 p-8 text-md">
+                          Aucune notification disponible
+                        </div>
+                      )}
+                    </>
                   );
                 })
               ) : (

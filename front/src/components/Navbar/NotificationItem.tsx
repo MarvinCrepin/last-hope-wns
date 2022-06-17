@@ -15,12 +15,7 @@ type Notification = {
 export default function NotificationItem({ notification }: IMyProps) {
   const [UpdateNotification, { data, loading, error }] =
     useMutation(UPDATE_NOTIFICATION);
-  if (error) {
-    return <p>{error.message}</p>;
-  }
-  if (loading){
-    return <p>loading</p>;
-  }
+
   return (
     <div className="w-full flex flex-col items-center space-y-4 sm:items-end">
       <div className="max-w-sm w-full bg-white pointer-events-auto overflow-hidden">
