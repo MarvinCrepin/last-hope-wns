@@ -78,6 +78,8 @@ export default function TaskList() {
         description: element.description,
         passed_time: element.passed_time,
         estimated_time: element.estimated_time,
+        state: element.state,
+        state_id: element.state_id,
       };
       result.push(newData);
     });

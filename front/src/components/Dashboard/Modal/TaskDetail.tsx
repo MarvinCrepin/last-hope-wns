@@ -91,12 +91,20 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
     });
   };
 
-  const changeEnum = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const changeEnum = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    type: String
+  ) => {
     dispatch(TOOGLE_LOAD(true));
+    let value = null;
+
     updateTicket({
       variables: {
         ticketId: task.id,
-        data: { [e.target.name]: parseInt(e.target.value) },
+        data: {
+          [e.target.name]:
+            type === "int" ? parseInt(e.target.value) : e.target.value,
+        },
       },
     });
   };
@@ -268,7 +276,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     <div className="font_weight_400 font-text text-xl	flex items-center space-x-2 lg:col-span-2">
                       <select
                         value={task.advancement}
-                        onChange={(e) => changeEnum(e)}
+                        onChange={(e) => changeEnum(e, "int")}
                         name="advancement"
                         id="advancement"
                         className="bg-lh-light w-1/2 border-2 border-lh-dark rounded-lg px-1.5"
@@ -296,23 +304,21 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                   <div className="flex  flex-col lg:grid  lg:grid-cols-5 gap-4">
                     <div className="font_weight_400 font-text text-xl	flex items-center space-x-2 lg:col-span-2">
                       <select
-                        name="status"
-                        id="status"
+                        onChange={(e) => changeEnum(e, "char")}
+                        defaultValue={task.state_id}
+                        name="state_id"
+                        id="state_id"
                         className="bg-lh-light w-1/2 border-2 border-lh-dark rounded-lg px-1.5"
                       >
-                        {/* {!loading && data &&
-                          .forEach((state)=>{
+                        {!loadingState &&
+                          dataState.GetAllState.map((state: State) => (
                             <option value={state.id}>{state.name}</option>
-                          })
-                        }                         */}
-                        <option value="0">In Progress</option>
-                        <option value="10">stat 2</option>
-                        <option value="20">20%</option>
+                          ))}
                       </select>
                       <div></div>
                     </div>
                     <div className="space-y-4 flex items-center justify-start lg:col-span-3">
-                      <label htmlFor="status">Status</label>
+                      <label htmlFor="state_id">Status</label>
                     </div>
                   </div>
                 </div>

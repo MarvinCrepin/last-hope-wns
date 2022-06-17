@@ -20,6 +20,10 @@ const getAllTickets = gql`
           firstname
         }
       }
+      state_id
+      state {
+        name
+      }
     }
   }
 `;

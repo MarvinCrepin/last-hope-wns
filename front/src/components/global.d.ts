@@ -28,6 +28,13 @@ type TaskInList = {
   assignee_id: string;
   estimated_time: number;
   description: string | null;
+  state_id: string;
+  state: State;
 };
+
+interface State {
+  id: string;
+  name: String;
+}
 
 type RowElement = any;
