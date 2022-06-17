@@ -1,8 +1,8 @@
-import updateNotification from "./mutations/updateNotification";
+import UpdateNotification from "./mutations/UpdateNotification";
 import GetNotificationByUserId from "./queries/GetNotificationByUserId";
 
 export default {
   Query: { GetNotificationByUserId },
 
-  Mutation: {updateNotification},
+  Mutation: {UpdateNotification},
 };
