@@ -10,6 +10,7 @@ type Project = {
   advancement: number;
   __typename: string;
   participants: User[Participant];
+  children: JSX.Element|JSX.Element[];
 };
 
 interface Participant {
@@ -20,6 +21,7 @@ interface UserParticipant {
   id: string;
   firstname: string;
   lastname: string;
+  roles: string;
 }
 
 interface Column {

@@ -1,4 +1,45 @@
-import { FaDumpsterFire } from "react-icons/fa";
+import { FaCalendarDay, FaCalendarCheck } from "react-icons/fa";
+import { MdOutlineAccountCircle } from "react-icons/md";
+import Moment from "react-moment";
+import { Line } from 'react-chartjs-2';
+import { Chart, registerables } from 'chart.js';
+import "../../../assets/css/projectDetail.css";
+Chart.register(...registerables);
+
+const projectStats = {
+  labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi','Vendredi', 'Samedi'],
+  datasets: [{
+    label: 'Project Statistics (tasks/day)',
+    data: [4, 1, 3, 3, 6, 2],
+    fill: false,
+    borderColor: 'rgb(214 96 96)',
+    backgroundColor: 'rgb(214 96 96)',
+    pointRadius: 5,
+    pointHoverRadius: 10,
+    pointHitRadius: 30,
+    pointBorderWidth: 2,  
+  }]
+};
+
+const memberStats = {
+  labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi','Vendredi', 'Samedi'],
+  datasets: [{
+    label: 'Project Statistics (hours/day)',
+    data: [3, 5, 5, 4, 7, 1, 0],
+    fill: false,
+    borderColor: 'rgb(214 96 96)',
+    backgroundColor: 'rgb(214 96 96)',
+    pointRadius: 5,
+    pointHoverRadius: 10,
+    pointHitRadius: 30,
+    pointBorderWidth: 2,  
+  }]
+};
+
+const options: any = {
+  maintaintAspectRatio: false,
+};
+
 
 type Props = {
   project: Project;
@@ -7,6 +48,7 @@ type Props = {
 
 function ProjectDetail({ project, closeModal }: Props) {
   console.log(project);
+
   return (
     <div
       className="fixed z-10 inset-0 overflow-y-auto"
@@ -26,26 +68,56 @@ function ProjectDetail({ project, closeModal }: Props) {
           &#8203;
         </span>
 
-        <div className="p-8 inline-block align-bottom text-left transform transition-all  sm:align-middle  sm:w-full">
-          <div className=" bg-white  rounded-lg  flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
-            <div className=" relative bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all   sm:w-full ">
-              <div>
-                <h3 className="text-2xl lh-primary font-bold mb-2">{"{ " + project.title + " }"}</h3>
-                <p className="text-gray-700 text-base">
-                  {project.description}
-                </p>
+        <div className="inline-block align-bottom text-left transform transition-all sm:align-middle project-modal">
+          <div className=" bg-white  rounded-lg  flex justify-center min-h-full p-4 text-center sm:p-0">
+            <div className=" relative bg-white rounded-lg text-left overflow-hidden transform transition-all project-modal-inside">
+              <div className="project-modal-infos py-8 px-2 sm:pl-6 sm:pr-10">
+                <div>
+                  <h2 className="text-4xl font-title text-lh-primary ">{"{ " + project.title + " }"}</h2>
+                  <p className="text-gray-700 pt-4 pb-6 text-xl">
+                    {(project.description) === "null" ? "No description defined" : project.description}
+                  </p>
+                </div>
+                <div>
+                  <h2 className="text-4xl font-title text-lh-primary ">Project Owner</h2>
+                  <div className="pt-4 pb-6 flex items-center">
+                    <MdOutlineAccountCircle size={30} /><p className="text-gray-700 font-title pl-3 text-xl">{(project.product_owner) ? project.product_owner.firstname + ' ' + project.product_owner.lastname : 'No project manager defined'}</p>
+                  </div>
+                </div>
+                <div>
+                  <h2 className="text-4xl font-title text-lh-primary ">Members</h2>
+                  <ul className="list-disc list-inside pt-4 pb-6 flex flex-wrap">
+                    {(project.participants).length === 0 ? <p>No members defined</p> :
+                    
+                    project.participants.map((participant: Participant) => (
+                      <li key={participant.user.id} className="flex items-center py-2 pr-4">
+                        <MdOutlineAccountCircle size={30} /><p className="text-gray-700 font-title pl-3 text-xl">{participant.user.firstname} {participant.user.lastname} - <span className="text-lh-light-gray">{participant.user.roles}</span></p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h2 className="text-4xl font-title text-lh-primary ">Infos</h2>
+                    <div className="pt-4 pb-6">
+                      <p className="text-gray-700 font-title text-xl flex"><FaCalendarDay /><span className="pl-3">Start date: <Moment format="MM/DD/YYYY">{(project.start_at) ? project.start_at.toString() : 'Not Defined'}</Moment></span></p> 
+                      <p className="text-gray-700 font-title text-xl flex pt-3"><FaCalendarCheck /><span className="pl-3">End day: <Moment format="MM/DD/YYYY">{(project.end_at) ? project.end_at.toString() : 'Not Defined'}</Moment></span></p>
+                    </div>
+                </div>
               </div>
-              <div>
-                <h3 className="text-2xl lh-primary font-bold mb-2">Project Owner</h3>
-                <h4 className="text-gray-700 text-base">{project.product_owner.firstname} {project.product_owner.lastname}</h4>
-              </div>
-              <div>
-                <h3 className="text-2xl lh-primary font-bold mb-2">Members</h3>
-                <ul className="list-disc list-inside">
-                  {project.participants.map((participant: Participant) => (
-                    <li key={participant.user.id}>{participant.user.firstname} {participant.user.lastname}</li>
-                  ))}
-                </ul>
+              <hr />
+              <div className="project-modal-stats py-8 px-2 sm:pl-6 sm:pr-10">
+                <div className="project-modal-pstats pb-10">
+                  <h2 className="text-4xl font-title text-lh-primary ">Project Statistics</h2>
+                  <div>
+                    <Line data={projectStats} options={options}/>
+                  </div>
+                </div>
+                <div className="project-modal-mstats">
+                  <h2 className="text-4xl font-title text-lh-primary ">Member Statistics</h2>
+                  <div>
+                    <Line data={memberStats} options={options}/>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

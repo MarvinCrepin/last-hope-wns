@@ -19,6 +19,7 @@ const getAllProjects = gql`
           id
           firstname
           lastname
+          roles
         }
       }
     }
