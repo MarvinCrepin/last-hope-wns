@@ -1,6 +1,5 @@
-import {Context} from '../../../../context'
 
-
+import {Context} from '../../../resolvers/types'
 export default async (
   _: any,
   { userId, data }: { userId: string; data: any },

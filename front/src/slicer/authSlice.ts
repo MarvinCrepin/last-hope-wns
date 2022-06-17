@@ -11,8 +11,8 @@ type User = {
 
 const initialState: TypeState = {
   user: {
-    role: "administrator", //dev, product_owner, administrator
-    id: "cl3e5wqry0000316kq8jijrvy",
+    role: "dev", //dev, product_owner, administrator
+    id: "2018",
   },
 };
 

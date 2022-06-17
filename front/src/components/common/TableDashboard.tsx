@@ -13,11 +13,11 @@ import { styled } from "@mui/material/styles";
 import Moment from "react-moment";
 import React, { ChangeEventHandler, useState } from "react";
 import Actions, { IActions } from "../Dashboard/Actions";
-import { Column, Project, RowElement, TaskInList, User } from "../global";
 import { roleList } from "./Utils";
 import { role } from "../../slicer/authSlice";
 import { useSelector } from "react-redux";
 import { StateFromReducersMapObject } from "@reduxjs/toolkit";
+import { Project, User, Column, TaskInList, RowElement } from "../global";
 
 const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
   margin: "3em auto",
