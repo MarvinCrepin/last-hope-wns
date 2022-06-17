@@ -1,3 +1,7 @@
+import { useMutation } from "@apollo/client";
+
+import UPDATE_NOTIFICATION from "../../queries/Notification/UpateNotification";
+
 interface IMyProps {
   notification: Notification;
 }
@@ -5,12 +9,17 @@ interface IMyProps {
 type Notification = {
   id: string;
   is_read: Boolean;
-  data: JSON
-}
+  data: JSON;
+};
 
-export default function NotificationItem({notification} : IMyProps ) {
-  const markAsRead = ()=>{
-    
+export default function NotificationItem({ notification }: IMyProps) {
+  const [UpdateNotification, { data, loading, error }] =
+    useMutation(UPDATE_NOTIFICATION);
+  if (error) {
+    return <p>{error.message}</p>;
+  }
+  if (loading){
+    return <p>loading</p>;
   }
   return (
     <div className="w-full flex flex-col items-center space-y-4 sm:items-end">
@@ -43,6 +52,16 @@ export default function NotificationItem({notification} : IMyProps ) {
               </p> */}
               <div className="mt-3 flex justify-between">
                 <button
+                  onClick={() => {
+                    console.log(notification.id)
+                    console.log(UpdateNotification)
+                    UpdateNotification({
+                      variables: {
+                        notificationId: notification.id,
+                        data: { is_read: true },
+                      },
+                    });
+                  }}
                   type="button"
                   className="bg-white rounded-md text-sm font-medium text-lh-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >

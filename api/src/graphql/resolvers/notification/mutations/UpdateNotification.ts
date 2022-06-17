@@ -1,8 +1,10 @@
 export default async (
   _: any,
-  { notificationId, data }: { notificationId: string; data: NotificationInput },
+  { notificationId, data }: { notificationId: string; data: any },
   context: Context
 ) => {
+  console.log(notificationId);
+  
   const oldData = await context.prisma.notification.findUnique({
     where: { id: notificationId },
   });

@@ -18,7 +18,7 @@ export default gql`
   }
 
   type Mutation {
-    UpdateNotification(id: ID, data: UpdatedNotificationInput): Notification
+    UpdateNotification(notificationId: String!, data: UpdatedNotificationInput): Notification
   }
 
   scalar JSON

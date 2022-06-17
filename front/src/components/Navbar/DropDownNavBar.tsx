@@ -32,7 +32,7 @@ export default function DropDownNavBar() {
   );
   const userId = useSelector(myId);
   const { loading, error, data } = useQuery(GetNotificationByUserId, {
-    variables: { userId: userId },
+    variables: { userId: "2018" },
   });
   const [notificationsUnread, setNotificationsUnread] = useState<Number>(0);
 
