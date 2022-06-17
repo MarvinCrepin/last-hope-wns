@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import UpdateTicket from "../../../mutation/Ticket/UpdateTicket";
 import getAllTickets from "../../../queries/Ticket/GetAllTicket";
+import GetAllState from "../../../queries/State/GetAllState";
 
 import { BsHourglass, BsHourglassBottom } from "react-icons/bs";
 import { FaPaperPlane, FaRegUserCircle } from "react-icons/fa";
@@ -18,10 +19,10 @@ type Props = {
   closeModal: () => void;
 };
 
-function TaskDetail({ taskPassed, closeModal }: Props) {
+export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const loadingInStore = useSelector(load);
   const dispatch = useDispatch();
-  // const { loading, data } = useQuery(getAllState);
+  const { loading: loadingState, data: dataState } = useQuery(GetAllState);
 
   const [task, setTask] = useState<TaskInList | any>({});
 
@@ -352,5 +353,3 @@ function TaskDetail({ taskPassed, closeModal }: Props) {
     </div>
   );
 }
-
-export default TaskDetail;
