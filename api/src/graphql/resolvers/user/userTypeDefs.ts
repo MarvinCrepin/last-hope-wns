@@ -10,7 +10,7 @@ export default gql`
     password: String
   }
 
-  type ResponseSecurity{
+  type ResponseSecurity {
     user: User
     token: String
   }

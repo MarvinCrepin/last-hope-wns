@@ -10,11 +10,11 @@ export default {
   Query: {
     GetUserById,
     GetAllUsers,
-    Login
+    Login,
   },
   Mutation: {
     DeleteUser,
     UpdateUser,
-    AddUser
-  }
+    AddUser,
+  },
 };

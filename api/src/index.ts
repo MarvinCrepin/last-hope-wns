@@ -1,6 +1,6 @@
 import { ApolloServer } from "apollo-server";
 import { PrismaClient } from "@prisma/client";
-
+import { JwtPayload } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 
 import * as dotenv from "dotenv";
@@ -18,19 +18,21 @@ const runServer = () => {
     resolvers,
     context: ({ req }) => {
       const token = req.headers.authorization;
+
       if (token) {
-        jwt.verify(
-          token,
-          process.env.ACCESS_TOKEN_SECRET_KEY as string,
-          (err, decoded) => {
-            if (err) {
-              console.error(err);
-              return { prisma: prisma, authenticatedUser: null };
-            }
-            return { prisma: prisma, authenticatedUser: decoded };
-          }
-        );
+        try {
+          const payload: JwtPayload | String = jwt.verify(
+            token,
+            process.env.ACCESS_TOKEN_SECRET_KEY as string
+          );
+          console.log(payload);
+
+          return { authenticatedUser: payload, prisma: prisma };
+        } catch (err) {
+          console.error(err);
+        }
       }
+
       return { prisma: prisma, authenticatedUser: null };
     },
   });
