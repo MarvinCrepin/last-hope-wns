@@ -18,7 +18,6 @@ function App() {
   const [verifyToken, { error, data }] = useLazyQuery(VerifyToken);
 
   const checkAuthentication = () => {
-    console.log(tokenInLocalStorage);
     if (!tokenInLocalStorage) {
       navigate("/login");
     }

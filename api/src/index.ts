@@ -25,7 +25,6 @@ const runServer = () => {
             token,
             process.env.ACCESS_TOKEN_SECRET_KEY as string
           );
-          console.log(payload);
 
           return { authenticatedUser: payload, prisma: prisma };
         } catch (err) {

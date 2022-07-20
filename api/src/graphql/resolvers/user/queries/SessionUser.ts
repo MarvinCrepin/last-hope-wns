@@ -5,7 +5,7 @@ export default async (_: any, _args: any, context: Context) => {
   if (!context.authenticatedUser) {
     throw new ApolloError("Token not valid");
   }
-  console.log(context.authenticatedUser);
+
   const user = await context.prisma.user.findUnique({
     where: { mail: context.authenticatedUser.mail },
   });
