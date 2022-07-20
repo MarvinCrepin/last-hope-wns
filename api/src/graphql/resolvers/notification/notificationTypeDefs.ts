@@ -5,12 +5,17 @@ export default gql`
     id: ID
     user_id: String
     is_read: Boolean
-    data: JSON
+    title: String
+    content: String
+    type: String
+    user: User
   }
 
   input UpdatedNotificationInput {
     is_read: Boolean
-    data: JSON
+    title: String
+    content: String
+    type: String
    }
 
   type Query {

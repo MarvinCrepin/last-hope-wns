@@ -5,7 +5,9 @@ const GetNotificationByUserId = gql`
     GetNotificationByUserId(userId: $userId) {
       id
       is_read
-      data
+      title
+      content
+      type
     }
   }
 `;

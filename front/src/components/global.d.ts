@@ -59,4 +59,12 @@ export interface State {
   name: String;
 }
 
+export type Notification = {
+  id: string;
+  is_read: Boolean;
+  title: string;
+  content: string;
+  type: string;
+};
+
 export type RowElement = any;
