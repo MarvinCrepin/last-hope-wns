@@ -84,7 +84,7 @@ export default function ProjectList() {
         <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
             {/* A cabler sur le filtre de la liste  */}
-            {userRole === "Project_Manager" && (
+            {userRole === "ROLE_PROJECT_MANAGER" && (
               <div className="mx-2 flex items-center space-x-1">
                 <input
                   className="rounded-md h-5 w-5"
@@ -127,7 +127,7 @@ export default function ProjectList() {
               />
               <FaSearch className="absolute top-2 left-4 text-gray-500" />
             </div>
-            {userRole === "Project_Manager" && (
+            {userRole === "ROLE_PROJECT_MANAGER" && (
               <button className=" flex bg-lh-light font-text font-bold text-lh-primary items-center p-1.5 rounded-md space-x-2">
                 <FaPlus className="" />
                 <div className="">Add project</div>
