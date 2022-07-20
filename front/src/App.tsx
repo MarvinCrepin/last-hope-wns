@@ -1,9 +1,8 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
 import LoginRouter from "./Pages/Login/LoginRouter";
 import Dashboard from "./Pages/Dashboard/Dashboard";
-import HomeRedirect from "./Pages/HomeRedirect";
 import { useEffect, useState } from "react";
 import { useLazyQuery } from "@apollo/client";
 import VerifyToken from "./queries/auth/VerifyToken";
@@ -19,14 +18,15 @@ function App() {
   const [verifyToken, { error, data }] = useLazyQuery(VerifyToken);
 
   const checkAuthentication = () => {
+    console.log(tokenInLocalStorage);
     if (!tokenInLocalStorage) {
       navigate("/login");
     }
 
     verifyToken();
+
     if (error) {
       console.log(error);
-      navigate("/login");
     }
 
     if (data) {
