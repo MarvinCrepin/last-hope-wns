@@ -1,30 +1,44 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface TypeState {
-  user: User;
-}
-
-type User = {
-  role: string;
-  id: string;
+type TypeState = {
+  user: IUser | null;
+  token: String | null;
 };
 
+interface IUser {
+  roles: "ROLE_ADMIN" | "ROLE_DEVELOPER" | "ROLE_PROJECT_MANAGER" | "";
+  id: string;
+}
+
 const initialState: TypeState = {
+  token: null,
   user: {
-    role: "Project_Manager", //  Project_Manager Admin Developer
-    id: "2018",
+    roles: "",
+    id: "",
   },
 };
 
 export const authSlice = createSlice({
   name: "authSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    AUTHENTICATE_USER_IN_STORE: (state, action) => {
+      state.user = { ...action.payload.user };
+      state.token = action.payload.token;
+    },
+  },
 });
 
-export const role = (state: { authSlice: TypeState }) =>
-  state.authSlice.user.role;
-export const myId = (state: { authSlice: TypeState }) =>
-  state.authSlice.user.id;
+export const { AUTHENTICATE_USER_IN_STORE } = authSlice.actions;
+
+export const role = (state: { authSlice: TypeState }) => {
+  if (state.authSlice.user) return state.authSlice.user.roles;
+  return "";
+};
+
+export const myId = (state: { authSlice: TypeState }) => {
+  if (state.authSlice.user) return state.authSlice.user.id;
+  return null;
+};
 
 export default authSlice.reducer;

@@ -15,10 +15,23 @@ export default gql`
     token: String
   }
 
+  type ResponseSessionUser {
+    user: payloadToken
+    error: String
+  }
+
+  type payloadToken {
+    mail: String
+    roles: String
+    iat: Int
+    exp: Int
+  }
+
   type Query {
     GetUserById(userId: String!): User
     GetAllUsers: [User]
     Login(mail: String!, password: String!): ResponseSecurity
+    SessionUser: ResponseSessionUser
   }
 
   type Mutation {
