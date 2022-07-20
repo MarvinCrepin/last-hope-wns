@@ -9,7 +9,11 @@ interface IMyProps {
 type Notification = {
   id: string;
   is_read: Boolean;
-  data: JSON;
+  data: {
+    type: string;
+    titre: string;
+    content: string;
+  };
 };
 
 export default function NotificationItem({ notification }: IMyProps) {

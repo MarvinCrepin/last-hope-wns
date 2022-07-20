@@ -9,6 +9,7 @@ import Logo from "../../assets/img/logo_LastHope_inline.png";
 import "../../assets/styles/navbar.css";
 import NotificationItem from "./NotificationItem";
 import GetNotificationByUserId from "../../queries/Notification/GetNotificationByUserId";
+import GetUserById from "../../queries/User/GetUserById";
 
 import { FaLaptopCode } from "react-icons/fa";
 import { VscAccount } from "react-icons/vsc";
@@ -16,10 +17,22 @@ import { RiLogoutBoxLine } from "react-icons/ri";
 import { IoIosNotifications } from "react-icons/io";
 import { myId } from "../../slicer/authSlice";
 
+/**
+ * {
+ *  type:"",
+ *  titre:"",
+ *  content:"",
+ * }
+ */
+
 type Notification = {
   id: string;
   is_read: Boolean;
-  data: JSON;
+  data: {
+    type: string;
+    titre: string;
+    content: string;
+  };
 };
 
 function classNames(...classes: string[]) {
@@ -36,6 +49,11 @@ export default function DropDownNavBar() {
     variables: { userId: userId },
   });
 
+  const { loading :userLoading, error :userError, data: userData } = useQuery(GetUserById, {
+    variables: { userId: userId },
+  });
+
+  
   const [notificationsUnread, setNotificationsUnread] = useState<Number>(0);
 
   useEffect(() => {
@@ -47,7 +65,7 @@ export default function DropDownNavBar() {
       );
     }
   }, [data]);
-
+ console.log(userData);
   return (
     <nav className="py-4 px-10 shadow-md flex justify-between mb-10">
       <Link to="/dashboard">
@@ -56,7 +74,7 @@ export default function DropDownNavBar() {
       <div className="flex items-stretch ">
         <Menu as="div" className="relative inline-block text-left">
           <Menu.Button className="h-full account rounded-l-lg inline-flex justify-center gap-x-2 items-center p-3 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-lh-primary">
-            <FaLaptopCode color="var(--primary-color)" size={18} /> John Doe
+            <FaLaptopCode color="var(--primary-color)" size={18} /> {userData && !userLoading && !userError ? userData.GetUserById.firstname + ' ' + userData.GetUserById.lastname : ''}
           </Menu.Button>
 
           <Transition

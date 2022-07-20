@@ -211,7 +211,7 @@ export default function TableDashboard({
                             )}
                             {column.style === "select" && (
                               <StyledTableCell key={column.id + project.id}>
-                                {userRole === "Developer" ? (
+                                {userRole === "ROLE_DEVELOPER" ? (
                                   <span>{userRole}</span>
                                 ) : (
                                   <select
