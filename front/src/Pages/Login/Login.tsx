@@ -17,7 +17,11 @@ export default function Login() {
     mail: "",
     password: "",
   });
-  const [errorDisplay, setError] = useState({ display: false, message: "" });
+  const [errorDisplay, setError] = useState({
+    type: "",
+    display: false,
+    message: "",
+  });
 
   const [loginQuery, { error, data }] = useLazyQuery(LoginQuery);
 
@@ -33,8 +37,20 @@ export default function Login() {
 
   useEffect(() => {
     if (error) {
-      setError({ message: error.message, display: true });
+      let type = "";
+      switch (error.message) {
+        case "Invalid mail":
+          type = "mail";
+          break;
+        case "Invalid password":
+          type = "password";
+          break;
+        default:
+          break;
+      }
+      setError({ message: error.message, display: true, type: type });
     }
+
     if (data) {
       dispatch(
         AUTHENTICATE_USER_IN_STORE({
@@ -57,9 +73,9 @@ export default function Login() {
             onSubmit={(e) => handleSubmit(e)}
             className="flex flex-col justify-center items-center"
           >
-            <div className="my-4">
+            <div className="my-8 relative ">
               <label className="sr-only" htmlFor="email">
-                Username
+                Email
               </label>
               <input
                 onChange={(e) =>
@@ -74,8 +90,13 @@ export default function Login() {
                 name="mail"
                 placeholder="user@gmail.com"
               />
+              {errorDisplay.display && errorDisplay.type === "mail" && (
+                <div className="absolute -top-5 text-lh-secondary text-sm">
+                  Aucun utilisateur enregistré avec cette adresse
+                </div>
+              )}
             </div>
-            <div className="mb-8 relative">
+            <div className=" relative">
               <label className="sr-only" htmlFor="password">
                 Password
               </label>
@@ -92,14 +113,22 @@ export default function Login() {
                 name="password"
                 placeholder="password"
               />
-              <div className="absolute text-xs ml-1 text-lh-primary cursor-pointer">
-                Forgot your password? Reset it here
-              </div>
+              {errorDisplay.display && errorDisplay.type === "password" && (
+                <div className="absolute -top-5 text-lh-secondary text-sm">
+                  Mot de passe incorrect
+                </div>
+              )}
+            </div>
+            <div className="mb-5 text-xs ml-1 text-lh-primary cursor-pointer">
+              Forgot your password? Reset it here
             </div>
 
             <ButtonForm text="Log In" type="submit" customClass="w-32" />
           </form>
-          <div className=" mt-4 text-xs ml-1 text-lh-primary cursor-pointer">
+          <div
+            onClick={() => navigate("/login/register")}
+            className=" mt-4 text-xs ml-1 text-lh-primary cursor-pointer"
+          >
             Don't have an account? Sign up
           </div>
         </div>

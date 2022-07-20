@@ -1,7 +1,23 @@
+import { useState } from "react";
+
 import ButtonForm from "../../components/Login/ButtonForm";
 import Logo from "../../assets/img/logo_LastHope.png";
 
 export default function Register() {
+  const [registerInformation, setRegisterInformation] = useState({
+    firstname: "",
+    lastname: "",
+    password: "",
+    mail: "",
+  });
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRegisterInformation({
+      ...registerInformation,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   return (
     <div className="flex min-h-screen justify-center items-center flex-col">
       <img src={Logo} alt="banner" className="pb-10" />
@@ -14,10 +30,35 @@ export default function Register() {
               Email
             </label>
             <input
+              onChange={(e) => onChange(e)}
               className="w-full sm:w-96 appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none focus:shadow-outline"
               id="email"
               type="email"
               placeholder="user@gmail.com"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="sr-only" htmlFor="firstname">
+              firstname
+            </label>
+            <input
+              onChange={(e) => onChange(e)}
+              className="w-full sm:w-96 appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none focus:shadow-outline"
+              id="firstname"
+              type="firstname"
+              placeholder="Jean"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="sr-only" htmlFor="lastname">
+              lastname
+            </label>
+            <input
+              onChange={(e) => onChange(e)}
+              className="w-full sm:w-96 appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none focus:shadow-outline"
+              id="lastname"
+              type="lastname"
+              placeholder="Dupont"
             />
           </div>
 
@@ -26,6 +67,7 @@ export default function Register() {
               Password
             </label>
             <input
+              onChange={(e) => onChange(e)}
               className="w-full sm:w-96 appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none focus:shadow-outline"
               id="password"
               type="password"

@@ -9,7 +9,7 @@ export default async (_parent: any, args: any, context: any) => {
   });
 
   if (!user) {
-    throw new ApolloError("Invalid user");
+    throw new ApolloError("Invalid mail");
   }
 
   if (!bcrypt.compareSync(args.password, user.password)) {
