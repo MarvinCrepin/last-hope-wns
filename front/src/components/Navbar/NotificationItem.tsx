@@ -1,20 +1,11 @@
 import { useMutation } from "@apollo/client";
 
 import UPDATE_NOTIFICATION from "../../queries/Notification/UpateNotification";
+import { Notification } from "../global";
 
 interface IMyProps {
   notification: Notification;
 }
-
-type Notification = {
-  id: string;
-  is_read: Boolean;
-  data: {
-    type: string;
-    titre: string;
-    content: string;
-  };
-};
 
 export default function NotificationItem({ notification }: IMyProps) {
   const [UpdateNotification] = useMutation(UPDATE_NOTIFICATION);

@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Menu, Transition } from "@headlessui/react";
+import { Notification } from "../global";
 
 import Logo from "../../assets/img/logo_LastHope_inline.png";
 import "../../assets/styles/navbar.css";
@@ -16,24 +17,6 @@ import { VscAccount } from "react-icons/vsc";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { IoIosNotifications } from "react-icons/io";
 import { myId } from "../../slicer/authSlice";
-
-/**
- * {
- *  type:"",
- *  titre:"",
- *  content:"",
- * }
- */
-
-type Notification = {
-  id: string;
-  is_read: Boolean;
-  data: {
-    type: string;
-    titre: string;
-    content: string;
-  };
-};
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
