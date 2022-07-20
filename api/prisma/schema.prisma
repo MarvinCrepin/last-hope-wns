@@ -54,7 +54,9 @@ model Notification {
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    String
   is_read    Boolean  @default(false)
-  data       Json
+  title      String
+  content    String
+  type       String
 }
 
 model TicketUser {
