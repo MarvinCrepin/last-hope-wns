@@ -17,10 +17,16 @@ export default async (_parent: any, args: any, context: any) => {
   }
 
   const token = await jwt.sign(
-    { user_id: user._id, mail: user.mail, roles: user.roles },
+    {
+      id: user._id,
+      mail: user.mail,
+      roles: user.roles,
+      firstname: user.firstname,
+      lastname: user.lastname,
+    },
     process.env.ACCESS_TOKEN_SECRET_KEY,
     {
-      expiresIn: "2h",
+      expiresIn: 10000,
     }
   );
 

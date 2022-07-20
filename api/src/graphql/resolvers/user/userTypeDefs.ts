@@ -21,7 +21,10 @@ export default gql`
   }
 
   type payloadToken {
+    id: ID
     mail: String
+    firstname: String
+    lastname: String
     roles: String
     iat: Int
     exp: Int

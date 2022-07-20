@@ -22,10 +22,14 @@ function App() {
       navigate("/login");
     }
 
-    verifyToken();
-
     if (error) {
       console.log(error);
+
+      if (error.message === "Token not valid") {
+        localStorage.removeItem("KeyLastHope");
+      }
+
+      navigate("/login");
     }
 
     if (data) {
@@ -42,8 +46,12 @@ function App() {
   };
 
   useEffect(() => {
+    verifyToken();
+  }, []);
+
+  useEffect(() => {
     checkAuthentication();
-  }, [error, data]);
+  }, [data, error]);
 
   return (
     <Routes>

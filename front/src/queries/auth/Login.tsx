@@ -7,6 +7,8 @@ export default gql`
         id
         mail
         roles
+        firstname
+        lastname
       }
       token
     }
