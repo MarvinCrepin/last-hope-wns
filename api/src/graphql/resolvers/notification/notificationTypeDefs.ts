@@ -9,6 +9,7 @@ export default gql`
     content: String
     type: String
     user: User
+    created_at:DateTime
   }
 
   input UpdatedNotificationInput {
@@ -29,5 +30,5 @@ export default gql`
     ): Notification
   }
 
-  scalar JSON
+  scalar DateTime
 `;

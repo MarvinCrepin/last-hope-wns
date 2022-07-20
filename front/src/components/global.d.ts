@@ -59,12 +59,19 @@ export interface State {
   name: String;
 }
 
+export type DashboardTitle = {
+  [ROLE_DEVELOPER: string]: string;
+  [ROLE_PROJECT_MANAGER: string]: string;
+  [ROLE_ADMIN: string]: string;
+};
+
 export type Notification = {
   id: string;
   is_read: Boolean;
   title: string;
   content: string;
   type: string;
+  created_at: Date;
 };
 
 export type RowElement = any;

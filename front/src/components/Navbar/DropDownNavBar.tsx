@@ -10,13 +10,12 @@ import Logo from "../../assets/img/logo_LastHope_inline.png";
 import "../../assets/styles/navbar.css";
 import NotificationItem from "./NotificationItem";
 import GetNotificationByUserId from "../../queries/Notification/GetNotificationByUserId";
-import GetUserById from "../../queries/User/GetUserById";
 
 import { FaLaptopCode } from "react-icons/fa";
 import { VscAccount } from "react-icons/vsc";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { IoIosNotifications } from "react-icons/io";
-import { myId } from "../../slicer/authSlice";
+import { user } from "../../slicer/authSlice";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -26,17 +25,12 @@ export default function DropDownNavBar() {
   const [notificationsList, setNotificationsList] = useState<Notification[]>(
     []
   );
-  const userId = useSelector(myId);
+  const userInStore = useSelector(user);
 
   const { loading, error, data } = useQuery(GetNotificationByUserId, {
-    variables: { userId: userId },
+    variables: { userId: userInStore.id },
   });
 
-  const { loading :userLoading, error :userError, data: userData } = useQuery(GetUserById, {
-    variables: { userId: userId },
-  });
-
-  
   const [notificationsUnread, setNotificationsUnread] = useState<Number>(0);
 
   useEffect(() => {
@@ -48,7 +42,7 @@ export default function DropDownNavBar() {
       );
     }
   }, [data]);
- console.log(userData);
+
   return (
     <nav className="py-4 px-10 shadow-md flex justify-between mb-10">
       <Link to="/dashboard">
@@ -56,8 +50,9 @@ export default function DropDownNavBar() {
       </Link>
       <div className="flex items-stretch ">
         <Menu as="div" className="relative inline-block text-left">
-          <Menu.Button className="h-full account rounded-l-lg inline-flex justify-center gap-x-2 items-center p-3 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-lh-primary">
-            <FaLaptopCode color="var(--primary-color)" size={18} /> {userData && !userLoading && !userError ? userData.GetUserById.firstname + ' ' + userData.GetUserById.lastname : ''}
+          <Menu.Button className="h-full account rounded-l-lg inline-flex justify-center gap-x-2 items-center p-3 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
+            <FaLaptopCode color="var(--primary-color)" size={18} />{" "}
+            {`${userInStore.firstname} ${userInStore.lastname}`}
           </Menu.Button>
 
           <Transition
@@ -110,12 +105,16 @@ export default function DropDownNavBar() {
         </Menu>
 
         <Menu as="div" className="relative inline-block text-left">
-          <Menu.Button className="notifications rounded-r-lg inline-flex justify-center gap-x-1 items-center shadow-sm p-3 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-lh-primary">
+          <Menu.Button className="notifications rounded-r-lg inline-flex justify-center gap-x-1 items-center shadow-sm p-3 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
             <span className="relative">
-              <IoIosNotifications size={26} />
-              <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
-                {notificationsUnread.toString()}
-              </span>
+              <IoIosNotifications size={28} />
+              {notificationsUnread !== 0 ? (
+                <span className="absolute top-1 right-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                  {notificationsUnread.toString()}
+                </span>
+              ) : (
+                ""
+              )}
             </span>
           </Menu.Button>
 
@@ -133,7 +132,7 @@ export default function DropDownNavBar() {
                 <div>
                   {notificationsList.map((notification: Notification) => {
                     return (
-                      <div>
+                      <div key={notification.id}>
                         {notification.is_read === false && (
                           <div className="py-1 border-b-2">
                             <NotificationItem notification={notification} />

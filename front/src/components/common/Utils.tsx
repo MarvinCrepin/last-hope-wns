@@ -1,4 +1,22 @@
-import { Column } from "../global";
+import { Column, DashboardTitle } from "../global";
+
+import { BiTask } from "react-icons/bi";
+import { AiOutlineFundProjectionScreen } from "react-icons/ai";
+import { HiOutlineTicket } from "react-icons/hi";
+import { FaRegUser } from "react-icons/fa";
+
+export const notificationIcone = (type: string, classname: string) => {
+  switch (type) {
+    case "task":
+      return <BiTask className={classname} />;
+    case "project":
+      return <AiOutlineFundProjectionScreen className={classname} />;
+    case "ticket":
+      return <HiOutlineTicket className={classname} />;
+    case "user":
+      return <FaRegUser className={classname} />;
+  }
+};
 
 export const theme = (userRole: string, type: string, meta: any = {}) => {
   if (type === "dashboard") {
@@ -19,12 +37,17 @@ export const theme = (userRole: string, type: string, meta: any = {}) => {
     }
   }
 };
-export const roleList = ["ROLE_DEVELOPER", "Project Manager", "Admin"];
-export const titleByRole = (userRole: string) => {
-  const dashboardTitle: any = {
+export const roleList = [
+  "ROLE_DEVELOPER",
+  "ROLE_PROJECT_MANAGER",
+  "ROLE_ADMIN",
+];
+
+export const titleByRole = (userRole: string): string => {
+  const dashboardTitle: DashboardTitle = {
     ROLE_DEVELOPER: "Dashboard",
-    Project_Manager: "Dashboard Manager",
-    Admin: "Admin Dashboard",
+    ROLE_PROJECT_MANAGER: "Dashboard Manager",
+    ROLE_ADMIN: "Admin Dashboard",
   };
   return dashboardTitle[userRole];
 };
