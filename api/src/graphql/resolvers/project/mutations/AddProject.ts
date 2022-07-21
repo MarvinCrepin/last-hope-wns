@@ -1,5 +1,6 @@
 import { UserInputError } from "apollo-server";
 import isConnected from "../../../../helpers/isConnected";
+import createNotification from "../../../../helpers/createNotification";
 import { Context } from "../../../resolvers/types";
 
 export default async (_parent: any, args: { data: any }, context: Context) => {
@@ -30,6 +31,19 @@ export default async (_parent: any, args: { data: any }, context: Context) => {
       },
     });
 
+    const notificationTitle = "New project!";
+    const notificationContent = `You have been assigned to the project ${args.data.title}.`;
+    const notificationType = "project";
+    
+    const notification = await createNotification(
+      notificationTitle,
+      notificationContent,
+      notificationType,
+      context,
+      args.data.product_owner_id
+    );
+
+      console.log(notification)
     return project;
   } catch (err) {
     throw new UserInputError("Bad Request", { errors: err });

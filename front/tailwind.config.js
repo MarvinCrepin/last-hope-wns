@@ -14,6 +14,10 @@ module.exports = {
         "lh-gray": "#e5e5e5",
         "lh-light-gray": "#cfcfcf",
       },
+      width: {
+        w10: "10vw",
+        w90: "100px",
+      },
     },
   },
   plugins: [],
