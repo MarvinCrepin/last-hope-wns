@@ -7,6 +7,9 @@ export default async (
 ) => {
   const result = await context.prisma.notification.findMany({
     where: { user_id: userId },
+    include: {
+      user: true,
+    }
   });
 
   return result;
