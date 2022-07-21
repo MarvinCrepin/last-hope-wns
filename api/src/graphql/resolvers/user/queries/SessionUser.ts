@@ -10,7 +10,7 @@ export default async (_: any, _args: any, context: Context) => {
     where: { mail: context.authenticatedUser.mail },
   });
 
-  if (user.roles !== context.authenticatedUser.role) {
+  if (user.roles !== context.authenticatedUser.roles) {
     throw new ApolloError("Token not valid");
   }
 
