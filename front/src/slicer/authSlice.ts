@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type TypeState = {
-  user: IUser | null;
+  user: User;
   token: String | null;
 };
 
@@ -10,7 +10,7 @@ type User = {
   id: string;
   firstname: string;
   mail: string;
-  lastname:string;
+  lastname: string;
 };
 
 const initialState: TypeState = {
@@ -20,7 +20,7 @@ const initialState: TypeState = {
     id: "cl5s7fg720000ryk9jlzteabj",
     firstname: "Florian",
     lastname: "Bême",
-    mail:"florianbme@gmail.com",
+    mail: "florianbme@gmail.com",
   },
 };
 
@@ -37,7 +37,6 @@ export const authSlice = createSlice({
 
 export const role = (state: { authSlice: TypeState }) =>
   state.authSlice.user.roles;
-export const user = (state: { authSlice: TypeState }) =>
-  state.authSlice.user;
+export const user = (state: { authSlice: TypeState }) => state.authSlice.user;
 
 export default authSlice.reducer;
