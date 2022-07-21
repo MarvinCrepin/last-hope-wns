@@ -63,8 +63,6 @@ export default function TaskList() {
   const formatDate = (entries: any[]) => {
     let result: TaskInList[] = [];
     entries.forEach((element) => {
-      console.log(element);
-
       let newData = {
         id: element.id,
         title: element.title,

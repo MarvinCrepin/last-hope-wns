@@ -9,7 +9,6 @@ export default async (_obj: any, _args: any, context: Context) => {
   isConnected(context.authenticatedUser);
 
   if (context.authenticatedUser.roles === ROLES.ADMIN) {
-    console.log("is admin");
     const result = await context.prisma.ticket.findMany({
       include: {
         state: true,
@@ -39,9 +38,7 @@ export default async (_obj: any, _args: any, context: Context) => {
   projectUser.forEach((project: any) => {
     projectsId.push(project.projectId);
   });
-  // console.log(context.authenticatedUser.id);
-  // console.log("projectUser", projectUser);
-  // console.log(projectsId);
+
   const result = await context.prisma.ticket.findMany({
     where: {
       project: {
