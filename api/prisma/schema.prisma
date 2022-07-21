@@ -23,7 +23,6 @@ model Project {
 
   participants UserProject[]
   tickets      Ticket[]
-
 }
 
 model UserProject {

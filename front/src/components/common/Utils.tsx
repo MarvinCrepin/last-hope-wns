@@ -63,7 +63,7 @@ export const columnsByRole = (
       { id: "user", label: "User", style: "text", metadata: {} },
       { id: "roles", label: "Role", style: "select", metadata: {} },
     ];
-    if (userRole !== "ROLE_DEVELOPER" /* && roleList.includes(userRole) */) {
+    if (userRole !== "ROLE_DEVELOPER") {
       columns.push({
         id: "actions",
         label: "Actions",
