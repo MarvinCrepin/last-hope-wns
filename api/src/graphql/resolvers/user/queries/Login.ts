@@ -26,7 +26,7 @@ export default async (_parent: any, args: any, context: any) => {
     },
     process.env.ACCESS_TOKEN_SECRET_KEY,
     {
-      expiresIn: 10000,
+      expiresIn: "2h",
     }
   );
 
