@@ -3,22 +3,25 @@ import { ApolloError } from "apollo-server-core";
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-export default async (_parent: any, args: any, context: any) => {
+export default async (
+  _parent: any,
+  { loginUserInput }: { loginUserInput: LoginUserInput },
+  context: any
+) => {
   const user = await context.prisma.user.findUnique({
-    where: { mail: args.mail },
+    where: { mail: loginUserInput.mail },
   });
 
-  if (!user) {
-    throw new ApolloError("Invalid mail");
-  }
-
-  if (!bcrypt.compareSync(args.password, user.password)) {
-    throw new ApolloError("Invalid password");
+  if (
+    !user ||
+    !(await bcrypt.compare(loginUserInput.password, user.password))
+  ) {
+    throw new ApolloError("Invalid credentials");
   }
 
   const token = await jwt.sign(
     {
-      id: user._id,
+      id: user.id,
       mail: user.mail,
       roles: user.roles,
       firstname: user.firstname,

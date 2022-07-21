@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export default gql`
-  query Login($mail: String!, $password: String!) {
-    Login(mail: $mail, password: $password) {
+  mutation Mutation($loginUserInput: LoginUserInput) {
+    Login(loginUserInput: $loginUserInput) {
       user {
         id
         mail

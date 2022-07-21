@@ -5,3 +5,8 @@ interface userInputRegister {
   roles: string;
   password: string;
 }
+
+interface LoginUserInput {
+  mail: string;
+  password: string;
+}

@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Fragment } from "react";
 import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Menu, Transition } from "@headlessui/react";
 import { Notification } from "../global";
 
@@ -10,12 +10,12 @@ import Logo from "../../assets/img/logo_LastHope_inline.png";
 import "../../assets/styles/navbar.css";
 import NotificationItem from "./NotificationItem";
 import GetNotificationByUserId from "../../queries/Notification/GetNotificationByUserId";
+import { LOGOUT_USER, user } from "../../slicer/authSlice";
 
 import { FaLaptopCode } from "react-icons/fa";
 import { VscAccount } from "react-icons/vsc";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { IoIosNotifications } from "react-icons/io";
-import { user } from "../../slicer/authSlice";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -25,13 +25,22 @@ export default function DropDownNavBar() {
   const [notificationsList, setNotificationsList] = useState<Notification[]>(
     []
   );
+
   const userInStore = useSelector(user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { loading, error, data } = useQuery(GetNotificationByUserId, {
     variables: { userId: userInStore.id },
   });
 
   const [notificationsUnread, setNotificationsUnread] = useState<Number>(0);
+
+  const logout = () => {
+    dispatch(LOGOUT_USER);
+    localStorage.removeItem("KeyLastHope");
+    navigate("/login");
+  };
 
   useEffect(() => {
     if (data) {
@@ -84,7 +93,8 @@ export default function DropDownNavBar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        type="submit"
+                        type="button"
+                        onClick={() => logout()}
                         className={classNames(
                           active ? "bg-gray-100 text-lh-dark" : "text-gray-700",
                           "flex items-center gap-x-2 w-full text-left px-4 py-2 text-md"
