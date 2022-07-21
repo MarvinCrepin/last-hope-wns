@@ -26,7 +26,7 @@ export default function Dashboard() {
         <FaPencilAlt size={45} />
       </div>
       <main className="mx-2 md:mx-12 lg:mx-28">
-        <nav className="space-x-1.5 text-2xl py-1">
+        <nav className="space-x-1.5 text-2xl pt-1">
           <NavLink
             to="/dashboard/task"
             className={(el) =>
