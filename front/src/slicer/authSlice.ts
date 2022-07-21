@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface TypeState {
-  user: User;
-}
+type TypeState = {
+  user: IUser | null;
+  token: String | null;
+};
 
 type User = {
   roles: "ROLE_ADMIN" | "ROLE_DEVELOPER" | "ROLE_PROJECT_MANAGER" | "";
@@ -13,6 +14,7 @@ type User = {
 };
 
 const initialState: TypeState = {
+  token: null,
   user: {
     roles: "ROLE_PROJECT_MANAGER", //  Project_Manager Admin Developer
     id: "cl5s7fg720000ryk9jlzteabj",
@@ -25,7 +27,12 @@ const initialState: TypeState = {
 export const authSlice = createSlice({
   name: "authSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    AUTHENTICATE_USER_IN_STORE: (state, action) => {
+      state.user = { ...action.payload.user };
+      state.token = action.payload.token;
+    },
+  },
 });
 
 export const role = (state: { authSlice: TypeState }) =>

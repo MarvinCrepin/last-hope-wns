@@ -10,15 +10,31 @@ export default gql`
     password: String
   }
 
-  type ResponseSecurity{
+  type ResponseSecurity {
     user: User
     token: String
+  }
+
+  type ResponseSessionUser {
+    user: payloadToken
+    error: String
+  }
+
+  type payloadToken {
+    id: ID
+    mail: String
+    firstname: String
+    lastname: String
+    roles: String
+    iat: Int
+    exp: Int
   }
 
   type Query {
     GetUserById(userId: String!): User
     GetAllUsers: [User]
     Login(mail: String!, password: String!): ResponseSecurity
+    SessionUser: ResponseSessionUser
   }
 
   type Mutation {

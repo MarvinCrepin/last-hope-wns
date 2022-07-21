@@ -1,11 +1,13 @@
-import {Context} from '../../../resolvers/types'
-
+import isConnected from "../../../../helpers/isConnected";
+import { Context } from "../../../resolvers/types";
 
 export default async (
   _: any,
   { projectId, data }: { projectId: string; data: any },
   context: Context
 ) => {
+  isConnected(context.authenticatedUser);
+
   const oldData = await context.prisma.project.findUnique({
     where: { id: projectId },
   });

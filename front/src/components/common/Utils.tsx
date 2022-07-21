@@ -37,6 +37,7 @@ export const theme = (userRole: string, type: string, meta: any = {}) => {
     }
   }
 };
+
 export const roleList = [
   "ROLE_DEVELOPER",
   "ROLE_PROJECT_MANAGER",
@@ -53,7 +54,7 @@ export const titleByRole = (userRole: string): string => {
 };
 
 export const columnsByRole = (
-  userRole: string,
+  userRole: "ROLE_ADMIN" | "ROLE_DEVELOPER" | "ROLE_PROJECT_MANAGER" | "",
   type: string,
   meta: any = {}
 ): any => {
