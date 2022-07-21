@@ -7,7 +7,12 @@ import "../../../assets/css/projectDetail.css";
 import { Participant, Project } from "../../global";
 import { useSelector } from "react-redux";
 import { role } from "../../../slicer/authSlice";
-import { roleList } from "../../common/Utils"
+import { roleList } from "../../common/Utils";
+import { FaCheck } from "react-icons/fa";
+import {RiDeleteBin6Line} from "react-icons/ri"
+import UpdateProject from "../../../mutation/Project/UpdateProject";
+import getAllProjects from "../../../queries/Project/GetAllProject";
+import { useMutation, useQuery } from "@apollo/client";
 
 Chart.register(...registerables);
 
@@ -56,6 +61,9 @@ type Props = {
 
 function ProjectDetail({ project, closeModal }: Props) {
   const userRole = useSelector(role);
+  const [updateProject, { data, loading, error }] = useMutation(UpdateProject, {
+    refetchQueries: [{ query: getAllProjects }],
+  });
 
   return (
     <div
@@ -92,27 +100,44 @@ function ProjectDetail({ project, closeModal }: Props) {
                     </p>
                   )}
                 </div>
-                <div>
+                <div className="section-po">
                   <h2 className="text-4xl font-title text-lh-primary ">
                     Project Owner
                   </h2>
-                  {((userRole === roleList[1]) || (userRole === roleList[2])) && <select><option>test</option></select> }
-                  <div className="pt-4 pb-6 flex items-center">
-                    {project.product_owner ? (
-                      <>
-                        <MdOutlineAccountCircle size={30} />
-                        <p className="text-gray-700 font-title pl-3 text-xl">
-                          {project.product_owner.firstname +
-                            " " +
-                            project.product_owner.lastname}
-                        </p>
-                      </>
-                    ) : (
-                      "No project manager defined"
-                    )}
-                  </div>
+                  {(userRole === roleList[1] || userRole === roleList[2]) && (
+                    <div className="pt-4 pb-6 flex items-center">
+                      <select
+                      value={project.product_owner}
+                      name="projectProductOwner"
+                      className="bg-lh-light border-2 border-lh-dark py-1 px-1.5 mr-5 select-product-owner cursor-pointer">
+                        {project.participants.map((participant: Participant) => (
+                          <option key={participant.user.id}>
+                            {participant.user.firstname} {participant.user.lastname}
+                          </option>
+                        ))}
+                      </select>
+                      <button className="bg-lh-secondary font-text text-lh-light px-3 flex space-x-2 items-center change-po">
+                        <div className="flex items-center">Change <span className="pl-3"><FaCheck size={14}/></span></div></button>
+                    </div>
+                  )}
+                  {userRole === roleList[0] && (
+                    <div className="pt-4 pb-6 flex items-center">
+                      {project.product_owner ? (
+                        <>
+                          <MdOutlineAccountCircle size={30} />
+                          <p className="text-gray-700 font-title pl-3 text-xl">
+                            {project.product_owner.firstname +
+                              " " +
+                              project.product_owner.lastname}
+                          </p>
+                        </>
+                      ) : (
+                        "No project manager defined"
+                      )}
+                    </div>
+                  )}
                 </div>
-                <div>
+                <div className="section-members">
                   <h2 className="text-4xl font-title text-lh-primary ">
                     Members
                   </h2>
@@ -126,22 +151,28 @@ function ProjectDetail({ project, closeModal }: Props) {
                           className="flex items-center py-2 pr-4"
                         >
                           <MdOutlineAccountCircle size={30} />
-                          <p className="text-gray-700 font-title pl-3 text-xl">
+                          <p className="text-gray-700 font-title pl-3 text-xl flex">
                             {participant.user.firstname}{" "}
-                            {participant.user.lastname} - 
-                            <span className="text-lh-light-gray">
+                            {participant.user.lastname} -&nbsp;
+                            {console.log(project)}
+                            <span className="text-lh-light-gray flex items-center">
                               {(() => {
                                 switch (participant.user.roles) {
                                   case "ROLE_DEVELOPER":
-                                    return " Developer";
+                                    return "Developer";
                                   case "ROLE_PROJECT_MANAGER":
-                                    return " Project Manager";
+                                    return "Project Manager";
                                   case "ROLE_ADMIN":
-                                    return " Admin";
+                                    return "Admin";
                                   default:
                                     return "No role defined";
                                 }
                               })()}
+                              <span className="text-lh-primary pl-2 cursor-pointer">
+                                {(userRole === roleList[1] || userRole === roleList[2]) && (
+                                  <RiDeleteBin6Line />
+                                )}
+                              </span>
                             </span>
                           </p>
                         </li>
