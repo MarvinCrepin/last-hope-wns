@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import ButtonForm from "../../components/Login/ButtonForm";
 import Logo from "../../assets/img/logo_LastHope.png";
 
-import LoginQuery from "../../queries/auth/Login";
+import LoginQuery from "../../mutation/auth/Login";
 import { AUTHENTICATE_USER_IN_STORE } from "../../slicer/authSlice";
 
 export default function Login() {
@@ -17,41 +17,17 @@ export default function Login() {
     mail: "",
     password: "",
   });
+
   const [errorDisplay, setError] = useState({
-    type: "",
     display: false,
     message: "",
   });
 
-  const [loginQuery, { error, data }] = useLazyQuery(LoginQuery);
-
-  const handleSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    loginQuery({
-      variables: {
-        mail: connectionInformation.mail,
-        password: connectionInformation.password,
-      },
-    });
-  };
-
-  useEffect(() => {
-    if (error) {
-      let type = "";
-      switch (error.message) {
-        case "Invalid mail":
-          type = "mail";
-          break;
-        case "Invalid password":
-          type = "password";
-          break;
-        default:
-          break;
-      }
-      setError({ message: error.message, display: true, type: type });
-    }
-
-    if (data) {
+  const [loginMutation] = useMutation(LoginQuery, {
+    variables: {
+      loginUserInput: connectionInformation,
+    },
+    onCompleted(data) {
       dispatch(
         AUTHENTICATE_USER_IN_STORE({
           user: data.Login.user,
@@ -60,8 +36,16 @@ export default function Login() {
       );
       localStorage.setItem("KeyLastHope", data.Login.token);
       navigate("/dashboard");
-    }
-  }, [data, error]);
+    },
+    onError(error) {
+      setError({ message: error.message, display: true });
+    },
+  });
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    loginMutation();
+  };
 
   return (
     <>
@@ -90,9 +74,9 @@ export default function Login() {
                 name="mail"
                 placeholder="user@gmail.com"
               />
-              {errorDisplay.display && errorDisplay.type === "mail" && (
+              {errorDisplay.display && (
                 <div className="absolute -top-5 text-lh-secondary text-sm">
-                  Aucun utilisateur enregistré avec cette adresse
+                  {errorDisplay.message}
                 </div>
               )}
             </div>
@@ -113,11 +97,6 @@ export default function Login() {
                 name="password"
                 placeholder="password"
               />
-              {errorDisplay.display && errorDisplay.type === "password" && (
-                <div className="absolute -top-5 text-lh-secondary text-sm">
-                  Mot de passe incorrect
-                </div>
-              )}
             </div>
             <div className="mb-5 text-xs ml-1 text-lh-primary cursor-pointer">
               Forgot your password? Reset it here
