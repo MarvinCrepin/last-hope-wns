@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { role } from "../../slicer/authSlice";
 import getAllTickets from "../../queries/Ticket/GetAllTicket";
-import { myId } from "../../slicer/authSlice";
+import { user } from "../../slicer/authSlice";
 import { loading as load, TOOGLE_LOAD } from "../../slicer/appSlice";
 import TableDashboard from "../common/TableDashboard";
 import Error from "../common/Error";
@@ -39,7 +39,7 @@ const columns: Column[] = [
 export default function TaskList() {
   const dispatch = useDispatch();
   const { loading, error, data } = useQuery(getAllTickets);
-  const me = useSelector(myId);
+  const me = useSelector(user);
   const userRole = useSelector(role);
   const loadingInStore = useSelector(load);
   const [hideDone, setHideDone] = useState(false);
@@ -104,7 +104,7 @@ export default function TaskList() {
         dataFiltered = dataFiltered.filter((el) => el.advancement < 100);
       }
       if (myTask) {
-        dataFiltered = dataFiltered.filter((el) => el.assignee_id === me);
+        dataFiltered = dataFiltered.filter((el) => el.assignee_id === me.id);
       }
       setList([...dataFiltered]);
     }

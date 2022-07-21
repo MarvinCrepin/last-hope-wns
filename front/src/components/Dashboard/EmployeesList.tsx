@@ -2,16 +2,18 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { useSelector } from "react-redux";
+
 import { FaSearch } from "react-icons/fa";
+
+import { Column, User } from "../global";
 import TableDashboard from "../common/TableDashboard";
 import Error from "../common/Error";
-import { role } from "../../slicer/authSlice";
-import { Column, User } from "../global";
-import getAllUsers from "../../queries/User/GetAllUsers";
 import { columnsByRole, theme } from "../common/Utils";
-import { cp } from "fs/promises";
+
+import { role } from "../../slicer/authSlice";
+
+import getAllUsers from "../../queries/User/GetAllUsers";
 import UpdateUser from "../../queries/User/UpdateUser";
-import GetAllUsers from "../../queries/User/GetAllUsers";
 import DeleteUser from "../../queries/User/DeleteUser";
 
 export default function EmployeesList() {
@@ -21,17 +23,13 @@ export default function EmployeesList() {
   const [list, setList] = useState<User[]>([]);
   const [searchInput, setSearchInput] = useState("");
   const [updateUser] = useMutation(UpdateUser, {
-    refetchQueries: [
-      {query: getAllUsers}
-    ]
+    refetchQueries: [{ query: getAllUsers }],
   });
 
   const [deleteUser] = useMutation(DeleteUser, {
-    refetchQueries: [
-      {query: getAllUsers}
-    ]
+    refetchQueries: [{ query: getAllUsers }],
   });
-  
+
   useEffect(() => {
     if (data) {
       const dataObject = data.GetAllUsers.map((user: any) => ({
@@ -51,15 +49,20 @@ export default function EmployeesList() {
   const changeStatus = (user: any) => {
     const UserId = user.project.id;
     const newRole = user.value;
-    
-    updateUser({variables: {userId: UserId, data: {
-      roles: newRole}}})
+
+    updateUser({
+      variables: {
+        userId: UserId,
+        data: {
+          roles: newRole,
+        },
+      },
+    });
   };
 
   const deleteEmployee = (user: any) => {
     const UserId = user.id;
-  
-    deleteUser({variables: {userId: UserId}})
+    deleteUser({ variables: { userId: UserId } });
   };
 
   return (
