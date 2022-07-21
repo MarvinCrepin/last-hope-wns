@@ -21,7 +21,7 @@ export default async (
 
   const token = await jwt.sign(
     {
-      id: user._id,
+      id: user.id,
       mail: user.mail,
       roles: user.roles,
       firstname: user.firstname,

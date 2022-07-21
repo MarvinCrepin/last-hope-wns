@@ -63,6 +63,8 @@ export default function TaskList() {
   const formatDate = (entries: any[]) => {
     let result: TaskInList[] = [];
     entries.forEach((element) => {
+      console.log(element);
+
       let newData = {
         id: element.id,
         title: element.title,
@@ -70,10 +72,13 @@ export default function TaskList() {
         due_at: element.due_at,
         project_name: element.project.title,
         assignee:
-          element.ticketUser[0].user.firstname +
-          " " +
-          element.ticketUser[0].user.lastname,
-        assignee_id: element.ticketUser[0].user.id,
+          element.ticketUser.length === 0
+            ? "-"
+            : element.ticketUser[0].user.firstname +
+              " " +
+              element.ticketUser[0].user.lastname,
+        assignee_id:
+          element.ticketUser.length === 0 ? "-" : element.ticketUser[0].user.id,
         description: element.description,
         passed_time: element.passed_time,
         estimated_time: element.estimated_time,
@@ -119,7 +124,12 @@ export default function TaskList() {
         />
       )}
 
-      <div className={`w-full ${theme(userRole, "dashboard")}  z-20 py-8 px-2 rounded-tr-md md:h-30`}>
+      <div
+        className={`w-full ${theme(
+          userRole,
+          "dashboard"
+        )}  z-20 py-8 px-2 rounded-tr-md md:h-30`}
+      >
         <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
             <label className="sr-only" htmlFor="filterSelect">
