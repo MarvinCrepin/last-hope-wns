@@ -24,6 +24,7 @@ export default gql`
     advancement: Int
     state_id: String
     description: String
+
   }
 
   type Query {

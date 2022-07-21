@@ -29,7 +29,7 @@ export default async (
   const notificationContent = `The project ${newData.title}, you are working on, has been updated.`;
   const notificationType = "project";
 
-  const notification = await createNotification(
+  await createNotification(
     notificationTitle,
     notificationContent,
     notificationType,
@@ -37,16 +37,12 @@ export default async (
     newData.product_owner_id
   );
 
-  console.log(notification)
-
   const projectUpdated = await context.prisma.project.update({
     where: {
       id: projectId,
     },
     data: newData,
   });
-
-  console.log(projectUpdated);
 
   return projectUpdated;
 };
