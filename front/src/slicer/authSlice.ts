@@ -16,11 +16,11 @@ type User = {
 const initialState: TypeState = {
   token: null,
   user: {
-    roles: "ROLE_PROJECT_MANAGER", //  Project_Manager Admin Developer
-    id: "cl5s7fg720000ryk9jlzteabj",
-    firstname: "Florian",
-    lastname: "Bême",
-    mail: "florianbme@gmail.com",
+    roles: "",
+    id: "",
+    firstname: "",
+    lastname: "",
+    mail: "",
   },
 };
 
@@ -32,6 +32,16 @@ export const authSlice = createSlice({
       state.user = { ...action.payload.user };
       state.token = action.payload.token;
     },
+    LOGOUT_USER: (state) => {
+      state.user = {
+        roles: "",
+        id: "",
+        firstname: "",
+        lastname: "",
+        mail: "",
+      };
+      state.token = null;
+    },
   },
 });
 
@@ -39,6 +49,6 @@ export const role = (state: { authSlice: TypeState }) =>
   state.authSlice.user.roles;
 export const user = (state: { authSlice: TypeState }) => state.authSlice.user;
 
-export const { AUTHENTICATE_USER_IN_STORE } = authSlice.actions;
+export const { AUTHENTICATE_USER_IN_STORE, LOGOUT_USER } = authSlice.actions;
 
 export default authSlice.reducer;
