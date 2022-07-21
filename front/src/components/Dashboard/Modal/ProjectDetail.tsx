@@ -7,7 +7,7 @@ import "../../../assets/css/projectDetail.css";
 import { Participant, Project } from "../../global";
 import { useSelector } from "react-redux";
 import { role } from "../../../slicer/authSlice";
-
+import { roleList } from "../../common/Utils"
 
 Chart.register(...registerables);
 
@@ -96,7 +96,7 @@ function ProjectDetail({ project, closeModal }: Props) {
                   <h2 className="text-4xl font-title text-lh-primary ">
                     Project Owner
                   </h2>
-                  {userRole === ""}
+                  {((userRole === roleList[1]) || (userRole === roleList[2])) && <select><option>test</option></select> }
                   <div className="pt-4 pb-6 flex items-center">
                     {project.product_owner ? (
                       <>
