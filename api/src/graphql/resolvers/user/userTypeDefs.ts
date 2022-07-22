@@ -30,14 +30,19 @@ export default gql`
     exp: Int
   }
 
+  input LoginUserInput {
+    mail: String!
+    password: String!
+  }
+
   type Query {
     GetUserById(userId: String!): User
     GetAllUsers: [User]
-    Login(mail: String!, password: String!): ResponseSecurity
     SessionUser: ResponseSessionUser
   }
 
   type Mutation {
+    Login(loginUserInput: LoginUserInput): ResponseSecurity
     DeleteUser(userId: String!): User
     UpdateUser(userId: String!, data: UpdateUserInput): User
     AddUser(createUserInput: CreateUserInput): ResponseSecurity
