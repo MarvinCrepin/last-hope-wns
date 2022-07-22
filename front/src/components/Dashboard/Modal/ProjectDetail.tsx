@@ -1,7 +1,7 @@
 import { FaCalendarDay, FaCalendarCheck } from "react-icons/fa";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import Moment from "react-moment";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import "../../../assets/css/projectDetail.css";
@@ -63,28 +63,24 @@ type Props = {
 
 function ProjectDetail({ project, users, closeModal }: Props) {
   const userRole = useSelector(role);
-  const [dataProject, setDataProject] = useState(project.product_owner_id);
+  const [productOwnerId, setProductOwnerId] = useState(project.product_owner.id);
   const [updateProject, { data, loading, error }] = useMutation(UpdateProject, {
     refetchQueries: [{ query: getAllProjects }],
   });
 
   const handleSelectChange = ({target}: any) => {
-    console.log(target.value);
-    setDataProject(target.value);
+    setProductOwnerId(target.value);
   }
-
-  console.log(dataProject);
 
   function changeProjectOwner() {
     updateProject({
       variables: {
         projectId: project.id,
         data: {
-          product_owner_id: dataProject
+          product_owner_id: productOwnerId
         },
       },
     });
-    console.log(project.product_owner);
   }
 
   return (
@@ -129,6 +125,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                   {(userRole === roleList[1] || userRole === roleList[2]) && (
                     <div className="pt-4 pb-6 flex items-center">
                       <select
+                       defaultValue={project.product_owner.id}
                       onChange={handleSelectChange}
                       name="projectProductOwner"
                       className="bg-lh-light border-2 border-lh-dark py-1 px-1.5 mr-5 select-product-owner cursor-pointer">
