@@ -1,17 +1,23 @@
 export type Project = {
-  product_owner: any;
+  product_owner: product_owner_in_project;
   id: string;
   title: string;
   description: string;
   start_at: Date;
   end_at: Date;
   due_at: Date;
-  product_owner_id: string;
   advancement: number;
   __typename: string;
   participants: User[Participant];
   children: JSX.Element | JSX.Element[];
 };
+
+export type product_owner_in_project = {
+  id: string;
+  firstname: string;
+  lastname: string;
+}
+
 
 export interface Participant {
   user: UserParticipant;

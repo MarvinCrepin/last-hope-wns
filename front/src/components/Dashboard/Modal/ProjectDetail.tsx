@@ -120,7 +120,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                 </div>
                 <div className="section-po">
                   <h2 className="text-4xl font-title text-lh-primary ">
-                    Project Owner
+                    Project Manager
                   </h2>
                   {(userRole === roleList[1] || userRole === roleList[2]) && (
                     <div className="pt-4 pb-6 flex items-center">
@@ -129,7 +129,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                       onChange={handleSelectChange}
                       name="projectProductOwner"
                       className="bg-lh-light border-2 border-lh-dark py-1 px-1.5 mr-5 select-product-owner cursor-pointer">
-                        {users.filter((user: any) => user.roles === roleList[1]).map((user: User) => (
+                        {users.filter((user: any) => user.roles === roleList[1] || user.roles === roleList[2]).map((user: User) => (
                           <option value={user.id} key={user.id}>
                             {user.firstname} {user.lastname}
                           </option>

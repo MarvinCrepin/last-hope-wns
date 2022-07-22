@@ -59,11 +59,6 @@ export default function ProjectList() {
   });
 
   useEffect(() => {
-    console.log("Users project list", users)
-  }, [users]);
-  
-
-  useEffect(() => {
     if (data) {
       let dataFiltered: Project[] = [...data.GetAllProjects];
       if (searchInput.length > 0) {
