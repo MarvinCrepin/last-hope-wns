@@ -46,9 +46,19 @@
     background-color: #fe9595;
 }
 
+.project-modal .section-po .select-product-owner {
+    border-radius: 4px;
+}
+
+.project-modal .section-po .change-po {
+    border-radius: 4px;
+    padding-top: .4em;
+    padding-bottom: .4em;
+}
+
 @media screen and (max-width: 1000px) {
     .project-modal > div:first-child {
-        padding: 2em 0 0.5em 0.5em;
+        padding: 1em 0 0.5em 0.5em;
     }
 
     .project-modal-infos .list-inside li {
@@ -86,6 +96,19 @@
     .project-modal-pstats, .project-modal-mstats {
         min-width: 350px;
         min-height: 175px;
+    }
+}
+
+@media screen and (max-width: 450px) { 
+    .project-modal .section-members li {
+        display: flex;
+        text-align: center;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    .project-modal .section-members li p {
+        display: block;
     }
 }
 

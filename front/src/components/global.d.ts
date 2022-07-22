@@ -6,7 +6,7 @@ export type Project = {
   start_at: Date;
   end_at: Date;
   due_at: Date;
-  product_owner_id: number;
+  product_owner_id: string;
   advancement: number;
   __typename: string;
   participants: User[Participant];

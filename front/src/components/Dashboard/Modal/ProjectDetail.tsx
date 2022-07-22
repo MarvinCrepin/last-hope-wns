@@ -1,13 +1,19 @@
 import { FaCalendarDay, FaCalendarCheck } from "react-icons/fa";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import Moment from "react-moment";
+import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import "../../../assets/css/projectDetail.css";
-import { Participant, Project } from "../../global";
+import { Participant, Project, User } from "../../global";
 import { useSelector } from "react-redux";
 import { role } from "../../../slicer/authSlice";
-import { roleList } from "../../common/Utils"
+import { roleList } from "../../common/Utils";
+import { FaCheck } from "react-icons/fa";
+import {RiDeleteBin6Line} from "react-icons/ri"
+import UpdateProject from "../../../mutation/Project/UpdateProject";
+import getAllProjects from "../../../queries/Project/GetAllProject";
+import { useMutation, useQuery } from "@apollo/client";
 
 Chart.register(...registerables);
 
@@ -51,11 +57,31 @@ const options: any = {
 
 type Props = {
   project: Project;
+  users: User[];
   closeModal: () => void;
 };
 
-function ProjectDetail({ project, closeModal }: Props) {
+function ProjectDetail({ project, users, closeModal }: Props) {
   const userRole = useSelector(role);
+  const [productOwnerId, setProductOwnerId] = useState(project.product_owner.id);
+  const [updateProject, { data, loading, error }] = useMutation(UpdateProject, {
+    refetchQueries: [{ query: getAllProjects }],
+  });
+
+  const handleSelectChange = ({target}: any) => {
+    setProductOwnerId(target.value);
+  }
+
+  function changeProjectOwner() {
+    updateProject({
+      variables: {
+        projectId: project.id,
+        data: {
+          product_owner_id: productOwnerId
+        },
+      },
+    });
+  }
 
   return (
     <div
@@ -92,27 +118,45 @@ function ProjectDetail({ project, closeModal }: Props) {
                     </p>
                   )}
                 </div>
-                <div>
+                <div className="section-po">
                   <h2 className="text-4xl font-title text-lh-primary ">
                     Project Owner
                   </h2>
-                  {((userRole === roleList[1]) || (userRole === roleList[2])) && <select><option>test</option></select> }
-                  <div className="pt-4 pb-6 flex items-center">
-                    {project.product_owner ? (
-                      <>
-                        <MdOutlineAccountCircle size={30} />
-                        <p className="text-gray-700 font-title pl-3 text-xl">
-                          {project.product_owner.firstname +
-                            " " +
-                            project.product_owner.lastname}
-                        </p>
-                      </>
-                    ) : (
-                      "No project manager defined"
-                    )}
-                  </div>
+                  {(userRole === roleList[1] || userRole === roleList[2]) && (
+                    <div className="pt-4 pb-6 flex items-center">
+                      <select
+                       defaultValue={project.product_owner.id}
+                      onChange={handleSelectChange}
+                      name="projectProductOwner"
+                      className="bg-lh-light border-2 border-lh-dark py-1 px-1.5 mr-5 select-product-owner cursor-pointer">
+                        {users.filter((user: any) => user.roles === roleList[1]).map((user: User) => (
+                          <option value={user.id} key={user.id}>
+                            {user.firstname} {user.lastname}
+                          </option>
+                        ))}
+                      </select>
+                      <button onClick={e => changeProjectOwner()} className="bg-lh-secondary font-text text-lh-light px-3 flex space-x-2 items-center change-po">
+                        <div className="flex items-center">Change <span className="pl-3"><FaCheck size={14}/></span></div></button>
+                    </div>
+                  )}
+                  {userRole === roleList[0] && (
+                    <div className="pt-4 pb-6 flex items-center">
+                      {project.product_owner ? (
+                        <>
+                          <MdOutlineAccountCircle size={30} />
+                          <p className="text-gray-700 font-title pl-3 text-xl">
+                            {project.product_owner.firstname +
+                              " " +
+                              project.product_owner.lastname}
+                          </p>
+                        </>
+                      ) : (
+                        "No project manager defined"
+                      )}
+                    </div>
+                  )}
                 </div>
-                <div>
+                <div className="section-members">
                   <h2 className="text-4xl font-title text-lh-primary ">
                     Members
                   </h2>
@@ -126,22 +170,28 @@ function ProjectDetail({ project, closeModal }: Props) {
                           className="flex items-center py-2 pr-4"
                         >
                           <MdOutlineAccountCircle size={30} />
-                          <p className="text-gray-700 font-title pl-3 text-xl">
+                          <p className="text-gray-700 font-title pl-3 text-xl flex">
                             {participant.user.firstname}{" "}
-                            {participant.user.lastname} - 
-                            <span className="text-lh-light-gray">
+                            {participant.user.lastname} -&nbsp;
+
+                            <span className="text-lh-light-gray flex items-center">
                               {(() => {
                                 switch (participant.user.roles) {
                                   case "ROLE_DEVELOPER":
-                                    return " Developer";
+                                    return "Developer";
                                   case "ROLE_PROJECT_MANAGER":
-                                    return " Project Manager";
+                                    return "Project Manager";
                                   case "ROLE_ADMIN":
-                                    return " Admin";
+                                    return "Admin";
                                   default:
                                     return "No role defined";
                                 }
                               })()}
+                              <span className="text-lh-primary pl-2 cursor-pointer">
+                                {(userRole === roleList[1] || userRole === roleList[2]) && (
+                                  <RiDeleteBin6Line />
+                                )}
+                              </span>
                             </span>
                           </p>
                         </li>
