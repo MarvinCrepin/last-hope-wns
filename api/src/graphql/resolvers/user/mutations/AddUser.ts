@@ -19,7 +19,7 @@ export default async (
     process.env.ACCESS_TOKEN_SECRET_KEY
   );
 
-  const notificationTitle = `Welcome to Last Hope ${user.lastname} ${user.firstname}!` ;
+  const notificationTitle = `Welcome to Last Hope ${user.lastname} ${user.firstname}!`;
   const notificationContent = `From your Dashboard, you can view your projects and your tasks in progress. If not, ask an admin to activate your account.`;
   const notificationType = "welcome";
 

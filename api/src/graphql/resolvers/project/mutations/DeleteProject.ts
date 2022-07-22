@@ -26,7 +26,6 @@ export default async (
     context,
     deleteProject.product_owner_id
   );
-  console.log(notification)
 
   return deleteProject;
 };

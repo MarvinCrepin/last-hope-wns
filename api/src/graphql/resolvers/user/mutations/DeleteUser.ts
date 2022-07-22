@@ -15,7 +15,7 @@ export default async (
     },
   });
 
-  const notificationTitle = `Account delete!` ;
+  const notificationTitle = `Account delete!`;
   const notificationContent = `You have deleted the account of ${deleteUser.lastname} ${deleteUser.firstname}.`;
   const notificationType = "deletion";
 
