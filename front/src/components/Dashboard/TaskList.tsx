@@ -138,7 +138,7 @@ export default function TaskList() {
   }, [data, hideDone, myTask, searchInput, projectFiltered]);
 
   return (
-    <div className="relative ">
+    <div className="relative">
       {displayModalTaskDetails && selectedTask && (
         <TaskDetail
           taskPassed={selectedTask}
@@ -152,7 +152,7 @@ export default function TaskList() {
           "dashboard"
         )}  z-20 py-8 px-2 rounded-tr-md md:h-30`}
       >
-        <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
+        <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center h-12">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
             <label className="sr-only" htmlFor="filterSelect">
               Filter:
@@ -179,7 +179,7 @@ export default function TaskList() {
             </select>
             <div className="mx-2 flex items-center space-x-1">
               <input
-                className="rounded-md h-5 w-5"
+                className="rounded-md h-5 w-5 "
                 type="checkbox"
                 name="onlyMy"
                 id="onlyMy"
@@ -203,7 +203,7 @@ export default function TaskList() {
             </div>
           </div>
 
-          <div className="relative flex item-centers">
+          <div className="relative flex item-centers mr-2">
             <label htmlFor="searchInput" className="sr-only">
               Recherche
             </label>
@@ -212,7 +212,7 @@ export default function TaskList() {
               id="searchInput"
               name="searchInput"
               placeholder="Search"
-              className="rounded-md h-8 mx-2 px-8"
+              className="rounded-md h-8 mx-2 px-8 "
               onChange={(e) => setSearchInput(e.target.value)}
             />
             <FaSearch className="absolute top-2 left-4 text-gray-500" />
