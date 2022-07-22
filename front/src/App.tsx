@@ -1,6 +1,5 @@
 import "./App.css";
 import { Routes, Route, useNavigate } from "react-router-dom";
-
 import LoginRouter from "./Pages/Login/LoginRouter";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import { useEffect, useState } from "react";
@@ -8,10 +7,11 @@ import { useLazyQuery } from "@apollo/client";
 import VerifyToken from "./queries/auth/VerifyToken";
 import { useDispatch } from "react-redux";
 import { AUTHENTICATE_USER_IN_STORE } from "./slicer/authSlice";
-
+import { User } from "./components/global";
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [users, setUsers] = useState<User[]>([]);
 
   const tokenInLocalStorage = localStorage.getItem("KeyLastHope");
 

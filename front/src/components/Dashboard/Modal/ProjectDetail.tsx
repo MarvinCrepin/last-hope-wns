@@ -1,10 +1,11 @@
 import { FaCalendarDay, FaCalendarCheck } from "react-icons/fa";
 import { MdOutlineAccountCircle } from "react-icons/md";
 import Moment from "react-moment";
+import { useState } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import "../../../assets/css/projectDetail.css";
-import { Participant, Project } from "../../global";
+import { Participant, Project, User } from "../../global";
 import { useSelector } from "react-redux";
 import { role } from "../../../slicer/authSlice";
 import { roleList } from "../../common/Utils";
@@ -56,14 +57,35 @@ const options: any = {
 
 type Props = {
   project: Project;
+  users: User[];
   closeModal: () => void;
 };
 
-function ProjectDetail({ project, closeModal }: Props) {
+function ProjectDetail({ project, users, closeModal }: Props) {
   const userRole = useSelector(role);
+  const [dataProject, setDataProject] = useState(project.product_owner_id);
   const [updateProject, { data, loading, error }] = useMutation(UpdateProject, {
     refetchQueries: [{ query: getAllProjects }],
   });
+
+  const handleSelectChange = ({target}: any) => {
+    console.log(target.value);
+    setDataProject(target.value);
+  }
+
+  console.log(dataProject);
+
+  function changeProjectOwner() {
+    updateProject({
+      variables: {
+        projectId: project.id,
+        data: {
+          product_owner_id: dataProject
+        },
+      },
+    });
+    console.log(project.product_owner);
+  }
 
   return (
     <div
@@ -107,16 +129,16 @@ function ProjectDetail({ project, closeModal }: Props) {
                   {(userRole === roleList[1] || userRole === roleList[2]) && (
                     <div className="pt-4 pb-6 flex items-center">
                       <select
-                      value={project.product_owner}
+                      onChange={handleSelectChange}
                       name="projectProductOwner"
                       className="bg-lh-light border-2 border-lh-dark py-1 px-1.5 mr-5 select-product-owner cursor-pointer">
-                        {project.participants.map((participant: Participant) => (
-                          <option key={participant.user.id}>
-                            {participant.user.firstname} {participant.user.lastname}
+                        {users.filter((user: any) => user.roles === roleList[1]).map((user: User) => (
+                          <option value={user.id} key={user.id}>
+                            {user.firstname} {user.lastname}
                           </option>
                         ))}
                       </select>
-                      <button className="bg-lh-secondary font-text text-lh-light px-3 flex space-x-2 items-center change-po">
+                      <button onClick={e => changeProjectOwner()} className="bg-lh-secondary font-text text-lh-light px-3 flex space-x-2 items-center change-po">
                         <div className="flex items-center">Change <span className="pl-3"><FaCheck size={14}/></span></div></button>
                     </div>
                   )}
@@ -154,7 +176,7 @@ function ProjectDetail({ project, closeModal }: Props) {
                           <p className="text-gray-700 font-title pl-3 text-xl flex">
                             {participant.user.firstname}{" "}
                             {participant.user.lastname} -&nbsp;
-                            {console.log(project)}
+
                             <span className="text-lh-light-gray flex items-center">
                               {(() => {
                                 switch (participant.user.roles) {

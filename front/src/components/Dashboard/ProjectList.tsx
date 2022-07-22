@@ -2,16 +2,15 @@ import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { useSelector } from "react-redux";
-
 import { FaSearch, FaPlus } from "react-icons/fa";
-
 import TableDashboard from "../common/TableDashboard";
 import GetAllProjects from "../../queries/Project/GetAllProject";
 import Error from "../common/Error";
 import { role } from "../../slicer/authSlice";
 import ProjectDetail from "./Modal/ProjectDetail";
-import { Column, Project } from "../global";
+import { Column, Project, User } from "../global";
 import { theme } from "../common/Utils";
+import GetAllUsers from "../../queries/User/GetAllUsers";
 
 const columns: Column[] = [
   { id: "title", label: "Project", style: "text", metadata: {} },
@@ -33,6 +32,7 @@ const columns: Column[] = [
 export default function ProjectList() {
   const { loading, error, data } = useQuery(GetAllProjects);
   const userRole = useSelector(role);
+  const [users, setUsers] = useState<User[]>([]);
 
   const [list, setList] = useState<Project[]>([]);
   const [beMy, setByMe] = useState(false);
@@ -51,6 +51,12 @@ export default function ProjectList() {
     setDisplayModalProjectDetails(false);
     setSelectedProject(null);
   };
+  
+  useQuery(GetAllUsers, {
+    onCompleted: (data) => {
+      setUsers(data.GetAllUsers);
+    }
+  });
 
   useEffect(() => {
     if (data) {
@@ -72,6 +78,7 @@ export default function ProjectList() {
       {displayModalProjectDetails && selectedProject && (
         <ProjectDetail
           project={selectedProject}
+          users={users}
           closeModal={() => closeModalProjectDetails()}
         />
       )}

@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 const UpdateProject = gql`
-mutation Mutation($projectId: String!) {
-  UpdateProject(projectId: $projectId) {
+mutation Mutation($projectId: String!, $data: UpdatedProjectInput) {
+  UpdateProject(projectId: $projectId, data: $data) {
     id
     title
     description
