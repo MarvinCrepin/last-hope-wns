@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-  import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 
 import moment from "moment";
 
-import UpdateTicket from "../../../mutation/Ticket/UpdateTicket";
-import getAllTickets from "../../../queries/Ticket/GetAllTicket";
-import GetAllState from "../../../queries/State/GetAllState";
+import UpdateTicket from "../../../graphql/mutation/Ticket/UpdateTicket";
+import getAllTickets from "../../../graphql/queries/Ticket/GetAllTicket";
+import GetAllState from "../../../graphql/queries/State/GetAllState";
 
 import { BsHourglass, BsHourglassBottom } from "react-icons/bs";
 import { State, TaskInList } from "../../global";

@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
-import getAllTickets from "../../queries/Ticket/GetAllTicket";
-import GetAllProjects from "../../queries/Project/GetAllProject";
+import getAllTickets from "../../graphql/queries/Ticket/GetAllTicket";
+import GetAllProjects from "../../graphql/queries/Project/GetAllProject";
 
 import { role } from "../../slicer/authSlice";
 import { user } from "../../slicer/authSlice";

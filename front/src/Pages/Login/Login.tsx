@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import ButtonForm from "../../components/Login/ButtonForm";
 import Logo from "../../assets/img/logo_LastHope.png";
 
-import LoginQuery from "../../mutation/auth/Login";
+import LoginQuery from "../../graphql/mutation/auth/Login";
 import { AUTHENTICATE_USER_IN_STORE } from "../../slicer/authSlice";
 
 export default function Login() {

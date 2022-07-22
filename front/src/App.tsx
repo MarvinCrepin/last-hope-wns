@@ -4,7 +4,7 @@ import LoginRouter from "./Pages/Login/LoginRouter";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import { useEffect, useState } from "react";
 import { useLazyQuery } from "@apollo/client";
-import VerifyToken from "./queries/auth/VerifyToken";
+import VerifyToken from "./graphql/queries/auth/VerifyToken";
 import { useDispatch } from "react-redux";
 import { AUTHENTICATE_USER_IN_STORE } from "./slicer/authSlice";
 import { User } from "./components/global";

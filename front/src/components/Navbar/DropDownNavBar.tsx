@@ -9,7 +9,7 @@ import { Notification } from "../global";
 import Logo from "../../assets/img/logo_LastHope_inline.png";
 import "../../assets/styles/navbar.css";
 import NotificationItem from "./NotificationItem";
-import GetNotificationByUserId from "../../queries/Notification/GetNotificationByUserId";
+import GetNotificationByUserId from "../../graphql/queries/Notification/GetNotificationByUserId";
 import { LOGOUT_USER, user } from "../../slicer/authSlice";
 
 import { FaLaptopCode } from "react-icons/fa";
@@ -141,17 +141,20 @@ export default function DropDownNavBar() {
               {notificationsList.length > 0 ? (
                 <>
                   {notificationsList
-                  .filter((notification: Notification)=> notification.is_read === false)
-                  .reverse()
-                  .map((notification: Notification) => {
-                    return (
-                      <div key={notification.id}>
+                    .filter(
+                      (notification: Notification) =>
+                        notification.is_read === false
+                    )
+                    .reverse()
+                    .map((notification: Notification) => {
+                      return (
+                        <div key={notification.id}>
                           <div className="py-1 border-b-2">
                             <NotificationItem notification={notification} />
                           </div>
-                      </div>
-                    );
-                  })}
+                        </div>
+                      );
+                    })}
                   {notificationsList.filter((el) => el.is_read === true)
                     .length === notificationsList.length && (
                     <div className="text-lh-dark flex items-center justify-between sm:justify-center gap-x-2 p-8 text-md">
