@@ -31,7 +31,7 @@ export default function Dashboard() {
             to="/dashboard/task"
             className={(el) =>
               "py-1.5 px-2 font-title rounded-t-md" +
-              (theme(userRole, "nav-link", {'isActive': el.isActive}))
+              theme(userRole, "nav-link", { isActive: el.isActive })
             }
           >
             Tasks
@@ -40,7 +40,7 @@ export default function Dashboard() {
             to="/dashboard/projects"
             className={(el) =>
               "py-1.5 px-2 font-title rounded-t-md" +
-              (theme(userRole, "nav-link", {'isActive': el.isActive}))
+              theme(userRole, "nav-link", { isActive: el.isActive })
             }
           >
             Projects
@@ -49,7 +49,7 @@ export default function Dashboard() {
             to="/dashboard/employees"
             className={(el) =>
               "py-1.5 px-2 font-title rounded-t-md" +
-              (theme(userRole, "nav-link", {'isActive': el.isActive}))
+              theme(userRole, "nav-link", { isActive: el.isActive })
             }
           >
             Employees
@@ -62,7 +62,9 @@ export default function Dashboard() {
             <Route path="/projects" element={<ProjectList />} />
             <Route path="/employees" element={<EmployeesList />} />
           </Routes>
-          <div className={`h-5 ${theme(userRole, "dashboard")} rounded-b-md`}></div>
+          <div
+            className={`h-5 ${theme(userRole, "dashboard")} rounded-b-md`}
+          ></div>
         </div>
       </main>
     </div>

@@ -45,12 +45,16 @@ export interface Column {
   metadata?: any;
 }
 
+export type ProjectInTask = {
+  id: string;
+  title: string;
+};
+
 export type TaskInList = {
   id: string;
   title: string;
   advancement: number;
   due_at: Date;
-  project_name: string;
   passed_time: number;
   assignee: string;
   assignee_id: string;
@@ -58,6 +62,7 @@ export type TaskInList = {
   description: string | null;
   state_id: string;
   state: State;
+  project: ProjectInTask;
 };
 
 export interface State {
