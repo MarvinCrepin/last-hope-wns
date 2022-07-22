@@ -4,7 +4,7 @@ import { Context } from "../../../resolvers/types";
 
 export default async (
   _: any,
-  { projectId, data }: { projectId: string; data: any },
+  { projectId, data }: { projectId: string; data: ProjectInput },
   context: Context
 ) => {
   isConnected(context.authenticatedUser);

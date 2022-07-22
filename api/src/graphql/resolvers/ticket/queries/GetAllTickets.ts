@@ -1,9 +1,6 @@
 import isConnected from "../../../../helpers/isConnected";
 import { Context } from "../../../resolvers/types";
-
-const ROLES = {
-  ADMIN: "ROLE_ADMIN",
-};
+import { ROLES } from "../../../../Constant";
 
 export default async (_obj: any, _args: any, context: Context) => {
   isConnected(context.authenticatedUser);

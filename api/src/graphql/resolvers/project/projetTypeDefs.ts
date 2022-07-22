@@ -37,7 +37,7 @@ export default gql`
     start_at: DateTime
     end_at: DateTime
     due_at: DateTime
-    product_owner_id: Int
+    product_owner_id: String
     advancement: Int
   }
 

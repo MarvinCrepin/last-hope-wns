@@ -12,6 +12,7 @@ const getAllProjects = gql`
       estimated_time
       advancement
       product_owner {
+        id
         lastname
         firstname
       }

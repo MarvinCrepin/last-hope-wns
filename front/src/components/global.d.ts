@@ -1,17 +1,23 @@
 export type Project = {
-  product_owner: any;
+  product_owner: product_owner_in_project;
   id: string;
   title: string;
   description: string;
   start_at: Date;
   end_at: Date;
   due_at: Date;
-  product_owner_id: number;
   advancement: number;
   __typename: string;
   participants: User[Participant];
   children: JSX.Element | JSX.Element[];
 };
+
+export type product_owner_in_project = {
+  id: string;
+  firstname: string;
+  lastname: string;
+}
+
 
 export interface Participant {
   user: UserParticipant;
@@ -39,12 +45,16 @@ export interface Column {
   metadata?: any;
 }
 
+export type ProjectInTask = {
+  id: string;
+  title: string;
+};
+
 export type TaskInList = {
   id: string;
   title: string;
   advancement: number;
   due_at: Date;
-  project_name: string;
   passed_time: number;
   assignee: string;
   assignee_id: string;
@@ -52,6 +62,7 @@ export type TaskInList = {
   description: string | null;
   state_id: string;
   state: State;
+  project: ProjectInTask;
 };
 
 export interface State {
