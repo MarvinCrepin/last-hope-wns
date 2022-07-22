@@ -2,14 +2,18 @@ import { useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { role } from "../../slicer/authSlice";
+
 import getAllTickets from "../../queries/Ticket/GetAllTicket";
+import GetAllProjects from "../../queries/Project/GetAllProject";
+
+import { role } from "../../slicer/authSlice";
 import { user } from "../../slicer/authSlice";
 import { loading as load, TOOGLE_LOAD } from "../../slicer/appSlice";
 import TableDashboard from "../common/TableDashboard";
 import Error from "../common/Error";
 import TaskDetail from "./Modal/TaskDetail";
-import { Column, TaskInList } from "../global";
+
+import { Column, Project, TaskInList } from "../global";
 import { theme } from "../common/Utils";
 
 const columns: Column[] = [
@@ -38,17 +42,24 @@ const columns: Column[] = [
 
 export default function TaskList() {
   const dispatch = useDispatch();
-  const { loading, error, data } = useQuery(getAllTickets);
   const me = useSelector(user);
   const userRole = useSelector(role);
   const loadingInStore = useSelector(load);
+
+  const { loading, error, data } = useQuery(getAllTickets);
+  const {
+    loading: loadingProjects,
+    error: errorProjects,
+    data: dataProjects,
+  } = useQuery(GetAllProjects);
+
   const [hideDone, setHideDone] = useState(false);
   const [myTask, setMyTask] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [displayModalTaskDetails, setDisplayModalTaskDetails] = useState(false);
   const [selectedTask, setSelectedTask] = useState<TaskInList | null>();
-
-  const [list, setList] = useState<TaskInList[]>([]);
+  const [listTask, setListTask] = useState<TaskInList[]>([]);
+  const [projectFiltered, setProjectFiltered] = useState("all");
 
   const openTask = (el: TaskInList) => {
     setSelectedTask(el);
@@ -63,12 +74,11 @@ export default function TaskList() {
   const formatDate = (entries: any[]) => {
     let result: TaskInList[] = [];
     entries.forEach((element) => {
-      let newData = {
+      let newData: any = {
         id: element.id,
         title: element.title,
         advancement: element.advancement,
         due_at: element.due_at,
-        project_name: element.project.title,
         assignee:
           element.ticketUser.length === 0
             ? "-"
@@ -82,6 +92,10 @@ export default function TaskList() {
         estimated_time: element.estimated_time,
         state: element.state,
         state_id: element.state_id,
+        project: {
+          id: element.project.id,
+          title: element.project.title,
+        },
       };
       result.push(newData);
     });
@@ -89,7 +103,7 @@ export default function TaskList() {
   };
 
   useEffect(() => {
-    if (data) dispatch(TOOGLE_LOAD(false));
+    if (data && dataProjects) dispatch(TOOGLE_LOAD(false));
   }, [data]);
 
   useEffect(() => {
@@ -109,9 +123,19 @@ export default function TaskList() {
       if (myTask) {
         dataFiltered = dataFiltered.filter((el) => el.assignee_id === me.id);
       }
-      setList([...dataFiltered]);
+
+      if (projectFiltered) {
+        if (projectFiltered === "all") {
+          dataFiltered = dataFiltered;
+        } else {
+          dataFiltered = dataFiltered.filter(
+            (el) => el.project.id === projectFiltered
+          );
+        }
+      }
+      setListTask([...dataFiltered]);
     }
-  }, [data, hideDone, myTask, searchInput]);
+  }, [data, hideDone, myTask, searchInput, projectFiltered]);
 
   return (
     <div className="relative ">
@@ -137,9 +161,21 @@ export default function TaskList() {
             <select
               name="filterSelect"
               id="filterSelect"
-              className="w-36 rounded-md bg-lh-primary text-lh-light p-2 mx-2"
+              className="w-36 rounded-md bg-lh-secondary text-lh-light p-2 mx-2"
+              onChange={(e) => {
+                setProjectFiltered(e.target.value);
+              }}
             >
-              <option value="allProject">All Projects</option>
+              <option value="all">All Projects</option>
+              {dataProjects &&
+                dataProjects.GetAllProjects.length > 0 &&
+                dataProjects.GetAllProjects.map((el: Project) => {
+                  return (
+                    <option value={el.id} key={el.id}>
+                      {el.title}
+                    </option>
+                  );
+                })}
             </select>
             <div className="mx-2 flex items-center space-x-1">
               <input
@@ -207,7 +243,7 @@ export default function TaskList() {
         > */}
         {!error && (
           <TableDashboard
-            dataList={list}
+            dataList={listTask}
             loading={loading || loadingInStore}
             columns={columns}
             clickHandlerRow={(el: TaskInList): void => {

@@ -7,6 +7,7 @@ import { FaSearch, FaPlus } from "react-icons/fa";
 
 import TableDashboard from "../common/TableDashboard";
 import GetAllProjects from "../../queries/Project/GetAllProject";
+
 import Error from "../common/Error";
 import { role } from "../../slicer/authSlice";
 import ProjectDetail from "./Modal/ProjectDetail";

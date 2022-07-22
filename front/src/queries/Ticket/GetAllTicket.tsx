@@ -6,6 +6,7 @@ const getAllTickets = gql`
       id
       title
       project {
+        id
         title
       }
       description
