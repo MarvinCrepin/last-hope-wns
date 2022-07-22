@@ -62,6 +62,7 @@ export default function Login() {
                 Email
               </label>
               <input
+                required
                 onChange={(e) =>
                   setConnectionInformation({
                     ...connectionInformation,
@@ -70,7 +71,7 @@ export default function Login() {
                 }
                 className="w-full sm:w-96 appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none focus:shadow-outline"
                 id="mail"
-                type="mail"
+                type="email"
                 name="mail"
                 placeholder="user@gmail.com"
               />
@@ -85,6 +86,7 @@ export default function Login() {
                 Password
               </label>
               <input
+                required
                 onChange={(e) =>
                   setConnectionInformation({
                     ...connectionInformation,
