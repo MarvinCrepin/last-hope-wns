@@ -19,6 +19,10 @@
   font-weight: 400;
 }
 
+.menu-overflow {
+  max-height: 80vh;
+}
+
 .task-detail input[type="number"]::-webkit-inner-spin-button,
 .task-detail input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;

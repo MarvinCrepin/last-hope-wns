@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+import createNotification from "../../../../helpers/createNotification";
 
 export default async (
   _parent: any,
@@ -16,6 +17,18 @@ export default async (
   const token = jwt.sign(
     { userId: user.id },
     process.env.ACCESS_TOKEN_SECRET_KEY
+  );
+
+  const notificationTitle = `Welcome to Last Hope ${user.lastname} ${user.firstname}!`;
+  const notificationContent = `From your Dashboard, you can view your projects and your tasks in progress. If not, ask an admin to activate your account.`;
+  const notificationType = "welcome";
+
+  createNotification(
+    notificationTitle,
+    notificationContent,
+    notificationType,
+    context,
+    user.id
   );
 
   return { token, user };

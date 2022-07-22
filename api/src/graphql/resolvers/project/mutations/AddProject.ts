@@ -1,5 +1,6 @@
 import { UserInputError } from "apollo-server";
 import isConnected from "../../../../helpers/isConnected";
+import createNotification from "../../../../helpers/createNotification";
 import { Context } from "../../../resolvers/types";
 
 export default async (_parent: any, args: { data: any }, context: Context) => {
@@ -29,6 +30,18 @@ export default async (_parent: any, args: { data: any }, context: Context) => {
         advancement: args.data.advancement,
       },
     });
+
+    const notificationTitle = "New project!";
+    const notificationContent = `You have been assigned to the project ${args.data.title}.`;
+    const notificationType = "project";
+
+    const notification = await createNotification(
+      notificationTitle,
+      notificationContent,
+      notificationType,
+      context,
+      args.data.product_owner_id
+    );
 
     return project;
   } catch (err) {

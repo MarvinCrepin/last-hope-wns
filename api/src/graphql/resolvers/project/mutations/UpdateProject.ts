@@ -1,4 +1,5 @@
 import isConnected from "../../../../helpers/isConnected";
+import createNotification from "../../../../helpers/createNotification";
 import { Context } from "../../../resolvers/types";
 
 export default async (
@@ -24,10 +25,24 @@ export default async (
 
   const newData = { ...oldData, ...data };
 
-  return await context.prisma.project.update({
+  const notificationTitle = "Project updated";
+  const notificationContent = `The project ${newData.title}, you are working on, has been updated.`;
+  const notificationType = "project";
+
+  await createNotification(
+    notificationTitle,
+    notificationContent,
+    notificationType,
+    context,
+    newData.product_owner_id
+  );
+
+  const projectUpdated = await context.prisma.project.update({
     where: {
       id: projectId,
     },
     data: newData,
   });
+
+  return projectUpdated;
 };

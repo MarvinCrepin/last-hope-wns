@@ -1,4 +1,5 @@
 import isConnected from "../../../../helpers/isConnected";
+import createNotification from "../../../../helpers/createNotification";
 import { Context } from "../../../resolvers/types";
 
 export default async (
@@ -13,5 +14,18 @@ export default async (
       id: projectId,
     },
   });
+
+  const notificationTitle = "Project deleted";
+  const notificationContent = `The project ${deleteProject.title}, you are working on, has been deleted.`;
+  const notificationType = "project";
+
+  const notification = await createNotification(
+    notificationTitle,
+    notificationContent,
+    notificationType,
+    context,
+    deleteProject.product_owner_id
+  );
+
   return deleteProject;
 };

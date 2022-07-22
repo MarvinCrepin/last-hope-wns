@@ -137,27 +137,28 @@ export default function DropDownNavBar() {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Menu.Items className="z-50 origin-top-right absolute right-0 mt-2 w-96 rounded-md shadow-sm bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-              {notificationsList.length > 0 && !loading && !error ? (
-                <div>
-                  {notificationsList.map((notification: Notification) => {
+            <Menu.Items className="z-50 origin-top-right absolute right-0 mt-2 menu-overflow w-[85vw] sm:w-96 rounded-md shadow-sm bg-white ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto">
+              {notificationsList.length > 0 ? (
+                <>
+                  {notificationsList
+                  .filter((notification: Notification)=> notification.is_read === false)
+                  .reverse()
+                  .map((notification: Notification) => {
                     return (
                       <div key={notification.id}>
-                        {notification.is_read === false && (
                           <div className="py-1 border-b-2">
                             <NotificationItem notification={notification} />
                           </div>
-                        )}
                       </div>
                     );
                   })}
                   {notificationsList.filter((el) => el.is_read === true)
                     .length === notificationsList.length && (
-                    <div className="text-lh-dark flex items-center justify-center gap-x-2 p-8 text-md">
+                    <div className="text-lh-dark flex items-center justify-between sm:justify-center gap-x-2 p-8 text-md">
                       Aucune notification disponible
                     </div>
                   )}
-                </div>
+                </>
               ) : (
                 <div className="text-lh-dark flex items-center justify-center gap-x-2 p-8 text-md">
                   Aucune notification disponible

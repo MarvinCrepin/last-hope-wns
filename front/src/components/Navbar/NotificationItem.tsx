@@ -14,7 +14,7 @@ export default function NotificationItem({ notification }: IMyProps) {
   const formatDate = "YYYY/MM/DD, hh:mm a'";
   return (
     <div className="w-full flex flex-col items-center space-y-4 sm:items-end">
-      <div className="max-w-sm w-full bg-white pointer-events-auto overflow-hidden">
+      <div className="w-full bg-white pointer-events-auto overflow-hidden">
         <div className="p-4">
           <div className="flex items-start">
             <div className="flex-shrink-0">

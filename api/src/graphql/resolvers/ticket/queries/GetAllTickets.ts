@@ -13,6 +13,7 @@ export default async (_obj: any, _args: any, context: Context) => {
         ticketUser: {
           include: {
             user: true,
+            ticket:true,
           },
         },
       },
@@ -55,6 +56,6 @@ export default async (_obj: any, _args: any, context: Context) => {
     },
   });
 
-  console.log(result);
+
   return result;
 };
