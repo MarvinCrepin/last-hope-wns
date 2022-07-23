@@ -3,6 +3,7 @@ import projectResolvers from "./project/project";
 import userResolver from "./user/user";
 import ticketResolver from "./ticket/ticket";
 import stateResolver from "./state/state";
+import ticketUserResolver from "./ticketUser/ticketUser";
 
 const resolvers = [
   projectResolvers,
@@ -10,6 +11,7 @@ const resolvers = [
   notificationResolver,
   stateResolver,
   ticketResolver,
+  ticketUserResolver,
 ];
 
 export default resolvers;

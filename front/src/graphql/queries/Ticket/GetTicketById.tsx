@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-const getAllTickets = gql`
-  query Query {
-    GetAllTickets {
+export default gql`
+  query Query($ticketId: String!) {
+    GetTicketById(ticketId: $ticketId) {
       id
       title
       project {
@@ -15,7 +15,6 @@ const getAllTickets = gql`
       estimated_time
       advancement
       ticketUser {
-        id
         user {
           id
           lastname
@@ -30,5 +29,3 @@ const getAllTickets = gql`
     }
   }
 `;
-
-export default getAllTickets;

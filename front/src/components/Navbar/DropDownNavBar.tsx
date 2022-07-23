@@ -30,8 +30,9 @@ export default function DropDownNavBar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { loading, error, data } = useQuery(GetNotificationByUserId, {
+  const { data } = useQuery(GetNotificationByUserId, {
     variables: { userId: userInStore.id },
+    pollInterval: 30000,
   });
 
   const [notificationsUnread, setNotificationsUnread] = useState<Number>(0);

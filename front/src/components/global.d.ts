@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export type Project = {
   product_owner: product_owner_in_project;
   id: string;
@@ -16,8 +18,7 @@ export type product_owner_in_project = {
   id: string;
   firstname: string;
   lastname: string;
-}
-
+};
 
 export interface Participant {
   user: UserParticipant;
@@ -28,9 +29,11 @@ export interface UserParticipant {
   firstname: string;
   lastname: string;
   roles: string;
+  tickerUserId: string;
 }
 
 export type User = {
+  __typename?: "User";
   id: string;
   firstname: string;
   lastname: string;
@@ -56,8 +59,7 @@ export type TaskInList = {
   advancement: number;
   due_at: Date;
   passed_time: number;
-  assignee: string;
-  assignee_id: string;
+  participants: UserParticipant[];
   estimated_time: number;
   description: string | null;
   state_id: string;

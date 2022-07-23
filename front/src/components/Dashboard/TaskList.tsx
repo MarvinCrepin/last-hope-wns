@@ -47,11 +47,7 @@ export default function TaskList() {
   const loadingInStore = useSelector(load);
 
   const { loading, error, data } = useQuery(getAllTickets);
-  const {
-    loading: loadingProjects,
-    error: errorProjects,
-    data: dataProjects,
-  } = useQuery(GetAllProjects);
+  const { data: dataProjects } = useQuery(GetAllProjects);
 
   const [hideDone, setHideDone] = useState(false);
   const [myTask, setMyTask] = useState(false);
@@ -79,14 +75,7 @@ export default function TaskList() {
         title: element.title,
         advancement: element.advancement,
         due_at: element.due_at,
-        assignee:
-          element.ticketUser.length === 0
-            ? "-"
-            : element.ticketUser[0].user.firstname +
-              " " +
-              element.ticketUser[0].user.lastname,
-        assignee_id:
-          element.ticketUser.length === 0 ? "-" : element.ticketUser[0].user.id,
+        participants: [],
         description: element.description,
         passed_time: element.passed_time,
         estimated_time: element.estimated_time,
@@ -97,6 +86,14 @@ export default function TaskList() {
           title: element.project.title,
         },
       };
+
+      element.ticketUser.forEach((participant: any) => {
+        newData.participants.push({
+          ...participant.user,
+          tickerUserId: participant.id,
+        });
+      });
+
       result.push(newData);
     });
     return result;
@@ -104,30 +101,46 @@ export default function TaskList() {
 
   useEffect(() => {
     if (data && dataProjects) dispatch(TOOGLE_LOAD(false));
-  }, [data]);
+  }, [data, dataProjects, dispatch]);
 
   useEffect(() => {
     if (data && !loadingInStore) {
       let dataFiltered: TaskInList[] = [...formatDate(data.GetAllTickets)];
 
+      // si une tache est selectionnée, on la met à jour dans le tableau
+      if (selectedTask) {
+        const index = dataFiltered.findIndex(
+          (el: TaskInList) => el.id === selectedTask.id
+        );
+        if (index !== -1) {
+          setSelectedTask(dataFiltered[index]);
+        }
+      }
+
       if (searchInput.length > 0) {
-        dataFiltered = dataFiltered.filter(
-          (el: TaskInList) =>
-            el.title.toLowerCase().includes(searchInput.toLowerCase()) ||
-            el.assignee.toLowerCase().includes(searchInput.toLowerCase())
+        dataFiltered = dataFiltered.filter((el: TaskInList) =>
+          el.title.toLowerCase().includes(searchInput.toLowerCase())
         );
       }
+
       if (hideDone) {
         dataFiltered = dataFiltered.filter((el) => el.advancement < 100);
       }
+
       if (myTask) {
-        dataFiltered = dataFiltered.filter((el) => el.assignee_id === me.id);
+        let result: any = [];
+
+        dataFiltered.forEach((el) => {
+          if (el.participants.filter((e) => e.id === me.id).length > 0) {
+            result.push(el);
+          }
+        });
+
+        dataFiltered = result;
       }
 
       if (projectFiltered) {
-        if (projectFiltered === "all") {
-          dataFiltered = dataFiltered;
-        } else {
+        if (projectFiltered !== "all") {
           dataFiltered = dataFiltered.filter(
             (el) => el.project.id === projectFiltered
           );
