@@ -13,9 +13,11 @@ import { AiFillSetting, AiOutlineClose } from "react-icons/ai";
 
 import { loading as load, TOOGLE_LOAD } from "../../../slicer/appSlice";
 import { State, TaskInList, UserParticipant } from "../../global";
-import { role } from "../../../slicer/authSlice";
+import { role, user } from "../../../slicer/authSlice";
 import AssigneeAddUser from "./AssigneeAddUser";
 import getAllTickets from "../../../graphql/queries/Ticket/GetAllTicket";
+import AddComment from "../../../graphql/mutation/comment/AddComment";
+import CommentList from "./TaskDetailComponent/CommentList";
 
 type Props = {
   taskPassed: TaskInList;
@@ -24,7 +26,7 @@ type Props = {
 
 export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const dispatch = useDispatch();
-  const userRole = useSelector(role);
+  const userInStore = useSelector(user);
 
   const { loading: loadingState, data: dataState } = useQuery(GetAllState);
   const [updateTicket, { data }] = useMutation(UpdateTicket, {
@@ -35,7 +37,6 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const [hourFrom, setHourFrom] = useState({ hourFrom: 0, minFrom: 0 });
   const [hourTo, setHourTo] = useState({ hourTo: 0, minTo: 0 });
   const [modalAssignee, setModalAssignee] = useState(false);
-  const [newCommentContent, setNewCommentContent] = useState("");
 
   const openModal = (modal: string) => {
     if (modal === "assignee") {
@@ -116,13 +117,6 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         },
       },
     });
-  };
-
-  const submitComment = () => {
-    const newComment = {
-      content: newCommentContent,
-    };
-    console.log(newCommentContent);
   };
 
   return (
@@ -378,40 +372,10 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
               {/* Right column */}
               <div className="border-l-2  flex justify-center">
                 <div className="space-y-8 py-4 w-4/5">
-                  <div className="space-y-4">
-                    <h3 className="text-lh-primary font-title text-4xl">
-                      Comments
-                    </h3>
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        submitComment();
-                      }}
-                      className="flex flex-col items-end  space-y-4"
-                    >
-                      <textarea
-                        onChange={(e) => setNewCommentContent(e.target.value)}
-                        placeholder="Write a comment"
-                        id="commentarea"
-                        name="commentarea"
-                        className="rounded-lg border-2 border-lh-gray p-2 text-lh-dark font-text w-full"
-                        rows={5}
-                        cols={5}
-                      />
-                      <button className="bg-lh-secondary font-text text-lh-light py-1.5 px-3 flex space-x-2 items-center rounded-lg w-fit">
-                        <div>Post</div>
-                        <FaPaperPlane />
-                      </button>
-                    </form>
-                  </div>
+                  <CommentList taskId={task.id} userId={userInStore.id} />
                 </div>
               </div>
             </div>
-            {/* <div className=" bg-white  rounded-lg  flex items-end sm:items-center justify-center p-4 text-center sm:p-0 h-full">
-            <div className=" relative bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:w-full">
-              test
-            </div>
-          </div> */}
           </div>
         </div>
       </div>
