@@ -7,6 +7,7 @@ export default gql`
     ticket_id: String
     content: String
     created_at: DateTime
+    user: User
   }
 
   input CommentInput {
@@ -19,9 +20,9 @@ export default gql`
     AddComment(data: CommentInput): Comment
   }
 
+  type Query {
+    GetCommentByTicketId(ticketId: String!): [Comment]
+  }
+
   scalar DateTime
 `;
-
-// type Query {
-//   GetAllCommentByTicket: [Comment]
-// }

@@ -1,8 +1,9 @@
-import { ForbiddenError, UserInputError } from "apollo-server";
+import { ForbiddenError } from "apollo-server";
+import { TicketUser } from "@prisma/client";
+
 import isConnected from "../../../../helpers/isConnected";
 import createNotification from "../../../../helpers/createNotification";
 import { Context } from "../../types";
-import { TicketUser } from "@prisma/client";
 import isAuthorizedToAdminProject from "../../../../helpers/isAuthorizedToAdminProject";
 
 export default async (_parent: any, args: { data: any }, context: Context) => {
@@ -16,10 +17,6 @@ export default async (_parent: any, args: { data: any }, context: Context) => {
       ticketUser: true,
     },
   });
-
-  console.log(
-    ticket.ticketUser.filter((el: TicketUser) => el.userId === data.user_id)
-  );
 
   const isParticipant =
     ticket.ticketUser.filter((el: TicketUser) => el.userId === data.user_id)
@@ -52,21 +49,4 @@ export default async (_parent: any, args: { data: any }, context: Context) => {
   );
 
   return comment;
-
-  //   const notificationTitle = "New project!";
-  //   const notificationContent = `You have been assigned to the project ${args.data.title}.`;
-  //   const notificationType = "project";
-
-  //   const notification = await createNotification(
-  //     notificationTitle,
-  //     notificationContent,
-  //     notificationType,
-  //     context,
-  //     args.data.product_owner_id
-  //   );
-
-  //   return project;
-  // } catch (err) {
-  //   throw new UserInputError("Bad Request", { errors: err });
-  // }
 };

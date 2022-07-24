@@ -1,7 +1,11 @@
 import AddComment from "./mutations/AddComment";
 
+import GetCommentByTicketId from "./queries/GetCommentByTicketId";
+
 export default {
-  // Query: {},
+  Query: {
+    GetCommentByTicketId,
+  },
 
   Mutation: {
     AddComment,
