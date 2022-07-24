@@ -5,12 +5,30 @@ export default gql`
     id: ID
     user_id: String
     is_read: Boolean
-    data: JSON
+    title: String
+    content: String
+    type: String
+    user: User
+    created_at:DateTime
   }
+
+  input UpdatedNotificationInput {
+    is_read: Boolean
+    title: String
+    content: String
+    type: String
+   }
 
   type Query {
     GetNotificationByUserId(userId: String!): [Notification]
   }
 
-  scalar JSON
+  type Mutation {
+    UpdateNotification(
+      notificationId: String!
+      data: UpdatedNotificationInput
+    ): Notification
+  }
+
+  scalar DateTime
 `;

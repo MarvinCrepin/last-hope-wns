@@ -2,14 +2,16 @@ import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { useSelector } from "react-redux";
-
 import { FaSearch, FaPlus } from "react-icons/fa";
-
 import TableDashboard from "../common/TableDashboard";
 import GetAllProjects from "../../queries/Project/GetAllProject";
+
 import Error from "../common/Error";
-import { role } from "../../slicer/authSlice";
+import { role, user } from "../../slicer/authSlice";
 import ProjectDetail from "./Modal/ProjectDetail";
+import { Column, Project, User } from "../global";
+import { theme } from "../common/Utils";
+import GetAllUsers from "../../queries/User/GetAllUsers";
 
 const columns: Column[] = [
   { id: "title", label: "Project", style: "text", metadata: {} },
@@ -31,6 +33,8 @@ const columns: Column[] = [
 export default function ProjectList() {
   const { loading, error, data } = useQuery(GetAllProjects);
   const userRole = useSelector(role);
+  const userInStore = useSelector(user);
+  const [users, setUsers] = useState<User[]>([]);
 
   const [list, setList] = useState<Project[]>([]);
   const [beMy, setByMe] = useState(false);
@@ -50,34 +54,55 @@ export default function ProjectList() {
     setSelectedProject(null);
   };
 
+  useQuery(GetAllUsers, {
+    onCompleted: (data) => {
+      setUsers(data.GetAllUsers);
+    },
+  });
+
   useEffect(() => {
     if (data) {
       let dataFiltered: Project[] = [...data.GetAllProjects];
+
       if (searchInput.length > 0) {
         dataFiltered = dataFiltered.filter((el: Project) =>
           el.title.toLowerCase().includes(searchInput.toLowerCase())
         );
       }
+
       if (hideDone) {
         dataFiltered = dataFiltered.filter((el) => el.advancement < 100);
       }
+
+      if (beMy) {
+        dataFiltered = dataFiltered.filter(
+          (el) => el.product_owner.id === userInStore.id
+        );
+      }
+
       setList([...dataFiltered]);
     }
-  }, [data, searchInput, hideDone]);
+  }, [data, searchInput, hideDone, beMy]);
 
   return (
     <div className="relative">
       {displayModalProjectDetails && selectedProject && (
         <ProjectDetail
           project={selectedProject}
+          users={users}
           closeModal={() => closeModalProjectDetails()}
         />
       )}
-      <div className="w-full bg-lh-primary z-20 py-8 px-2 rounded-tr-md md:h-30 ">
-        <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
+      <div
+        className={`w-full ${theme(
+          userRole,
+          "dashboard"
+        )} z-20 py-8 px-2 rounded-tr-md md:h-30`}
+      >
+        <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center h-12">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
             {/* A cabler sur le filtre de la liste  */}
-            {userRole === "product_owner" && (
+            {userRole === "ROLE_PROJECT_MANAGER" && (
               <div className="mx-2 flex items-center space-x-1">
                 <input
                   className="rounded-md h-5 w-5"
@@ -120,7 +145,7 @@ export default function ProjectList() {
               />
               <FaSearch className="absolute top-2 left-4 text-gray-500" />
             </div>
-            {userRole === "product_owner" && (
+            {userRole === "ROLE_ADMIN" && (
               <button className=" flex bg-lh-light font-text font-bold text-lh-primary items-center p-1.5 rounded-md space-x-2">
                 <FaPlus className="" />
                 <div className="">Add project</div>
@@ -156,7 +181,7 @@ export default function ProjectList() {
               dataList={list}
               loading={loading}
               columns={columns}
-              clickHandlerRow={(el): void => {
+              clickHandlerRow={(el: Project): void => {
                 openProject(el);
               }}
             />

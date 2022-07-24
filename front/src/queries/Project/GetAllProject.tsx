@@ -9,10 +9,20 @@ const getAllProjects = gql`
       start_at
       end_at
       due_at
+      estimated_time
       advancement
       product_owner {
+        id
         lastname
         firstname
+      }
+      participants {
+        user {
+          id
+          firstname
+          lastname
+          roles
+        }
       }
     }
   }

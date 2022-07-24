@@ -15,6 +15,28 @@
   width: 15vmin;
 }
 
+.font_weight_400 {
+  font-weight: 400;
+}
+
+.menu-overflow {
+  max-height: 80vh;
+}
+
+.task-detail input[type="number"]::-webkit-inner-spin-button,
+.task-detail input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.custom-number-input input:focus {
+  outline: none !important;
+}
+
+.custom-number-input button:focus {
+  outline: none !important;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -58,4 +80,11 @@
   right: 14%;
   z-index: 5;
   font-weight: bold;
+}
+
+.table-cell {
+  background-color: "#FE9595";
+  color: "white";
+  font-size: "1.5em";
+  text-align: "center";
 }

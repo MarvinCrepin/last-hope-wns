@@ -1,161 +1,173 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
+import { Link, useNavigate } from "react-router-dom";
+import { Fragment } from "react";
+import { useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Menu, Transition } from "@headlessui/react";
+import { Notification } from "../global";
+
+import Logo from "../../assets/img/logo_LastHope_inline.png";
+import "../../assets/styles/navbar.css";
+import NotificationItem from "./NotificationItem";
+import GetNotificationByUserId from "../../queries/Notification/GetNotificationByUserId";
+import { LOGOUT_USER, user } from "../../slicer/authSlice";
+
 import { FaLaptopCode } from "react-icons/fa";
 import { VscAccount } from "react-icons/vsc";
-import { IoIosLogIn } from "react-icons/io";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { IoIosNotifications } from "react-icons/io";
-import Logo from "../../assets/img/logo_LastHope_inline.png";
-import {MdMenuBook} from "react-icons/md";
 
-export default function PrimarySearchAppBar() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-      className="nav-font"
-    >
-      <MenuItem onClick={handleMenuClose}>
-        <VscAccount className="mr-2 mb-1" color="var(--primary-color)" />
-        <span className="text-lh-dark">Profil</span>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <IoIosLogIn className="mr-2 mb-1" color="var(--primary-color)" />
-        <span className="text-lh-dark">Log in</span>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <RiLogoutBoxLine className="mr-2 mb-1" color="var(--primary-color)" />
-        <span className="text-lh-dark">Log out</span>
-      </MenuItem>
-    </Menu>
+export default function DropDownNavBar() {
+  const [notificationsList, setNotificationsList] = useState<Notification[]>(
+    []
   );
 
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-      sx={{fontFamily:"var(--title-font"}}
-    >
-      <MenuItem>
-        <Badge
-          badgeContent={17}
-          color="error"
-          className="text-lh-dark mr-2 text-2xl"
-        >
-          <IoIosNotifications />
-        </Badge>
+  const userInStore = useSelector(user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-        <p className="text-lh-dark">Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <VscAccount className="mr-2 mb-1" color="var(--primary-color)" />
+  const { loading, error, data } = useQuery(GetNotificationByUserId, {
+    variables: { userId: userInStore.id },
+  });
 
-        <span className="text-lh-dark">Profile</span>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <IoIosLogIn className="mr-2 mb-1" color="var(--primary-color)" />
-        <span className="text-lh-dark">Log in</span>
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <RiLogoutBoxLine className="mr-2 mb-1" color="var(--primary-color)" />
-        <span className="text-lh-dark">Log out</span>
-      </MenuItem>
-    </Menu>
-  );
+  const [notificationsUnread, setNotificationsUnread] = useState<Number>(0);
+
+  const logout = () => {
+    dispatch(LOGOUT_USER);
+    localStorage.removeItem("KeyLastHope");
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    if (data) {
+      const notifications = [...data.GetNotificationByUserId];
+      setNotificationsList(notifications);
+      setNotificationsUnread(
+        notifications.filter((el: Notification) => el.is_read === false).length
+      );
+    }
+  }, [data]);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ bgcolor: "var(--light-color)" }} className = "mb-10">
-        <Toolbar className="nav-font">
-          <img src={Logo} alt="logo" className="logo-Navbar" />
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="small"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-            >
-              <FaLaptopCode className="mr-3" color="var(--primary-color)" />
-              <span className="text-lh-dark">John Doe</span>
-            </IconButton>
-            <IconButton size="medium" aria-label="show 17 new notifications">
-              <Badge badgeContent={17} color="error">
-                <IoIosNotifications color="text-lh-dark" />
-              </Badge>
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-            >
-              <MdMenuBook color="var(--dark-color)" />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </Box>
+    <nav className="py-4 px-10 shadow-md flex justify-between mb-10">
+      <Link to="/dashboard">
+        <img src={Logo} alt="logo-last-hope" className="w-40" />
+      </Link>
+      <div className="flex items-stretch ">
+        <Menu as="div" className="relative inline-block text-left">
+          <Menu.Button className="h-full account rounded-l-lg inline-flex justify-center gap-x-2 items-center p-3 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
+            <FaLaptopCode color="var(--primary-color)" size={18} />{" "}
+            {`${userInStore.firstname} ${userInStore.lastname}`}
+          </Menu.Button>
+
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-75"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <div className="py-1">
+                <Menu.Item>
+                  {({ active }) => (
+                    <a
+                      href="/"
+                      className={classNames(
+                        active ? "bg-gray-100 text-gray-900" : "text-lh-dark",
+                        "flex items-center gap-x-2 px-4 py-2 text-md"
+                      )}
+                    >
+                      <VscAccount size={18} color="var(--primary-color)" />
+                      Profil
+                    </a>
+                  )}
+                </Menu.Item>
+                <form method="POST" action="#">
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        type="button"
+                        onClick={() => logout()}
+                        className={classNames(
+                          active ? "bg-gray-100 text-lh-dark" : "text-gray-700",
+                          "flex items-center gap-x-2 w-full text-left px-4 py-2 text-md"
+                        )}
+                      >
+                        <RiLogoutBoxLine
+                          size={18}
+                          color="var(--primary-color)"
+                        />
+                        Sign out
+                      </button>
+                    )}
+                  </Menu.Item>
+                </form>
+              </div>
+            </Menu.Items>
+          </Transition>
+        </Menu>
+
+        <Menu as="div" className="relative inline-block text-left">
+          <Menu.Button className="notifications rounded-r-lg inline-flex justify-center gap-x-1 items-center shadow-sm p-3 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none">
+            <span className="relative">
+              <IoIosNotifications size={28} />
+              {notificationsUnread !== 0 ? (
+                <span className="absolute top-1 right-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                  {notificationsUnread.toString()}
+                </span>
+              ) : (
+                ""
+              )}
+            </span>
+          </Menu.Button>
+
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-75"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Menu.Items className="z-50 origin-top-right absolute right-0 mt-2 menu-overflow w-[85vw] sm:w-96 rounded-md shadow-sm bg-white ring-1 ring-black ring-opacity-5 focus:outline-none overflow-y-auto">
+              {notificationsList.length > 0 ? (
+                <>
+                  {notificationsList
+                  .filter((notification: Notification)=> notification.is_read === false)
+                  .reverse()
+                  .map((notification: Notification) => {
+                    return (
+                      <div key={notification.id}>
+                          <div className="py-1 border-b-2">
+                            <NotificationItem notification={notification} />
+                          </div>
+                      </div>
+                    );
+                  })}
+                  {notificationsList.filter((el) => el.is_read === true)
+                    .length === notificationsList.length && (
+                    <div className="text-lh-dark flex items-center justify-between sm:justify-center gap-x-2 p-8 text-md">
+                      Aucune notification disponible
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="text-lh-dark flex items-center justify-center gap-x-2 p-8 text-md">
+                  Aucune notification disponible
+                </div>
+              )}
+            </Menu.Items>
+          </Transition>
+        </Menu>
+      </div>
+    </nav>
   );
 }

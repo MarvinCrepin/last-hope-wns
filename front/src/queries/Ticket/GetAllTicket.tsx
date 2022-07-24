@@ -6,9 +6,13 @@ const getAllTickets = gql`
       id
       title
       project {
+        id
         title
       }
+      description
       due_at
+      passed_time
+      estimated_time
       advancement
       ticketUser {
         user {
@@ -16,6 +20,10 @@ const getAllTickets = gql`
           lastname
           firstname
         }
+      }
+      state_id
+      state {
+        name
       }
     }
   }

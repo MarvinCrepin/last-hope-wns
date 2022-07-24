@@ -7,10 +7,31 @@ import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import store from "./store";
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+const httpLink = createHttpLink({
+  uri: "http://localhost:4000",
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem("KeyLastHope");
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? token : "",
+    },
+  };
+});
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000",
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
@@ -21,7 +42,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <ApolloProvider client={client}>
     <Provider store={store}>
-      <App />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/*" element={<App />}></Route>
+        </Routes>
+      </BrowserRouter>
     </Provider>
   </ApolloProvider>
 );

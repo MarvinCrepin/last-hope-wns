@@ -18,19 +18,18 @@ model Project {
   due_at           DateTime
   end_at           DateTime
   advancement      Int
-  product_owner    User     @relation(fields: [product_owner_id], references: [id])
-  product_owner_id String
+  product_owner    User?    @relation(fields: [product_owner_id], references: [id], onUpdate: SetNull, onDelete: SetNull)
+  product_owner_id String?
 
   participants UserProject[]
   tickets      Ticket[]
-
 }
 
 model UserProject {
   id        String  @id @default(cuid())
   user      User    @relation(fields: [userId], references: [id])
   userId    String
-  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project   Project @relation(fields: [projectId], references: [id])
   projectId String
 }
 
@@ -44,22 +43,24 @@ model User {
 
   projects      UserProject[]
   owner         Project[]
-  Notifications Notfications[]
+  Notifications Notification[]
   ticketUser    TicketUser[]
 }
 
-model Notfications {
+model Notification {
   id         String   @id @default(cuid())
   created_at DateTime @default(now())
-  user       User     @relation(fields: [user_id], references: [id])
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    String
   is_read    Boolean  @default(false)
-  data       Json
+  title      String
+  content    String
+  type       String
 }
 
 model TicketUser {
   id       String @id @default(cuid())
-  user     User   @relation(fields: [userId], references: [id])
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String
   ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
   ticketId String
@@ -69,12 +70,12 @@ model TicketUser {
 model Ticket {
   id             String    @id @default(cuid())
   title          String
-  ticket_user_id String
+  description    String?   @db.Text
   due_at         DateTime?
   project        Project   @relation(fields: [project_id], references: [id], onDelete: Cascade)
   project_id     String
   estimated_time Int?
-  passed_time    Int?
+  passed_time    Decimal?  @db.Decimal(10, 2)
   advancement    Int?
   state          State     @relation(fields: [state_id], references: [id])
   state_id       String

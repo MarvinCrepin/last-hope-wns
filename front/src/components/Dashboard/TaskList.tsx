@@ -1,17 +1,23 @@
 import { useQuery } from "@apollo/client";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-
 import { FaSearch } from "react-icons/fa";
 
 import getAllTickets from "../../queries/Ticket/GetAllTicket";
-import { myId } from "../../slicer/authSlice";
+import GetAllProjects from "../../queries/Project/GetAllProject";
 
+import { role } from "../../slicer/authSlice";
+import { user } from "../../slicer/authSlice";
+import { loading as load, TOOGLE_LOAD } from "../../slicer/appSlice";
 import TableDashboard from "../common/TableDashboard";
 import Error from "../common/Error";
+import TaskDetail from "./Modal/TaskDetail";
+
+import { Column, Project, TaskInList } from "../global";
+import { theme } from "../common/Utils";
 
 const columns: Column[] = [
-  { id: "subject", label: "Subject", style: "text", metadata: {} },
+  { id: "title", label: "Subject", style: "text", metadata: {} },
   {
     id: "project_name",
     label: "Project",
@@ -35,29 +41,61 @@ const columns: Column[] = [
 ];
 
 export default function TaskList() {
+  const dispatch = useDispatch();
+  const me = useSelector(user);
+  const userRole = useSelector(role);
+  const loadingInStore = useSelector(load);
+
   const { loading, error, data } = useQuery(getAllTickets);
-  const me = useSelector(myId);
+  const {
+    loading: loadingProjects,
+    error: errorProjects,
+    data: dataProjects,
+  } = useQuery(GetAllProjects);
 
   const [hideDone, setHideDone] = useState(false);
   const [myTask, setMyTask] = useState(false);
   const [searchInput, setSearchInput] = useState("");
+  const [displayModalTaskDetails, setDisplayModalTaskDetails] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<TaskInList | null>();
+  const [listTask, setListTask] = useState<TaskInList[]>([]);
+  const [projectFiltered, setProjectFiltered] = useState("all");
 
-  const [list, setList] = useState<TaskInList[]>([]);
+  const openTask = (el: TaskInList) => {
+    setSelectedTask(el);
+    setDisplayModalTaskDetails(true);
+  };
+
+  const closeModalTaskDetails = () => {
+    setSelectedTask(null);
+    setDisplayModalTaskDetails(true);
+  };
 
   const formatDate = (entries: any[]) => {
     let result: TaskInList[] = [];
     entries.forEach((element) => {
-      let newData = {
+      let newData: any = {
         id: element.id,
-        subject: element.title,
+        title: element.title,
         advancement: element.advancement,
         due_at: element.due_at,
-        project_name: element.project.title,
         assignee:
-          element.ticketUser[0].user.firstname +
-          " " +
-          element.ticketUser[0].user.lastname,
-        assignee_id: element.ticketUser[0].user.id,
+          element.ticketUser.length === 0
+            ? "-"
+            : element.ticketUser[0].user.firstname +
+              " " +
+              element.ticketUser[0].user.lastname,
+        assignee_id:
+          element.ticketUser.length === 0 ? "-" : element.ticketUser[0].user.id,
+        description: element.description,
+        passed_time: element.passed_time,
+        estimated_time: element.estimated_time,
+        state: element.state,
+        state_id: element.state_id,
+        project: {
+          id: element.project.id,
+          title: element.project.title,
+        },
       };
       result.push(newData);
     });
@@ -65,13 +103,17 @@ export default function TaskList() {
   };
 
   useEffect(() => {
-    if (data) {
+    if (data && dataProjects) dispatch(TOOGLE_LOAD(false));
+  }, [data]);
+
+  useEffect(() => {
+    if (data && !loadingInStore) {
       let dataFiltered: TaskInList[] = [...formatDate(data.GetAllTickets)];
 
       if (searchInput.length > 0) {
         dataFiltered = dataFiltered.filter(
           (el: TaskInList) =>
-            el.subject.toLowerCase().includes(searchInput.toLowerCase()) ||
+            el.title.toLowerCase().includes(searchInput.toLowerCase()) ||
             el.assignee.toLowerCase().includes(searchInput.toLowerCase())
         );
       }
@@ -79,16 +121,38 @@ export default function TaskList() {
         dataFiltered = dataFiltered.filter((el) => el.advancement < 100);
       }
       if (myTask) {
-        dataFiltered = dataFiltered.filter((el) => el.assignee_id === me);
+        dataFiltered = dataFiltered.filter((el) => el.assignee_id === me.id);
       }
-      setList([...dataFiltered]);
+
+      if (projectFiltered) {
+        if (projectFiltered === "all") {
+          dataFiltered = dataFiltered;
+        } else {
+          dataFiltered = dataFiltered.filter(
+            (el) => el.project.id === projectFiltered
+          );
+        }
+      }
+      setListTask([...dataFiltered]);
     }
-  }, [data, hideDone, myTask, searchInput]);
+  }, [data, hideDone, myTask, searchInput, projectFiltered]);
 
   return (
-    <div>
-      <div className="w-full bg-lh-primary z-20 py-8 px-2 rounded-tr-md md:h-30">
-        <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
+    <div className="relative">
+      {displayModalTaskDetails && selectedTask && (
+        <TaskDetail
+          taskPassed={selectedTask}
+          closeModal={() => closeModalTaskDetails()}
+        />
+      )}
+
+      <div
+        className={`w-full ${theme(
+          userRole,
+          "dashboard"
+        )}  z-20 py-8 px-2 rounded-tr-md md:h-30`}
+      >
+        <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center h-12">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
             <label className="sr-only" htmlFor="filterSelect">
               Filter:
@@ -98,12 +162,24 @@ export default function TaskList() {
               name="filterSelect"
               id="filterSelect"
               className="w-36 rounded-md bg-lh-secondary text-lh-light p-2 mx-2"
+              onChange={(e) => {
+                setProjectFiltered(e.target.value);
+              }}
             >
-              <option value="allProject">All Projects</option>
+              <option value="all">All Projects</option>
+              {dataProjects &&
+                dataProjects.GetAllProjects.length > 0 &&
+                dataProjects.GetAllProjects.map((el: Project) => {
+                  return (
+                    <option value={el.id} key={el.id}>
+                      {el.title}
+                    </option>
+                  );
+                })}
             </select>
             <div className="mx-2 flex items-center space-x-1">
               <input
-                className="rounded-md h-5 w-5"
+                className="rounded-md h-5 w-5 "
                 type="checkbox"
                 name="onlyMy"
                 id="onlyMy"
@@ -127,7 +203,7 @@ export default function TaskList() {
             </div>
           </div>
 
-          <div className="relative flex item-centers">
+          <div className="relative flex item-centers mr-2">
             <label htmlFor="searchInput" className="sr-only">
               Recherche
             </label>
@@ -136,7 +212,7 @@ export default function TaskList() {
               id="searchInput"
               name="searchInput"
               placeholder="Search"
-              className="rounded-md h-8 mx-2 px-8"
+              className="rounded-md h-8 mx-2 px-8 "
               onChange={(e) => setSearchInput(e.target.value)}
             />
             <FaSearch className="absolute top-2 left-4 text-gray-500" />
@@ -167,12 +243,12 @@ export default function TaskList() {
         > */}
         {!error && (
           <TableDashboard
-            dataList={list}
-            loading={loading}
+            dataList={listTask}
+            loading={loading || loadingInStore}
             columns={columns}
-            // clickHandlerRow={(el): void => {
-            //   openProject(el);
-            // }}
+            clickHandlerRow={(el: TaskInList): void => {
+              openTask(el);
+            }}
           />
         )}
         {/* </Transition> */}

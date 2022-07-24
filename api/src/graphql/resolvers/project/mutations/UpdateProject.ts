@@ -1,21 +1,48 @@
-import { Context } from "../../../../context";
+import isConnected from "../../../../helpers/isConnected";
+import createNotification from "../../../../helpers/createNotification";
+import { Context } from "../../../resolvers/types";
 
 export default async (
   _: any,
-  { projectId, data }: { projectId: string; data: any },
+  { projectId, data }: { projectId: string; data: ProjectInput },
   context: Context
-) =>
-  await context.prisma.project.update({
+) => {
+  isConnected(context.authenticatedUser);
+
+  const oldData = await context.prisma.project.findUnique({
+    where: { id: projectId },
+  });
+
+  for (const property in data) {
+    if (
+      property === "start_at" ||
+      property === "end_at" ||
+      property === "due_at"
+    ) {
+      data[property] = new Date(data[property]);
+    }
+  }
+
+  const newData = { ...oldData, ...data };
+
+  const notificationTitle = "Project updated";
+  const notificationContent = `The project ${newData.title}, you are working on, has been updated.`;
+  const notificationType = "project";
+
+  await createNotification(
+    notificationTitle,
+    notificationContent,
+    notificationType,
+    context,
+    newData.product_owner_id
+  );
+
+  const projectUpdated = await context.prisma.project.update({
     where: {
       id: projectId,
     },
-    data: {
-      title: data.title,
-      description: data.description,
-      start_at: new Date(data.start_at),
-      end_at: new Date(data.end_at),
-      due_at: new Date(data.due_at),
-      product_owner_id: data.product_owner_id,
-      advancement: data.advancement,
-    },
+    data: newData,
   });
+
+  return projectUpdated;
+};
