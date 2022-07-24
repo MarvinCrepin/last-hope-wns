@@ -2,7 +2,7 @@ import isConnected from "../../../../helpers/isConnected";
 import createNotification from "../../../../helpers/createNotification";
 import { Context } from "../../../resolvers/types";
 import isAuthorizedToAdminProject from "../../../../helpers/isAuthorizedToAdminProject";
-import { ApolloError } from "apollo-server-core";
+import { ApolloError, ForbiddenError } from "apollo-server-core";
 
 export default async (
   _: any,
@@ -25,7 +25,7 @@ export default async (
   if (
     !(await isAuthorizedToAdminProject(context, ticketUser.ticket.project.id))
   ) {
-    throw new ApolloError("Not Authorized");
+    throw new ForbiddenError("Not Authorized");
   }
 
   const deletedTicketUser = await context.prisma.ticketUser.delete({

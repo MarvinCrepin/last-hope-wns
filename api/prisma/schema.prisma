@@ -45,6 +45,8 @@ model User {
   owner         Project[]
   Notifications Notification[]
   ticketUser    TicketUser[]
+  comments      Comment[]
+
 }
 
 model Notification {
@@ -81,6 +83,17 @@ model Ticket {
   state_id       String
 
   ticketUser TicketUser[]
+  comments   Comment[]
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    String
+  ticket     Ticket   @relation(fields: [ticket_id], references: [id], onDelete: Cascade)
+  ticket_id  String
+  content    String
 }
 
 model State {

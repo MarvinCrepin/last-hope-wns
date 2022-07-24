@@ -1,7 +1,7 @@
 import isConnected from "../../../../helpers/isConnected";
 import { Context } from "../../../resolvers/types";
 import { ROLES } from "../../../../Constant";
-import { ApolloError } from "apollo-server-core";
+import { ApolloError, ForbiddenError } from "apollo-server-core";
 
 export default async (
   _: any,
@@ -48,7 +48,7 @@ export default async (
   });
 
   if (!projectsId.includes(ticket.project.id)) {
-    throw new ApolloError("Not Authorized");
+    throw new ForbiddenError("Not Authorized");
   }
 
   return ticket;

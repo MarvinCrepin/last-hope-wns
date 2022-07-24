@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 
 import moment from "moment";
 
 import UpdateTicket from "../../../graphql/mutation/Ticket/UpdateTicket";
-import GetTaskById from "../../../graphql/queries/Ticket/GetTicketById";
 import GetAllState from "../../../graphql/queries/State/GetAllState";
 
 import { BsHourglass, BsHourglassBottom } from "react-icons/bs";
-import { FaPaperPlane, FaPlusCircle, FaRegUserCircle } from "react-icons/fa";
-import { AiOutlineClose } from "react-icons/ai";
+import { FaPaperPlane, FaRegUserCircle } from "react-icons/fa";
+import { AiFillSetting, AiOutlineClose } from "react-icons/ai";
 
 import { loading as load, TOOGLE_LOAD } from "../../../slicer/appSlice";
 import { State, TaskInList, UserParticipant } from "../../global";
@@ -28,9 +27,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const userRole = useSelector(role);
 
   const { loading: loadingState, data: dataState } = useQuery(GetAllState);
-  const [getTaskById, { loading: loadingTask, data: dataTask }] =
-    useLazyQuery(GetTaskById);
-  const [updateTicket, { data, loading, error }] = useMutation(UpdateTicket, {
+  const [updateTicket, { data }] = useMutation(UpdateTicket, {
     refetchQueries: [{ query: getAllTickets }],
   });
 
@@ -38,6 +35,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const [hourFrom, setHourFrom] = useState({ hourFrom: 0, minFrom: 0 });
   const [hourTo, setHourTo] = useState({ hourTo: 0, minTo: 0 });
   const [modalAssignee, setModalAssignee] = useState(false);
+  const [newCommentContent, setNewCommentContent] = useState("");
 
   const openModal = (modal: string) => {
     if (modal === "assignee") {
@@ -108,7 +106,6 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
     type: String
   ) => {
     dispatch(TOOGLE_LOAD(true));
-    let value = null;
 
     updateTicket({
       variables: {
@@ -121,8 +118,11 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
     });
   };
 
-  const updateTask = () => {
-    console.log("update task");
+  const submitComment = () => {
+    const newComment = {
+      content: newCommentContent,
+    };
+    console.log(newCommentContent);
   };
 
   return (
@@ -206,7 +206,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                       <h3 className="text-lh-primary font-title text-4xl">
                         Assignee
                       </h3>
-                      <FaPlusCircle
+                      <AiFillSetting
                         onClick={() => openModal("assignee")}
                         size={30}
                         className="text-lh-primary cursor-pointer hover:opacity-90 transition-opacity"
@@ -361,7 +361,9 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                         >
                           {!loadingState &&
                             dataState.GetAllState.map((state: State) => (
-                              <option value={state.id}>{state.name}</option>
+                              <option key={state.id} value={state.id}>
+                                {state.name}
+                              </option>
                             ))}
                         </select>
                         <div></div>
@@ -374,14 +376,21 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                 </div>
               </div>
               {/* Right column */}
-              <div className="flex justify-center">
+              <div className="border-l-2  flex justify-center">
                 <div className="space-y-8 py-4 w-4/5">
                   <div className="space-y-4">
                     <h3 className="text-lh-primary font-title text-4xl">
                       Comments
                     </h3>
-                    <form className="flex flex-col items-end  space-y-4">
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        submitComment();
+                      }}
+                      className="flex flex-col items-end  space-y-4"
+                    >
                       <textarea
+                        onChange={(e) => setNewCommentContent(e.target.value)}
                         placeholder="Write a comment"
                         id="commentarea"
                         name="commentarea"
