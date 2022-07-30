@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL_DOCKER")
 }
 
 generator client {
@@ -93,7 +93,7 @@ model Comment {
   user_id    String
   ticket     Ticket   @relation(fields: [ticket_id], references: [id], onDelete: Cascade)
   ticket_id  String
-  content    String
+  content    String   @db.Text
 }
 
 model State {

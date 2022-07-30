@@ -20,8 +20,9 @@ export default async (_obj: any, args: any, context: Context) => {
   }
 
   const isParticipant =
-    ticket.ticketUser.filter((el: TicketUser) => el.userId === args.user_id)
-      .length > 0;
+    ticket.ticketUser.filter(
+      (el: TicketUser) => el.userId === context.authenticatedUser.id
+    ).length > 0;
 
   if (!isParticipant) {
     if (!(await isAuthorizedToAdminProject(context, ticket.project_id))) {
@@ -30,6 +31,7 @@ export default async (_obj: any, args: any, context: Context) => {
   }
 
   const comments = await context.prisma.comment.findMany({
+    orderBy: args.orderBy,
     where: {
       ticket_id: ticket.id,
     },

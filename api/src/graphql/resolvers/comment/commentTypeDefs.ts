@@ -16,13 +16,23 @@ export default gql`
     content: String!
   }
 
+  input SortingInput {
+    created_at: Sort
+  }
+
   type Mutation {
     AddComment(data: CommentInput): Comment
+    DeleteComment(commentId: String!): Comment
   }
 
   type Query {
-    GetCommentByTicketId(ticketId: String!): [Comment]
+    GetCommentByTicketId(ticketId: String!, orderBy: SortingInput): [Comment]
   }
 
   scalar DateTime
+
+  enum Sort {
+    asc
+    desc
+  }
 `;

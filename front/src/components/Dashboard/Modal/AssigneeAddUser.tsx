@@ -21,8 +21,6 @@ function AssigneeAddUser({ closeModal, task }: Props) {
 
   const [usersAvailable, setUsersAvailable] = useState<User[]>([]);
 
-  let requestInCurrent = false;
-
   const [getAllUsersList] = useLazyQuery(GetAllUsers, {
     onCompleted: (data) => {
       let participantsId: string[] = [];

@@ -1,8 +1,14 @@
-import { useMutation } from "@apollo/client";
-import React, { useState } from "react";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
+import Pagination from "@mui/material/Pagination";
+
 import { FaPaperPlane } from "react-icons/fa";
+
+import CommentItem from "./CommentItem";
+import usePagination from "../../../common/hook/usePagination";
 import AddComment from "../../../../graphql/mutation/comment/AddComment";
-import { TaskInList } from "../../../global";
+import GetCommentByTicketId from "../../../../graphql/queries/comment/GetCommentByTicketId";
+import DeleteComment from "../../../../graphql/mutation/comment/DeleteComment";
 
 type Props = {
   taskId: string;
@@ -11,12 +17,35 @@ type Props = {
 
 const CommentList = ({ taskId, userId }: Props) => {
   const [newCommentContent, setNewCommentContent] = useState("");
+  let [page, setPage] = useState(1);
 
   const [addComment, { loading }] = useMutation(AddComment, {
     onCompleted: () => {
       setNewCommentContent("");
     },
+    refetchQueries: [
+      { query: GetCommentByTicketId, variables: { ticketId: taskId } },
+    ],
   });
+
+  const [getComment, { data: dataComments, loading: loadingComment }] =
+    useLazyQuery(GetCommentByTicketId);
+
+  const handleChange = (e: any, p: number) => {
+    setPage(p);
+    _DATA.jump(p);
+  };
+
+  const PER_PAGE = 2;
+
+  const count = Math.ceil(
+    dataComments ? dataComments.GetCommentByTicketId.length : 0 / PER_PAGE
+  );
+
+  const _DATA = usePagination(
+    dataComments ? dataComments.GetCommentByTicketId : [],
+    PER_PAGE
+  );
 
   const submitComment = () => {
     const newComment = {
@@ -32,8 +61,37 @@ const CommentList = ({ taskId, userId }: Props) => {
     });
   };
 
+  const [deleteComment, { loading: loadDelete }] = useMutation(DeleteComment);
+
+  const handleDelete = async (id: string) => {
+    await deleteComment({
+      variables: {
+        commentId: id,
+      },
+      update(cache) {
+        const normalizedId = cache.identify({
+          id: id,
+          __typename: "Comment",
+        });
+        cache.evict({ id: normalizedId });
+        cache.gc();
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (taskId) {
+      getComment({
+        variables: {
+          ticketId: taskId,
+        },
+      });
+    }
+  }, [taskId]);
+
+  console.log(dataComments);
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-h-full overflow-hidden">
       <h3 className="text-lh-primary font-title text-4xl">Comments</h3>
       <form
         onSubmit={(e) => {
@@ -64,6 +122,30 @@ const CommentList = ({ taskId, userId }: Props) => {
           <FaPaperPlane />
         </button>
       </form>
+      <div>
+        <div className="space-y-4 h-96 overflow-y-auto">
+          {dataComments &&
+            _DATA.currentData().map((comment: any) => {
+              return (
+                <CommentItem
+                  key={comment.id}
+                  comment={comment}
+                  deleteComment={() => handleDelete(comment.id)}
+                />
+              );
+            })}
+        </div>
+        <div className="flex items-center justify-center my-4">
+          <Pagination
+            count={count}
+            size="large"
+            page={page}
+            variant="outlined"
+            shape="rounded"
+            onChange={handleChange}
+          />
+        </div>
+      </div>
     </div>
   );
 };

@@ -13,7 +13,7 @@ import { AiFillSetting, AiOutlineClose } from "react-icons/ai";
 
 import { loading as load, TOOGLE_LOAD } from "../../../slicer/appSlice";
 import { State, TaskInList, UserParticipant } from "../../global";
-import { role, user } from "../../../slicer/authSlice";
+import { user } from "../../../slicer/authSlice";
 import AssigneeAddUser from "./AssigneeAddUser";
 import getAllTickets from "../../../graphql/queries/Ticket/GetAllTicket";
 import AddComment from "../../../graphql/mutation/comment/AddComment";
@@ -157,7 +157,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                 <AiOutlineClose size={30} />
               </div>
               {/* Left column */}
-              <div className="flex flex-col items-center justify-center">
+              <div className="flex flex-col items-center justify-start">
                 <div className="space-y-8 py-4 w-4/5">
                   {/* ZONE TIME */}
                   <div className="flex space-x-3 font-text text-xl	">

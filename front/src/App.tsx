@@ -41,8 +41,8 @@ function App() {
       if (data.SessionUser.user) {
         dispatch(
           AUTHENTICATE_USER_IN_STORE({
-            user: data.SessionUser.user,
-            token: tokenInLocalStorage,
+              user: data.SessionUser.user,
+              token: tokenInLocalStorage,
           })
         );
         navigate("/dashboard");

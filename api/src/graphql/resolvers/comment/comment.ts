@@ -1,4 +1,5 @@
 import AddComment from "./mutations/AddComment";
+import DeleteComment from "./mutations/DeleteComment";
 
 import GetCommentByTicketId from "./queries/GetCommentByTicketId";
 
@@ -8,6 +9,7 @@ export default {
   },
 
   Mutation: {
+    DeleteComment,
     AddComment,
   },
 };
