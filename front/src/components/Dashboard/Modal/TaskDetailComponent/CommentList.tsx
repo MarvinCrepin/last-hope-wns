@@ -39,7 +39,9 @@ const CommentList = ({ taskId, userId }: Props) => {
   const PER_PAGE = 2;
 
   const count = Math.ceil(
-    dataComments ? dataComments.GetCommentByTicketId.length : 0 / PER_PAGE
+    dataComments
+      ? dataComments.GetCommentByTicketId.length / PER_PAGE
+      : 0 / PER_PAGE
   );
 
   const _DATA = usePagination(
@@ -89,7 +91,6 @@ const CommentList = ({ taskId, userId }: Props) => {
     }
   }, [taskId]);
 
-  console.log(dataComments);
   return (
     <div className="space-y-4 max-h-full overflow-hidden">
       <h3 className="text-lh-primary font-title text-4xl">Comments</h3>
