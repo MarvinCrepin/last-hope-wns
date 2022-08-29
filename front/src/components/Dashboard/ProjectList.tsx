@@ -4,14 +4,14 @@ import { Transition } from "@headlessui/react";
 import { useSelector } from "react-redux";
 import { FaSearch, FaPlus } from "react-icons/fa";
 import TableDashboard from "../common/TableDashboard";
-import GetAllProjects from "../../queries/Project/GetAllProject";
+import GetAllProjects from "../../graphql/queries/Project/GetAllProject";
 
 import Error from "../common/Error";
 import { role, user } from "../../slicer/authSlice";
 import ProjectDetail from "./Modal/ProjectDetail";
 import { Column, Project, User } from "../global";
 import { theme } from "../common/Utils";
-import GetAllUsers from "../../queries/User/GetAllUsers";
+import GetAllUsers from "../../graphql/queries/User/GetAllUsers";
 
 const columns: Column[] = [
   { id: "title", label: "Project", style: "text", metadata: {} },

@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 
-import UPDATE_NOTIFICATION from "../../queries/Notification/UpateNotification";
+import UPDATE_NOTIFICATION from "../../graphql/queries/Notification/UpateNotification";
 import { Notification } from "../global";
 import Moment from "react-moment";
 import { notificationIcone } from "../common/Utils";

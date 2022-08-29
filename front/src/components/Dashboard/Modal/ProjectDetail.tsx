@@ -1,19 +1,23 @@
+import Moment from "react-moment";
+import { useState } from "react";
+
 import { FaCalendarDay, FaCalendarCheck } from "react-icons/fa";
 import { MdOutlineAccountCircle } from "react-icons/md";
-import Moment from "react-moment";
-import { useEffect, useState } from "react";
+import { FaCheck } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { useMutation } from "@apollo/client";
+
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+
 import "../../../assets/css/projectDetail.css";
 import { Participant, Project, User } from "../../global";
 import { useSelector } from "react-redux";
 import { role } from "../../../slicer/authSlice";
 import { roleList } from "../../common/Utils";
-import { FaCheck } from "react-icons/fa";
-import {RiDeleteBin6Line} from "react-icons/ri"
-import UpdateProject from "../../../mutation/Project/UpdateProject";
-import getAllProjects from "../../../queries/Project/GetAllProject";
-import { useMutation, useQuery } from "@apollo/client";
+
+import UpdateProject from "../../../graphql/mutation/Project/UpdateProject";
+import getAllProjects from "../../../graphql/queries/Project/GetAllProject";
 
 Chart.register(...registerables);
 
@@ -63,21 +67,23 @@ type Props = {
 
 function ProjectDetail({ project, users, closeModal }: Props) {
   const userRole = useSelector(role);
-  const [productOwnerId, setProductOwnerId] = useState(project.product_owner.id);
+  const [productOwnerId, setProductOwnerId] = useState(
+    project.product_owner.id
+  );
   const [updateProject, { data, loading, error }] = useMutation(UpdateProject, {
     refetchQueries: [{ query: getAllProjects }],
   });
 
-  const handleSelectChange = ({target}: any) => {
+  const handleSelectChange = ({ target }: any) => {
     setProductOwnerId(target.value);
-  }
+  };
 
   function changeProjectOwner() {
     updateProject({
       variables: {
         projectId: project.id,
         data: {
-          product_owner_id: productOwnerId
+          product_owner_id: productOwnerId,
         },
       },
     });
@@ -125,18 +131,34 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                   {(userRole === roleList[1] || userRole === roleList[2]) && (
                     <div className="pt-4 pb-6 flex items-center">
                       <select
-                       defaultValue={project.product_owner.id}
-                      onChange={handleSelectChange}
-                      name="projectProductOwner"
-                      className="bg-lh-light border-2 border-lh-dark py-1 px-1.5 mr-5 select-product-owner cursor-pointer">
-                        {users.filter((user: any) => user.roles === roleList[1] || user.roles === roleList[2]).map((user: User) => (
-                          <option value={user.id} key={user.id}>
-                            {user.firstname} {user.lastname}
-                          </option>
-                        ))}
+                        defaultValue={project.product_owner.id}
+                        onChange={handleSelectChange}
+                        name="projectProductOwner"
+                        className="bg-lh-light border-2 border-lh-dark py-1 px-1.5 mr-5 select-product-owner cursor-pointer"
+                      >
+                        {users
+                          .filter(
+                            (user: any) =>
+                              user.roles === roleList[1] ||
+                              user.roles === roleList[2]
+                          )
+                          .map((user: User) => (
+                            <option value={user.id} key={user.id}>
+                              {user.firstname} {user.lastname}
+                            </option>
+                          ))}
                       </select>
-                      <button onClick={e => changeProjectOwner()} className="bg-lh-secondary font-text text-lh-light px-3 flex space-x-2 items-center change-po">
-                        <div className="flex items-center">Change <span className="pl-3"><FaCheck size={14}/></span></div></button>
+                      <button
+                        onClick={(e) => changeProjectOwner()}
+                        className="bg-lh-secondary font-text text-lh-light px-3 flex space-x-2 items-center change-po"
+                      >
+                        <div className="flex items-center">
+                          Change{" "}
+                          <span className="pl-3">
+                            <FaCheck size={14} />
+                          </span>
+                        </div>
+                      </button>
                     </div>
                   )}
                   {userRole === roleList[0] && (
@@ -173,7 +195,6 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                           <p className="text-gray-700 font-title pl-3 text-xl flex">
                             {participant.user.firstname}{" "}
                             {participant.user.lastname} -&nbsp;
-
                             <span className="text-lh-light-gray flex items-center">
                               {(() => {
                                 switch (participant.user.roles) {
@@ -188,7 +209,8 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                                 }
                               })()}
                               <span className="text-lh-primary pl-2 cursor-pointer">
-                                {(userRole === roleList[1] || userRole === roleList[2]) && (
+                                {(userRole === roleList[1] ||
+                                  userRole === roleList[2]) && (
                                   <RiDeleteBin6Line />
                                 )}
                               </span>

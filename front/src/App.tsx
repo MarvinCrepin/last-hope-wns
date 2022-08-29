@@ -1,21 +1,25 @@
 import "./App.css";
 import { Routes, Route, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useLazyQuery } from "@apollo/client";
+import { useDispatch } from "react-redux";
+
+import VerifyToken from "./graphql/queries/auth/VerifyToken";
 import LoginRouter from "./Pages/Login/LoginRouter";
 import Dashboard from "./Pages/Dashboard/Dashboard";
-import { useEffect, useState } from "react";
-import { useLazyQuery } from "@apollo/client";
-import VerifyToken from "./queries/auth/VerifyToken";
-import { useDispatch } from "react-redux";
 import { AUTHENTICATE_USER_IN_STORE } from "./slicer/authSlice";
-import { User } from "./components/global";
+
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [users, setUsers] = useState<User[]>([]);
 
   const tokenInLocalStorage = localStorage.getItem("KeyLastHope");
 
   const [verifyToken, { error, data }] = useLazyQuery(VerifyToken);
+
+  useEffect(() => {
+    verifyToken();
+  }, [verifyToken]);
 
   const checkAuthentication = () => {
     console.log("checkAuthentication");
@@ -37,8 +41,8 @@ function App() {
       if (data.SessionUser.user) {
         dispatch(
           AUTHENTICATE_USER_IN_STORE({
-            user: data.SessionUser.user,
-            token: tokenInLocalStorage,
+              user: data.SessionUser.user,
+              token: tokenInLocalStorage,
           })
         );
         navigate("/dashboard");
@@ -47,11 +51,8 @@ function App() {
   };
 
   useEffect(() => {
-    verifyToken();
-  }, []);
-
-  useEffect(() => {
     checkAuthentication();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, error]);
 
   return (
