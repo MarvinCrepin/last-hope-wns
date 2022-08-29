@@ -1,4 +1,4 @@
 type InputTicketUser = {
   ticketId: string;
-  userId: strin;
+  userId: string;
 };
