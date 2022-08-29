@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { useEffect, useState } from "react";
 import Pagination from "@mui/material/Pagination";
 
@@ -19,6 +19,8 @@ const CommentList = ({ taskId, userId }: Props) => {
   const [newCommentContent, setNewCommentContent] = useState("");
   let [page, setPage] = useState(1);
 
+  const PER_PAGE = 2;
+
   const [addComment, { loading }] = useMutation(AddComment, {
     onCompleted: () => {
       setNewCommentContent("");
@@ -27,16 +29,10 @@ const CommentList = ({ taskId, userId }: Props) => {
       { query: GetCommentByTicketId, variables: { ticketId: taskId } },
     ],
   });
-
   const [getComment, { data: dataComments, loading: loadingComment }] =
     useLazyQuery(GetCommentByTicketId);
 
-  const handleChange = (e: any, p: number) => {
-    setPage(p);
-    _DATA.jump(p);
-  };
-
-  const PER_PAGE = 2;
+  const [deleteComment, { loading: loadDelete }] = useMutation(DeleteComment);
 
   const count = Math.ceil(
     dataComments
@@ -48,6 +44,11 @@ const CommentList = ({ taskId, userId }: Props) => {
     dataComments ? dataComments.GetCommentByTicketId : [],
     PER_PAGE
   );
+
+  const handleChange = (e: any, p: number) => {
+    setPage(p);
+    _DATA.jump(p);
+  };
 
   const submitComment = () => {
     const newComment = {
@@ -62,8 +63,6 @@ const CommentList = ({ taskId, userId }: Props) => {
       },
     });
   };
-
-  const [deleteComment, { loading: loadDelete }] = useMutation(DeleteComment);
 
   const handleDelete = async (id: string) => {
     await deleteComment({

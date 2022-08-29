@@ -41,11 +41,12 @@ model User {
   roles     String
   password  String
 
-  projects      UserProject[]
-  owner         Project[]
-  Notifications Notification[]
-  ticketUser    TicketUser[]
-  comments      Comment[]
+  projects           UserProject[]
+  owner              Project[]
+  Notifications      Notification[]
+  ticketUser         TicketUser[]
+  comments           Comment[]
+  ticketDurationUser TicketDurationUser[]
 
 }
 
@@ -66,7 +67,6 @@ model TicketUser {
   userId   String
   ticket   Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
   ticketId String
-
 }
 
 model Ticket {
@@ -82,8 +82,9 @@ model Ticket {
   state          State     @relation(fields: [state_id], references: [id])
   state_id       String
 
-  ticketUser TicketUser[]
-  comments   Comment[]
+  ticketUser         TicketUser[]
+  comments           Comment[]
+  ticketDurationUser TicketDurationUser[]
 }
 
 model Comment {
@@ -100,4 +101,14 @@ model State {
   id      String   @id @default(cuid())
   name    String
   tickets Ticket[]
+}
+
+model TicketDurationUser {
+  id            String   @id @default(cuid())
+  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id       String
+  ticket        Ticket   @relation(fields: [ticket_id], references: [id], onDelete: Cascade)
+  ticket_id     String
+  created_at    DateTime @default(now())
+  minute_passed Int
 }

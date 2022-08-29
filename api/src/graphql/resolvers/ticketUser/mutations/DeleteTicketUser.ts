@@ -1,8 +1,7 @@
 import isConnected from "../../../../helpers/isConnected";
-import createNotification from "../../../../helpers/createNotification";
 import { Context } from "../../../resolvers/types";
 import isAuthorizedToAdminProject from "../../../../helpers/isAuthorizedToAdminProject";
-import { ApolloError, ForbiddenError } from "apollo-server-core";
+import { ForbiddenError } from "apollo-server-core";
 
 export default async (
   _: any,
