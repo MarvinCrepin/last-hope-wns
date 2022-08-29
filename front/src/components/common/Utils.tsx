@@ -5,7 +5,7 @@ import { AiOutlineFundProjectionScreen } from "react-icons/ai";
 import { HiOutlineTicket } from "react-icons/hi";
 import { FaRegUser } from "react-icons/fa";
 import { FaRegHandSpock } from "react-icons/fa";
-import { RiDeleteBin6Line } from "react-icons/ri"
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 export const notificationIcone = (type: string, classname: string) => {
   switch (type) {
@@ -78,5 +78,23 @@ export const columnsByRole = (
       });
     }
     return columns;
+  }
+};
+
+export const isAuthorizedToManageProject = (userRole: string) => {
+  const authorizedRole = ["ROLE_PROJECT_MANAGER", "ROLE_ADMIN"];
+
+  if (authorizedRole.includes(userRole)) return true;
+  else return false;
+};
+
+export const returnRoleName = (role: string) => {
+  switch (role) {
+    case "ROLE_DEVELOPER":
+      return "Developer";
+    case "ROLE_PROJECT_MANAGER":
+      return "Project Manager";
+    case "ROLE_ADMIN":
+      return "Administrator";
   }
 };

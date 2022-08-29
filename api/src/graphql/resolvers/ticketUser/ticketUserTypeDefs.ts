@@ -8,4 +8,14 @@ export default gql`
     ticket: Ticket
     ticketId: String
   }
+
+  input CreateTicketUser {
+    ticketId: String
+    userId: String
+  }
+
+  type Mutation {
+    CreateTicketUser(data: CreateTicketUser!): TicketUser
+    DeleteTicketUser(userTicketId: String!): TicketUser
+  }
 `;

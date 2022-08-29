@@ -129,36 +129,30 @@ export default function TableDashboard({
             {!loading && dataList.length > 0 ? (
               dataList
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((project: any) => {
+                .map((item: any) => {
                   const color =
-                    project.advancement >= 60
+                    item.advancement >= 60
                       ? "success"
-                      : project.advancement <= 30
+                      : item.advancement <= 30
                       ? "error"
                       : "warning";
-
                   return (
                     <StyledTableRow
                       className={clickHandlerRow && "cursor-pointer"}
-                      key={project.id}
-                      onClick={() =>
-                        clickHandlerRow && clickHandlerRow(project)
-                      }
+                      key={item.id}
+                      onClick={() => clickHandlerRow && clickHandlerRow(item)}
                     >
                       {columns.map((column, index) => {
-                        const value = project[column.id];
+                        const value = item[column.id];
                         return (
-                          <>
+                          <React.Fragment key={index}>
                             {column.style === "text" && (
-                              <StyledTableCell key={column.id + project.id}>
+                              <StyledTableCell>
                                 {value ? value : "Not defined"}
                               </StyledTableCell>
                             )}
                             {column.style === "linear-bar" && (
-                              <StyledTableCell
-                                className="relative"
-                                key={column.id + project.id}
-                              >
+                              <StyledTableCell className="relative">
                                 <LinearProgress
                                   color={color}
                                   className="linearProgress"
@@ -172,17 +166,12 @@ export default function TableDashboard({
                               </StyledTableCell>
                             )}
                             {column.style === "multitext" && (
-                              <StyledTableCell key={column.id + project.id}>
+                              <StyledTableCell>
                                 {value
                                   ? column.metadata.property.map(
                                       (el: string) => {
                                         return (
-                                          <span
-                                            className="ml-2"
-                                            key={
-                                              value[el] + column.id + project.id
-                                            }
-                                          >
+                                          <span className="ml-2">
                                             {value[el]}
                                           </span>
                                         );
@@ -192,25 +181,25 @@ export default function TableDashboard({
                               </StyledTableCell>
                             )}
                             {column.style === "date" && (
-                              <StyledTableCell key={column.id + project.id}>
+                              <StyledTableCell>
                                 <Moment format={column.metadata.format}>
                                   {new Date(value)}
                                 </Moment>
                               </StyledTableCell>
                             )}
                             {column.style === "actions" && (
-                              <StyledTableCell key={column.id + project.id}>
+                              <StyledTableCell>
                                 {deleteAction && viewAction && updateAction && (
                                   <Actions
-                                    updateItem={() => console.log(project)}
-                                    viewItem={() => console.log(project)}
-                                    deleteItem={() => deleteAction(project)}
+                                    updateItem={() => console.log(item)}
+                                    viewItem={() => console.log(item)}
+                                    deleteItem={() => deleteAction(item)}
                                   />
                                 )}
                               </StyledTableCell>
                             )}
                             {column.style === "select" && (
-                              <StyledTableCell key={column.id + project.id}>
+                              <StyledTableCell>
                                 {userRole === "ROLE_DEVELOPER" ? (
                                   <span>{userRole}</span>
                                 ) : (
@@ -220,20 +209,24 @@ export default function TableDashboard({
                                     ) =>
                                       handleChangeSelect &&
                                       handleChangeSelect({
-                                        project,
+                                        item,
                                         value: e.target.value,
                                       })
                                     }
-                                    id={project.id}
+                                    id={item.id}
                                     className="w-36 rounded-md bg-lh-light text-lh-dark p-2 mx-2"
                                   >
-                                    {roleList.map((roleName) =>
-                                      project.roles === roleName ? (
-                                        <option selected value={roleName}>
+                                    {roleList.map((roleName, index) =>
+                                      item.roles === roleName ? (
+                                        <option
+                                          key={index}
+                                          selected
+                                          value={roleName}
+                                        >
                                           {roleName}
                                         </option>
                                       ) : (
-                                        <option value={roleName}>
+                                        <option key={index} value={roleName}>
                                           {roleName}
                                         </option>
                                       )
@@ -242,7 +235,7 @@ export default function TableDashboard({
                                 )}
                               </StyledTableCell>
                             )}
-                          </>
+                          </React.Fragment>
                         );
                       })}
                     </StyledTableRow>

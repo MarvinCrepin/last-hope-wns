@@ -23,12 +23,12 @@ export default gql`
     passed_time: Float
     advancement: Int
     state_id: String
-    description: String,
-
+    description: String
   }
 
   type Query {
     GetAllTickets: [Ticket]
+    GetTicketById(ticketId: String!): Ticket
   }
 
   type Mutation {

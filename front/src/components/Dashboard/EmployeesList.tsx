@@ -12,9 +12,9 @@ import { columnsByRole, theme } from "../common/Utils";
 
 import { role } from "../../slicer/authSlice";
 
-import getAllUsers from "../../queries/User/GetAllUsers";
-import UpdateUser from "../../queries/User/UpdateUser";
-import DeleteUser from "../../queries/User/DeleteUser";
+import getAllUsers from "../../graphql/queries/User/GetAllUsers";
+import UpdateUser from "../../graphql/queries/User/UpdateUser";
+import DeleteUser from "../../graphql/queries/User/DeleteUser";
 
 export default function EmployeesList() {
   const { loading, error, data } = useQuery(getAllUsers);
