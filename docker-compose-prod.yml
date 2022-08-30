@@ -3,7 +3,7 @@ services:
     build: ./server
     expose:
       - 5000
-    command: npm run dev
+    command: npm run deploy
     environment:
       - NODE_ENV=production
       - PORT=5000
