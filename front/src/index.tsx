@@ -16,11 +16,19 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+function apiLink(state: string | null) {
+  switch (state) {
+    case "development" || null:
+      return "http://localhost:4000";
+    case "production":
+      return "https://darroze-1-04-22.wilders.dev/graphql";
+    case "staging":
+      return "https://staging.darroze-1-04-22.wilders.dev/graphql";
+  }
+}
+
 const httpLink = createHttpLink({
-  uri:
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:4000"
-      : "https://darroze-1-04-22.wilders.dev/graphql",
+  uri: apiLink(process.env.NODE_ENV),
 });
 
 const authLink = setContext((_, { headers }) => {
