@@ -4,11 +4,13 @@ services:
     expose:
       - 5000
     command: npm run dev
-     environment:
+    environment:
       - NODE_ENV=production
       - PORT=5000
     volumes:
       - ./server/src/:/app/src/
+    depends_on:
+      - db
   front:
     build: ./front
     command: sh -c "npm run build"
