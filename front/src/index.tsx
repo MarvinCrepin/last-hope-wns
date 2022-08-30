@@ -17,7 +17,10 @@ import { setContext } from "@apollo/client/link/context";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:4000",
+  uri:
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:4000"
+      : "https://darroze-1-04-22.wilders.dev/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
