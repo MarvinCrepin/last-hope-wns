@@ -1,11 +1,11 @@
 services:
-  api:
-    build: ./api
+  server:
+    build: ./server
     ports:
-      - 4000:4000
+      - 5000:5000
     command: npm run dev
     volumes:
-      - ./api/src/:/app/src/
+      - ./server/src/:/app/src/
   front:
     build: ./front
     command: sh -c "npm run build"
@@ -34,7 +34,7 @@ services:
   nginx:
     image: nginx:1.21.3
     depends_on:
-      - api
+      - server
       - front
     restart: always
     ports:
