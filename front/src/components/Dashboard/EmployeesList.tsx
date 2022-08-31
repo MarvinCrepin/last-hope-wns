@@ -4,11 +4,11 @@ import { Transition } from "@headlessui/react";
 import { useSelector } from "react-redux";
 
 import { FaSearch } from "react-icons/fa";
-
-import { Column, User } from "../global";
+import "react-toastify/dist/ReactToastify.css";
+import { User } from "../global";
 import TableDashboard from "../common/TableDashboard";
 import Error from "../common/Error";
-import { columnsByRole, theme } from "../common/Utils";
+import { columnsByRole, notify, returnRoleName, theme } from "../common/Utils";
 
 import { role } from "../../slicer/authSlice";
 
@@ -47,9 +47,11 @@ export default function EmployeesList() {
   }, [data, searchInput]);
 
   const changeStatus = (user: any) => {
-    const UserId = user.project.id;
+  
+    const UserId = user.item.id;
     const newRole = user.value;
-
+    const name = user.item.user;
+    const roleName: string = returnRoleName(newRole);
     updateUser({
       variables: {
         userId: UserId,
@@ -58,11 +60,13 @@ export default function EmployeesList() {
         },
       },
     });
+    notify("success", `${name} a maintenant le rôle ${roleName}.`);
   };
 
   const deleteEmployee = (user: any) => {
     const UserId = user.id;
     deleteUser({ variables: { userId: UserId } });
+    notify("success", `${user.user} a été supprimé avec succès.`);
   };
 
   return (

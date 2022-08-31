@@ -9,6 +9,8 @@ import {
   TablePagination,
   LinearProgress,
 } from "@mui/material";
+import { ToastContainer } from "react-toastify";
+
 import { styled } from "@mui/material/styles";
 import Moment from "react-moment";
 import React from "react";
@@ -204,6 +206,7 @@ export default function TableDashboard({
                                   <span>{userRole}</span>
                                 ) : (
                                   <select
+                                    defaultValue={item.roles}
                                     onChange={(
                                       e: React.ChangeEvent<HTMLSelectElement>
                                     ) =>
@@ -216,21 +219,11 @@ export default function TableDashboard({
                                     id={item.id}
                                     className="w-36 rounded-md bg-lh-light text-lh-dark p-2 mx-2"
                                   >
-                                    {roleList.map((roleName, index) =>
-                                      item.roles === roleName ? (
-                                        <option
-                                          key={index}
-                                          selected
-                                          value={roleName}
-                                        >
-                                          {roleName}
-                                        </option>
-                                      ) : (
-                                        <option key={index} value={roleName}>
-                                          {roleName}
-                                        </option>
-                                      )
-                                    )}
+                                    {roleList.map((roleName, index) => (
+                                      <option key={index} value={roleName}>
+                                        {roleName}
+                                      </option>
+                                    ))}
                                   </select>
                                 )}
                               </StyledTableCell>
@@ -238,6 +231,17 @@ export default function TableDashboard({
                           </React.Fragment>
                         );
                       })}
+                      <ToastContainer
+                        position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                      />
                     </StyledTableRow>
                   );
                 })
