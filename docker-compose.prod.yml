@@ -1,14 +1,4 @@
 services:
-  front:
-    # build: ./front
-    image: florianbeme/wns-client:latest
-    command: sh -c "npm run build"
-    environment:
-      - NODE_ENV=production
-    ports:
-      - 3000:3000
-    volumes:
-      - web-client-build:/app/build/
   db:
     image: mysql:5.7-oracle
     command: --default-authentication-plugin=mysql_native_password
@@ -21,24 +11,36 @@ services:
       # MYSQL_USER: user
       # MYSQL_PASSWORD: user
     ports:
-      - "8006:3306"
+      - "8007:3306"
     volumes:
       - ./init:/docker-entrypoint-initdb.d
       - mysql:/var/lib/mysql
   server:
     # build: ./server
-    image: florianbeme/wns-server:latest
+    image: florianbeme/prod-wns-server:latest
     expose:
-      - 5000
+      - 6000
     command: npm run deploy
     environment:
       - NODE_ENV=production
-      - PORT=5000
+      - PORT=6000
       - DATABASE_URL_DOCKER=mysql://root:root@db:3306/mydb?serverVersion=5.7
     # volumes:
     #   - ./server/src/:/app/src/
     depends_on:
       - db
+
+  front:
+    # build: ./front
+    image: florianbeme/wns-client:latest
+    command: sh -c "npm run build"
+    environment:
+      - NODE_ENV=production
+    ports:
+      - 3002:3000
+    volumes:
+      - web-client-build:/app/build/
+
   nginx:
     image: nginx:1.21.3
     depends_on:
