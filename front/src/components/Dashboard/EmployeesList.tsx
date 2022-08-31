@@ -2,16 +2,12 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { useSelector } from "react-redux";
-
 import { FaSearch } from "react-icons/fa";
-import "react-toastify/dist/ReactToastify.css";
 import { User } from "../global";
 import TableDashboard from "../common/TableDashboard";
 import Error from "../common/Error";
 import { columnsByRole, notify, returnRoleName, theme } from "../common/Utils";
-
 import { role } from "../../slicer/authSlice";
-
 import getAllUsers from "../../graphql/queries/User/GetAllUsers";
 import UpdateUser from "../../graphql/queries/User/UpdateUser";
 import DeleteUser from "../../graphql/queries/User/DeleteUser";
