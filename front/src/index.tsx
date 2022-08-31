@@ -28,7 +28,7 @@ function apiLink(state: string | null) {
 }
 
 const httpLink = createHttpLink({
-  uri: apiLink(process.env.NODE_ENV),
+  uri: "/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
