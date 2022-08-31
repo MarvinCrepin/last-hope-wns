@@ -6,7 +6,7 @@ services:
     environment:
       - NODE_ENV=staging
     ports:
-      - 3000:3000git
+      - 3000:3000
     volumes:
       - web-client-build:/app/build/
   db:

@@ -27,8 +27,6 @@ function apiLink(state: string | null) {
   }
 }
 
-console.log("test");
-
 const httpLink = createHttpLink({
   uri: apiLink(process.env.NODE_ENV),
 });
