@@ -42,6 +42,9 @@ export const theme = (userRole: string, type: string, meta: any = {}) => {
         : " bg-lh-gray text-lh-dark";
     }
   }
+  if(type === "hidden") {
+    return !(meta.isActive) ? " hidden" : "";
+  }
 };
 
 export const roleList = [
