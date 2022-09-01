@@ -1,6 +1,7 @@
 import isConnected from "../../../../helpers/isConnected";
 import { Context } from "../../../resolvers/types";
 import createNotification from "../../../../helpers/createNotification";
+import { TicketInputPatch } from "../types";
 
 export default async (
   _: any,
