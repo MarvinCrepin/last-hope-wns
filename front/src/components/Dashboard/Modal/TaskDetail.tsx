@@ -107,7 +107,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
     if (differenceInHour() > 0) {
       createTicketDurationUser({
         variables: {
-          data: { minute_passed: differenceInHour, ticket_id: task.id },
+          data: { minute_passed: differenceInHour(), ticket_id: task.id },
         },
       });
     }

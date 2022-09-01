@@ -1,4 +1,5 @@
 import { ROLES } from "../../../../Constant";
+import isAuthorizedToUpdateTicket from "../../../../helpers/isAuthorizedToUpdateTicket";
 import isConnected from "../../../../helpers/isConnected";
 import { Context } from "../../types";
 import { TicketDurationUserInput } from "../types";
@@ -22,22 +23,10 @@ export default async (
     throw new Error("Ticket not found");
   }
 
-  console.log(context.authenticatedUser);
-
-  if (
-    ticket.ticketUser.filter(
-      (ticketUser: { user_id: string }) =>
-        ticketUser.user_id === context.authenticatedUser.id
-    ).length === 0 &&
-    context.authenticatedUser.roles !== ROLES.ADMIN
-  ) {
-    if (context.authenticatedUser.roles === ROLES.PRODUCT_MANAGER) {
-      if (ticket.project.product_owner_id !== context.authenticatedUser.id)
-        throw new Error("User not authorized to update this ticket");
-    } else {
-      throw new Error("User not authorized to update this ticket");
-    }
+  if (!isAuthorizedToUpdateTicket(context, ticket)) {
+    throw new Error("Not Authorized to update Ticket");
   }
+
   try {
     const ticketDurationUser = await context.prisma.ticketDurationUser.create({
       data: {
