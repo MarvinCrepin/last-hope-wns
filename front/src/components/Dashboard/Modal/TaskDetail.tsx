@@ -123,17 +123,21 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         variables: {
           data: { minute_passed: differenceInHour(), ticket_id: task.id },
         },
+        onCompleted: () => {
+          setHourFrom({ hourFrom: 0, minFrom: 0 });
+          setHourTo({ hourTo: 0, minTo: 0 });
+        },
       });
     }
   };
 
-  const changeEnum = (
+  const changeEnum = async (
     e: React.ChangeEvent<HTMLSelectElement>,
     type: String
   ) => {
     dispatch(TOOGLE_LOAD(true));
 
-    updateTicket({
+    await updateTicket({
       variables: {
         ticketId: task.id,
         data: {
@@ -142,6 +146,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         },
       },
     });
+    // dispatch(TOOGLE_LOAD(false));
   };
 
   return (
@@ -198,7 +203,9 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     </div>
                     <div className="space-y-2">
                       <div className="text-lh-dark font-semibold ">
-                        {task.estimated_time} Hours
+                        {task.estimated_time
+                          ? `${task.estimated_time} Hours`
+                          : "Non-défini"}
                       </div>
                       <div className="text-lh-primary font-semibold">
                         {`${
@@ -218,7 +225,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                                 (totalDuration.GetTicketDurationUserByTicket
                                   .totalTime *
                                   100) /
-                                task.estimated_time
+                                (task.estimated_time * 60)
                               ).toFixed(2)} %)`
                             : ""
                         } `}
