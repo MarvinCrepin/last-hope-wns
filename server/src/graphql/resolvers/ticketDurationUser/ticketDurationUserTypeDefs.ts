@@ -11,6 +11,11 @@ export default gql`
     minute_passed: Int
   }
 
+  type TicketDurationUserResponse {
+    ticketDurationUser: [TicketDurationUser]
+    totalTime: Int
+  }
+
   input TicketDurationUserInput {
     ticket_id: ID
     minute_passed: Int
@@ -18,5 +23,9 @@ export default gql`
 
   type Mutation {
     CreateTicketDurationUser(data: TicketDurationUserInput): TicketDurationUser
+  }
+
+  type Query {
+    GetTicketDurationUserByTicket(ticketId: ID): TicketDurationUserResponse
   }
 `;

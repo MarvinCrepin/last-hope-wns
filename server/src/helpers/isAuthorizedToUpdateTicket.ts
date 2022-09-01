@@ -2,7 +2,7 @@ import { Context } from "../graphql/resolvers/types";
 import { ROLES } from "../Constant";
 
 /**
- * Vérifie si un user à le d'update le ticket' (product owner ou admin)
+ * Vérifie si un user à le d'update le ticket'(product owner ou admin)
  * @param context context qui est passé dans le resolver
  * @param   ticket ticket à vérifier
  * @returns Boolean
@@ -15,16 +15,6 @@ export default function isAuthorizedToUpdateTicket(
     project: { product_owner_id: string };
   }
 ) {
-  console.log("ticket", ticket);
-  console.log(
-    ticket.ticketUser.filter(
-      (ticketUser: { user_id: string }) =>
-        ticketUser.user_id === context.authenticatedUser.id
-    )
-  );
-
-  console.log(context.authenticatedUser);
-
   if (
     ticket.ticketUser.filter(
       (ticketUser: { user_id: string }) =>

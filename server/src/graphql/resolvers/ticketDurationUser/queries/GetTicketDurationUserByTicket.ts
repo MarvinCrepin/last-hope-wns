@@ -1,7 +1,6 @@
 import isConnected from "../../../../helpers/isConnected";
-import { Context } from "../../../resolvers/types";
-import { ROLES } from "../../../../Constant";
-import { ApolloError, ForbiddenError } from "apollo-server-core";
+import { Context } from "../../types";
+import isAuthorizedToUpdateTicket from "../../../../helpers/isAuthorizedToUpdateTicket";
 
 export default async (
   _: any,
@@ -10,32 +9,36 @@ export default async (
 ) => {
   isConnected(context.authenticatedUser);
 
-  const ticketDurationUser = await context.prisma.ticket.findMany({
+  const ticket = await context.prisma.ticket.findUnique({
     where: { id: ticketId },
+    include: {
+      ticketUser: true,
+      project: true,
+    },
   });
 
-  // if (context.authenticatedUser.roles === ROLES.ADMIN) {
-  //   return ticket;
-  // }
+  if (!ticket) {
+    throw new Error("Ticket not found");
+  }
 
-  // const projectUser = await context.prisma.userProject.findMany({
-  //   where: {
-  //     userId: context.authenticatedUser.id,
-  //   },
-  //   include: {
-  //     project: true,
-  //   },
-  // });
+  if (!isAuthorizedToUpdateTicket(context, ticket)) {
+    throw new Error("Not Authorized to update Ticket");
+  }
 
-  // let projectsId: string[] = [];
+  const ticketDurationUser = await context.prisma.ticketDurationUser.findMany({
+    where: { ticket_id: ticketId },
+    include: {
+      ticket: true,
+      user: true,
+    },
+  });
 
-  // projectUser.forEach((project: any) => {
-  //   projectsId.push(project.projectId);
-  // });
-
-  // if (!projectsId.includes(ticket.project.id)) {
-  //   throw new ForbiddenError("Not Authorized");
-  // }
-
-  // return ticket;
+  return {
+    ticketDurationUser,
+    totalTime: ticketDurationUser.reduce(
+      (totalTime: number, ticketDurationUser: { minute_passed: number }) =>
+        totalTime + ticketDurationUser.minute_passed,
+      0
+    ),
+  };
 };
