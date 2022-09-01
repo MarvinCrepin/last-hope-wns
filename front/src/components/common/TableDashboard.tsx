@@ -200,6 +200,7 @@ export default function TableDashboard({
                                 )}
                               </StyledTableCell>
                             )}
+                            {/* A refactorisé */}
                             {column.style === "select" && (
                               <StyledTableCell>
                                 {userRole === "ROLE_DEVELOPER" ? (
@@ -228,6 +229,7 @@ export default function TableDashboard({
                                 )}
                               </StyledTableCell>
                             )}
+                            {/* A refactorisé */}
                           </React.Fragment>
                         );
                       })}
@@ -251,17 +253,19 @@ export default function TableDashboard({
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </StyledTableContainer>
+      {/* A refactorisé */}
       <ToastContainer
-                        position="top-right"
-                        autoClose={5000}
-                        hideProgressBar={false}
-                        newestOnTop={false}
-                        closeOnClick
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                      />
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      {/* A refactorisé */}
     </div>
   );
 }

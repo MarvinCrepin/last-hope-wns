@@ -9,23 +9,35 @@ import GetAllState from "../../../graphql/queries/State/GetAllState";
 
 import { BsHourglass, BsHourglassBottom } from "react-icons/bs";
 import { FaPaperPlane, FaRegUserCircle } from "react-icons/fa";
-import { AiFillSetting, AiOutlineClose } from "react-icons/ai";
+import {
+  AiFillSetting,
+  AiOutlineClose,
+  AiOutlineLoading,
+} from "react-icons/ai";
 
 import { loading as load, TOOGLE_LOAD } from "../../../slicer/appSlice";
 import { State, TaskInList, UserParticipant } from "../../global";
 import { user } from "../../../slicer/authSlice";
 import AssigneeAddUser from "./AssigneeAddUser";
 import getAllTickets from "../../../graphql/queries/Ticket/GetAllTicket";
-import AddComment from "../../../graphql/mutation/comment/AddComment";
 import CommentList from "./TaskDetailComponent/CommentList";
+import CreateTicketDurationUser from "../../../graphql/mutation/TicketDurationUser/CreateTicketDurationUser";
 
 type Props = {
   taskPassed: TaskInList;
   closeModal: () => void;
 };
 
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
+
 export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const dispatch = useDispatch();
+  const [createTicketDurationUser, { loading: loadCreate }] = useMutation(
+    CreateTicketDurationUser
+  );
+
   const userInStore = useSelector(user);
 
   const { loading: loadingState, data: dataState } = useQuery(GetAllState);
@@ -82,24 +94,23 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
     }
   };
 
-  const addSpentTime = () => {
+  const differenceInHour = () => {
     const timeFrom = moment().hour(hourFrom.hourFrom).minute(hourFrom.minFrom);
     const timeTo = moment().hour(hourTo.hourTo).minute(hourTo.minTo);
 
     const diff = timeTo.diff(timeFrom);
     const duration = moment.duration(diff);
+    return duration.hours() + duration.minutes() / 60;
+  };
 
-    const differenceInHour = duration.hours() + duration.minutes() / 60;
-
-    const newPassedTime = task.passed_time + differenceInHour;
-
-    dispatch(TOOGLE_LOAD(true));
-    updateTicket({
-      variables: {
-        ticketId: task.id,
-        data: { passed_time: newPassedTime },
-      },
-    });
+  const addSpentTime = () => {
+    if (differenceInHour() > 0) {
+      createTicketDurationUser({
+        variables: {
+          data: { minute_passed: differenceInHour, ticket_id: task.id },
+        },
+      });
+    }
   };
 
   const changeEnum = (
@@ -305,10 +316,19 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                       </div>
                       <div className="space-y-4 flex items-center justify-start lg:col-span-3">
                         <button
-                          className="bg-lh-secondary font-text text-lh-light py-1.5 px-3 flex space-x-2 items-center rounded-lg "
+                          disabled={loadCreate || differenceInHour() <= 0}
+                          className={classNames(
+                            loadCreate ? "grayscale cursor-progress" : "",
+                            "bg-lh-secondary font-text text-lh-light py-1.5 px-3 flex space-x-2 items-center rounded-lg "
+                          )}
                           onClick={() => addSpentTime()}
                         >
-                          <BsHourglassBottom />
+                          {!loadCreate ? (
+                            <BsHourglassBottom />
+                          ) : (
+                            <AiOutlineLoading className="animate-spin" />
+                          )}
+
                           <div>Add to Spent Time</div>
                         </button>
                       </div>

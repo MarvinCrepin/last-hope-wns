@@ -43,7 +43,6 @@ export default function EmployeesList() {
   }, [data, searchInput]);
 
   const changeStatus = (user: any) => {
-  
     const UserId = user.item.id;
     const newRole = user.value;
     const name = user.item.user;
