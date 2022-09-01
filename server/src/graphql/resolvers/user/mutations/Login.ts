@@ -11,7 +11,8 @@ export default async (
   const user = await context.prisma.user.findUnique({
     where: { mail: loginUserInput.mail },
   });
-
+  console.log(user);
+  
   if (
     !user ||
     !(await bcrypt.compare(loginUserInput.password, user.password))
