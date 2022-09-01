@@ -59,6 +59,7 @@ export type TaskInList = {
   advancement: number;
   due_at: Date;
   participants: UserParticipant[];
+  project_name: string;
   estimated_time: number;
   description: string | null;
   state_id: string;
