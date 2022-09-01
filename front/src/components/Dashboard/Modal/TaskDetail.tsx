@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 
-import moment from "moment";
+import moment, { Duration, Moment } from "moment";
 
 import UpdateTicket from "../../../graphql/mutation/Ticket/UpdateTicket";
 import GetAllState from "../../../graphql/queries/State/GetAllState";
+import CreateTicketDurationUser from "../../../graphql/mutation/TicketDurationUser/CreateTicketDurationUser";
+import GetTotalTicketDurationUserByTicket from "../../../graphql/queries/TicketDurationUser/GetTotalTicketDurationUserByTicket";
 
 import { BsHourglass, BsHourglassBottom } from "react-icons/bs";
 import { FaPaperPlane, FaRegUserCircle } from "react-icons/fa";
@@ -21,7 +23,6 @@ import { user } from "../../../slicer/authSlice";
 import AssigneeAddUser from "./AssigneeAddUser";
 import getAllTickets from "../../../graphql/queries/Ticket/GetAllTicket";
 import CommentList from "./TaskDetailComponent/CommentList";
-import CreateTicketDurationUser from "../../../graphql/mutation/TicketDurationUser/CreateTicketDurationUser";
 
 type Props = {
   taskPassed: TaskInList;
@@ -34,9 +35,6 @@ function classNames(...classes: string[]) {
 
 export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const dispatch = useDispatch();
-  const [createTicketDurationUser, { loading: loadCreate }] = useMutation(
-    CreateTicketDurationUser
-  );
 
   const userInStore = useSelector(user);
 
@@ -44,6 +42,21 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const [updateTicket, { data }] = useMutation(UpdateTicket, {
     refetchQueries: [{ query: getAllTickets }],
   });
+  const { loading: totalDurationError, data: totalDuration } = useQuery(
+    GetTotalTicketDurationUserByTicket,
+    { variables: { ticketId: taskPassed.id } }
+  );
+  const [createTicketDurationUser, { loading: loadCreate }] = useMutation(
+    CreateTicketDurationUser,
+    {
+      refetchQueries: [
+        {
+          query: GetTotalTicketDurationUserByTicket,
+          variables: { ticketId: taskPassed.id },
+        },
+      ],
+    }
+  );
 
   const [task, setTask] = useState<TaskInList | any>({});
   const [hourFrom, setHourFrom] = useState({ hourFrom: 0, minFrom: 0 });
@@ -99,8 +112,9 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
     const timeTo = moment().hour(hourTo.hourTo).minute(hourTo.minTo);
 
     const diff = timeTo.diff(timeFrom);
-    const duration = moment.duration(diff);
-    return duration.hours() + duration.minutes() / 60;
+    const duration: Duration = moment.duration(diff);
+
+    return duration.asMinutes();
   };
 
   const addSpentTime = () => {
@@ -186,12 +200,29 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                       <div className="text-lh-dark font-semibold ">
                         {task.estimated_time} Hours
                       </div>
-                      <div className="text-lh-primary font-semibold">{`${
-                        task.passed_time
-                      } Hours ( ${(
-                        (task.passed_time * 100) /
-                        task.estimated_time
-                      ).toFixed(2)} % )`}</div>
+                      <div className="text-lh-primary font-semibold">
+                        {`${
+                          totalDuration
+                            ? moment
+                                .duration(
+                                  totalDuration.GetTicketDurationUserByTicket
+                                    .totalTime,
+                                  "minutes"
+                                )
+                                .asHours()
+                                .toFixed(0)
+                            : 0
+                        } Hours  ${
+                          totalDuration && task.estimated_time
+                            ? `( ${(
+                                (totalDuration.GetTicketDurationUserByTicket
+                                  .totalTime *
+                                  100) /
+                                task.estimated_time
+                              ).toFixed(2)} %)`
+                            : ""
+                        } `}
+                      </div>
                     </div>
                   </div>
 
