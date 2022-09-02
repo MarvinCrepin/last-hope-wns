@@ -58,13 +58,13 @@ export default function EmployeesList() {
         },
       },
     });
-    notify("success", `${name} a maintenant le rôle ${roleName}.`);
+    error ? notify("error", "Something went wrong with the update of the employee.") : notify("success", `${name} is now a ${roleName}.`);
   };
 
   const deleteEmployee = (user: any) => {
     const UserId = user.id;
     deleteUser({ variables: { userId: UserId } });
-    notify("success", `${user.user} a été supprimé avec succès.`);
+    error ? notify("error", "Something went wrong with the deletion of the employee.") : notify("success", `${user.user} has been deleted.`);
   };
 
   return (
