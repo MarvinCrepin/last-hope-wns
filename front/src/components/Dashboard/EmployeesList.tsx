@@ -2,23 +2,22 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { useSelector } from "react-redux";
-
 import { FaSearch } from "react-icons/fa";
-
-import { Column, User } from "../global";
+import { User } from "../global";
 import TableDashboard from "../common/TableDashboard";
 import Error from "../common/Error";
-import { columnsByRole, theme } from "../common/Utils";
-
-import { role } from "../../slicer/authSlice";
-
+import { columnsByRole, notify, returnRoleName, theme } from "../common/Utils";
+import { role, user } from "../../slicer/authSlice";
 import getAllUsers from "../../graphql/queries/User/GetAllUsers";
 import UpdateUser from "../../graphql/queries/User/UpdateUser";
 import DeleteUser from "../../graphql/queries/User/DeleteUser";
+import UserDetail from "./Modal/UserDetail";
 
 export default function EmployeesList() {
   const { loading, error, data } = useQuery(getAllUsers);
   const userRole = useSelector(role);
+  const currentUser: any = useSelector(user);
+
   const columns = columnsByRole(userRole, "actions");
   const [list, setList] = useState<User[]>([]);
   const [searchInput, setSearchInput] = useState("");
@@ -47,9 +46,10 @@ export default function EmployeesList() {
   }, [data, searchInput]);
 
   const changeStatus = (user: any) => {
-    const UserId = user.project.id;
+    const UserId = user.item.id;
     const newRole = user.value;
-
+    const name = user.item.user;
+    const roleName: string = returnRoleName(newRole);
     updateUser({
       variables: {
         userId: UserId,
@@ -58,11 +58,13 @@ export default function EmployeesList() {
         },
       },
     });
+    error ? notify("error", "Something went wrong with the update of the employee.") : notify("success", `${name} is now a ${roleName}.`);
   };
 
   const deleteEmployee = (user: any) => {
     const UserId = user.id;
     deleteUser({ variables: { userId: UserId } });
+    error ? notify("error", "Something went wrong with the deletion of the employee.") : notify("success", `${user.user} has been deleted.`);
   };
 
   return (

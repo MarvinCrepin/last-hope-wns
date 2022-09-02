@@ -2,6 +2,7 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 
 import "./index.css";
+import "react-toastify/dist/ReactToastify.css";
 import reportWebVitals from "./reportWebVitals";
 
 import App from "./App";
@@ -17,7 +18,10 @@ import { setContext } from "@apollo/client/link/context";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const httpLink = createHttpLink({
-  uri: "/graphql",
+  uri:
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:4000"
+      : "/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {

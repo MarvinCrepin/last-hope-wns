@@ -1,20 +1,19 @@
-import Moment from "react-moment";
 import { useState } from "react";
+import Moment from "react-moment";
 
-import { FaCalendarDay, FaCalendarCheck } from "react-icons/fa";
-import { MdOutlineAccountCircle } from "react-icons/md";
-import { FaCheck } from "react-icons/fa";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import { useMutation } from "@apollo/client";
+import { FaCalendarCheck, FaCalendarDay, FaCheck } from "react-icons/fa";
+import { MdOutlineAccountCircle } from "react-icons/md";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
-import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+import { Line } from "react-chartjs-2";
 
-import "../../../assets/css/projectDetail.css";
-import { Participant, Project, User } from "../../global";
 import { useSelector } from "react-redux";
+import "../../../assets/css/projectDetail.css";
 import { role } from "../../../slicer/authSlice";
 import { roleList } from "../../common/Utils";
+import { Participant, Project, User } from "../../global";
 
 import UpdateProject from "../../../graphql/mutation/Project/UpdateProject";
 import getAllProjects from "../../../graphql/queries/Project/GetAllProject";
@@ -70,7 +69,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
   const [productOwnerId, setProductOwnerId] = useState(
     project.product_owner.id
   );
-  const [updateProject, { data, loading, error }] = useMutation(UpdateProject, {
+  const [updateProject] = useMutation(UpdateProject, {
     refetchQueries: [{ query: getAllProjects }],
   });
 
@@ -96,7 +95,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
       role="dialog"
       aria-modal="true"
     >
-      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div className="flex items-end justify-center  pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div
           className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity "
           onClick={() => closeModal()}
@@ -109,7 +108,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
         </span>
 
         <div className="inline-block align-bottom text-left transform transition-all sm:align-middle project-modal">
-          <div className=" bg-white  rounded-lg  flex justify-center min-h-full p-4 text-center sm:p-0">
+          <div className=" bg-white  rounded-lg  flex justify-center p-4 text-center sm:p-0">
             <div className=" relative bg-white rounded-lg text-left overflow-hidden transform transition-all project-modal-inside">
               <div className="project-modal-infos py-8 px-2 sm:pl-6 sm:pr-6">
                 <div>
@@ -149,7 +148,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                           ))}
                       </select>
                       <button
-                        onClick={(e) => changeProjectOwner()}
+                        onClick={() => changeProjectOwner()}
                         className="bg-lh-secondary font-text text-lh-light px-3 flex space-x-2 items-center change-po"
                       >
                         <div className="flex items-center">
