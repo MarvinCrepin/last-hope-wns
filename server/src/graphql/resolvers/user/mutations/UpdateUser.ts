@@ -1,6 +1,7 @@
 import isConnected from "../../../../helpers/isConnected";
 import { Context } from "../../../resolvers/types";
 import createNotification from "../../../../helpers/createNotification";
+const bcrypt = require("bcrypt");
 
 export default async (
   _: any,
@@ -13,6 +14,10 @@ export default async (
     where: { id: userId },
   });
 
+  if (data.password) {
+    data.password = await bcrypt.hash(data.password, 10);
+  }
+  
   const newData = { ...oldData, ...data };
 
   const notificationTitle = "Account updated";

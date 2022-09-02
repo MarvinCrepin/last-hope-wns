@@ -1,13 +1,21 @@
 .user-modal {
   height: 40vh !important;
-  width: 35% !important;
+  width: 20vw !important;
   margin-top: 25vh;
   align-items: center;
   justify-content: center;
+  border-radius: 22em;
 }
 
 .close-modal-btn {
     float:right;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    justify-content: center;
+}
+
+.rounder-user-modal {
+  border-radius: 0em 0.5em 0.5em 0.5em !important;
 }
 
 .close-modal-icon {
@@ -16,13 +24,23 @@
     font-weight: 1500;
 }
 
-.user-modal-content {
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  display: flex;
-}
 
 .pdng-5 {
     padding: 2em;
+}
+
+.pg-nav-user-modal {
+  padding: 0.20rem 0.25rem 0.15rem 0.20rem !important;
+  cursor: pointer;
+}
+
+.user-modal input:focus {
+    outline: var(--primary-color) solid 1px;
+    border: none;
+}
+
+.user-modal label {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: var(--primary-color);
 }

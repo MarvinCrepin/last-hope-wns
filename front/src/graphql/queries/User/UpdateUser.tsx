@@ -7,6 +7,7 @@ mutation UpdateUser($userId: String!, $data: UpdateUserInput) {
     firstname
     mail
     roles
+    id
   }
 }
 `;
