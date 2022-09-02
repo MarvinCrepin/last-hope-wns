@@ -20,7 +20,7 @@ import {
 import { loading as load, TOOGLE_LOAD } from "../../../slicer/appSlice";
 import { State, TaskInList, UserParticipant } from "../../global";
 import { user } from "../../../slicer/authSlice";
-import AssigneeAddUser from "./AssigneeAddUser";
+import AssigneeAddUser from "./TaskDetailComponent/AssigneeAddUser";
 import getAllTickets from "../../../graphql/queries/Ticket/GetAllTicket";
 import CommentList from "./TaskDetailComponent/CommentList";
 
