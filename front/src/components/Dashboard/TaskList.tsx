@@ -25,12 +25,6 @@ const columns: Column[] = [
     metadata: {},
   },
   { id: "advancement", label: "Status", style: "linear-bar", metadata: {} },
-  {
-    id: "assignee",
-    label: "Assignee",
-    style: "text",
-    metadata: {},
-  },
 
   {
     id: "due_at",
@@ -67,7 +61,7 @@ export default function TaskList() {
     setDisplayModalTaskDetails(true);
   };
 
-  const formatDate = (entries: any[]) => {
+  const formatData = (entries: any[]) => {
     let result: TaskInList[] = [];
     entries.forEach((element) => {
       let newData: any = {
@@ -77,10 +71,10 @@ export default function TaskList() {
         due_at: element.due_at,
         participants: [],
         description: element.description,
-        passed_time: element.passed_time,
         estimated_time: element.estimated_time,
         state: element.state,
         state_id: element.state_id,
+        project_name: element.project.title,
         project: {
           id: element.project.id,
           title: element.project.title,
@@ -105,7 +99,7 @@ export default function TaskList() {
 
   useEffect(() => {
     if (data && !loadingInStore) {
-      let dataFiltered: TaskInList[] = [...formatDate(data.GetAllTickets)];
+      let dataFiltered: TaskInList[] = [...formatData(data.GetAllTickets)];
 
       // si une tache est selectionnée, on la met à jour dans le tableau
       if (selectedTask) {

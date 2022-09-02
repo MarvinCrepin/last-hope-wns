@@ -6,6 +6,7 @@ import stateTypeDefs from "./state/stateTypeDefs";
 import ticketUserTypeDefs from "./ticketUser/ticketUserTypeDefs";
 import projectUserTypeDefs from "./userProject/userProjectTypeDefs";
 import commentTypeDefs from "./comment/commentTypeDefs";
+import ticketDurationUserTypeDefs from "./ticketDurationUser/ticketDurationUserTypeDefs";
 
 const typeDefs = [
   projectType,
@@ -16,6 +17,7 @@ const typeDefs = [
   ticketUserTypeDefs,
   projectUserTypeDefs,
   commentTypeDefs,
+  ticketDurationUserTypeDefs,
 ];
 
 export default typeDefs;
