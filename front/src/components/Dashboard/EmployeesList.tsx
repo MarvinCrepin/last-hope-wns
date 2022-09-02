@@ -7,14 +7,17 @@ import { User } from "../global";
 import TableDashboard from "../common/TableDashboard";
 import Error from "../common/Error";
 import { columnsByRole, notify, returnRoleName, theme } from "../common/Utils";
-import { role } from "../../slicer/authSlice";
+import { role, user } from "../../slicer/authSlice";
 import getAllUsers from "../../graphql/queries/User/GetAllUsers";
 import UpdateUser from "../../graphql/queries/User/UpdateUser";
 import DeleteUser from "../../graphql/queries/User/DeleteUser";
+import UserDetail from "./Modal/UserDetail";
 
 export default function EmployeesList() {
   const { loading, error, data } = useQuery(getAllUsers);
   const userRole = useSelector(role);
+  const currentUser: any = useSelector(user);
+
   const columns = columnsByRole(userRole, "actions");
   const [list, setList] = useState<User[]>([]);
   const [searchInput, setSearchInput] = useState("");

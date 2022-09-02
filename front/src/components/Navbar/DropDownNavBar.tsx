@@ -16,19 +16,27 @@ import { FaLaptopCode } from "react-icons/fa";
 import { VscAccount } from "react-icons/vsc";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { IoIosNotifications } from "react-icons/io";
+import UserDetail from "../Dashboard/Modal/UserDetail";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
+
+
 
 export default function DropDownNavBar() {
   const [notificationsList, setNotificationsList] = useState<Notification[]>(
     []
   );
 
+  const [displayModalUserDetails, setDisplayModalUserDetails] = useState(false);
+
   const userInStore = useSelector(user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const closeModalUserDetails = () => {
+    setDisplayModalUserDetails(false);
+  };
 
   const { data } = useQuery(GetNotificationByUserId, {
     variables: { userId: userInStore.id },
@@ -79,14 +87,14 @@ export default function DropDownNavBar() {
                 <Menu.Item>
                   {({ active }) => (
                     <a
-                      href="/"
+                      onClick={() => setDisplayModalUserDetails(true)}
                       className={classNames(
                         active ? "bg-gray-100 text-gray-900" : "text-lh-dark",
                         "flex items-center gap-x-2 px-4 py-2 text-md"
                       )}
                     >
                       <VscAccount size={18} color="var(--primary-color)" />
-                      Profil
+                      Profile
                     </a>
                   )}
                 </Menu.Item>
@@ -171,6 +179,7 @@ export default function DropDownNavBar() {
             </Menu.Items>
           </Transition>
         </Menu>
+        {displayModalUserDetails && <UserDetail user={userInStore}  closeModal={() => closeModalUserDetails()}></UserDetail>}
       </div>
     </nav>
   );
