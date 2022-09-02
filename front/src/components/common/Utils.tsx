@@ -42,8 +42,8 @@ export const theme = (userRole: string, type: string, meta: any = {}) => {
         : " bg-lh-gray text-lh-dark";
     }
   }
-  if(type === "hidden") {
-    return !(meta.isActive) ? " hidden" : "";
+  if (type === "hidden") {
+    return !meta.isActive ? " hidden" : "";
   }
 };
 
@@ -99,7 +99,8 @@ export const returnRoleName = (role: string): string => {
       return "Project Manager";
     case "ROLE_ADMIN":
       return "Administrator";
-    default: return "";
+    default:
+      return "";
   }
 };
 
@@ -111,10 +112,13 @@ const notifyDefaultOptions: ToastOptions = {
   pauseOnHover: true,
   draggable: true,
   progress: undefined,
-  theme: "colored"
-  }
+};
 
-export const notify = (type: string, message: string, options = notifyDefaultOptions) => {
+export const notify = (
+  type: string,
+  message: string,
+  options = notifyDefaultOptions
+) => {
   switch (type) {
     case "success":
       toast.success(message, options);
@@ -129,5 +133,4 @@ export const notify = (type: string, message: string, options = notifyDefaultOpt
       toast.warn(message, options);
       break;
   }
-}
-
+};

@@ -27,6 +27,20 @@ function UserDetail({ user, closeModal }: Props) {
       { query: GetUserById, variables: { userId: user.id } },
       { query: GetAllUsers },
     ],
+    onCompleted: (data) => {
+      notify("success", "Account succesfully updated");
+      dispatch(
+        UPDATE_USER_IN_STORE({
+          user: data.UpdateUser,
+        })
+      );
+    },
+    onError: (error) => {
+      notify(
+        "error",
+        `Something went wrong with the update [${error.message}]`
+      );
+    },
   });
   const [firstName, setFirstName] = useState(user.firstname);
   const [lastName, setLastName] = useState(user.lastname);
@@ -36,11 +50,13 @@ function UserDetail({ user, closeModal }: Props) {
   const [detailsIsActive, setDetailsIsActive] = useState(true);
   const dispatch = useDispatch();
 
-  const isConfirmPasswordOk = (password: string, passwordConfirm: string) =>
-    password === passwordConfirm;
+  const PasswordAndConfirmIsSame = (
+    password: string,
+    passwordConfirm: string
+  ) => password === passwordConfirm;
 
   const submitPasswordChange = () => {
-    if (isConfirmPasswordOk(password, passwordConfirm)) {
+    if (PasswordAndConfirmIsSame(password, passwordConfirm)) {
       updateUser({
         variables: {
           userId: user.id,
@@ -51,12 +67,6 @@ function UserDetail({ user, closeModal }: Props) {
       });
     } else {
       return notify("error", "Password confirmation is not ok");
-    }
-
-    if (!error) {
-      notify("success", "Password updated");
-    } else {
-      notify("error", error.message);
     }
   };
 
@@ -72,17 +82,6 @@ function UserDetail({ user, closeModal }: Props) {
         data: {
           ...updatedUser,
         },
-      },
-      onError: (error) => {
-        notify("error", error.message);
-      },
-      onCompleted: (data) => {
-        notify("success", "User updated");
-        dispatch(
-          UPDATE_USER_IN_STORE({
-            user: data.UpdateUser,
-          })
-        );
       },
     });
   };
@@ -144,17 +143,16 @@ function UserDetail({ user, closeModal }: Props) {
                       >
                         <div className={"details"}>
                           <div className="my-2">
-                            <label  htmlFor="email">
+                            <label htmlFor="email">
                               Mail
-                            <input
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
-                              className="w-full appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight "
-                              id="email"
-                              type="email"
-                            />
+                              <input
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight "
+                                id="email"
+                                type="email"
+                              />
                             </label>
-
                           </div>
                           <div className="mb-2">
                             <label htmlFor="firstname">
@@ -170,18 +168,17 @@ function UserDetail({ user, closeModal }: Props) {
                             </label>
                           </div>
                           <div className="mb-4">
-                            <label  htmlFor="lastname">
+                            <label htmlFor="lastname">
                               Lastname
-
-                            <input
-                              value={lastName}
-                              onChange={(e) => setLastName(e.target.value)}
-                              className="w-full appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none"
-                              id="lastname"
-                              type="lastname"
-                              placeholder="Dupont"
-                            />
-                                                        </label>
+                              <input
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                className="w-full appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none"
+                                id="lastname"
+                                type="lastname"
+                                placeholder="Dupont"
+                              />
+                            </label>
                           </div>
                           <ButtonForm
                             text="Save"
@@ -201,32 +198,27 @@ function UserDetail({ user, closeModal }: Props) {
                         >
                           <div className={"security"}>
                             <div className="mb-4 mt-2 relative">
-                              <label  htmlFor="password">
+                              <label htmlFor="password">
                                 Password
-
-                              <input
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full  appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none"
-                                id="password"
-                                type="password"
-                              />
-                              </label>
-                              <div className="mb-8 my-2 relative">
-                                <label
-                                 
-                                  htmlFor="confirmPassword"
-                                >
-                                  Confirm password
                                 <input
-                                  onChange={(e) =>
-                                    setPasswordConfirm(e.target.value)
-                                  }
-                                  className="w-full appearance-none border border-lh-dark rounded-lg mb-9 py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none"
-                                  id="confirmPassword"
+                                  onChange={(e) => setPassword(e.target.value)}
+                                  className="w-full  appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none"
+                                  id="password"
                                   type="password"
                                 />
+                              </label>
+                              <div className="mb-8 my-2 relative">
+                                <label htmlFor="confirmPassword">
+                                  Confirm password
+                                  <input
+                                    onChange={(e) =>
+                                      setPasswordConfirm(e.target.value)
+                                    }
+                                    className="w-full appearance-none border border-lh-dark rounded-lg mb-9 py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none"
+                                    id="confirmPassword"
+                                    type="password"
+                                  />
                                 </label>
-
                               </div>
                             </div>
 
