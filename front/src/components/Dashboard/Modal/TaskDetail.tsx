@@ -35,7 +35,6 @@ function classNames(...classes: string[]) {
 
 export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const dispatch = useDispatch();
-
   const userInStore = useSelector(user);
 
   const { loading: loadingState, data: dataState } = useQuery(GetAllState);
