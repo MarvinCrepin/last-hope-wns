@@ -1,11 +1,12 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { FaCheck } from "react-icons/fa";
 
-import AddTicket from "../../../graphql/mutation/Ticket/AddTicket";
-import getNameAndIdProjects from "../../../graphql/queries/Project/GetNameAndIdOfAllProject";
-import { Project } from "../../global";
+import AddTicket from "../../../../graphql/mutation/Ticket/AddTicket";
+import getNameAndIdProjects from "../../../../graphql/queries/Project/GetNameAndIdOfAllProject";
+import AssigneeUser from "./AssigneeUser";
+import getAllTickets from "../../../../graphql/queries/Ticket/GetAllTicket";
+import { Project, User } from "../../../global";
 
 type Props = {
   closeModal: () => void;
@@ -22,9 +23,16 @@ export default function AddTask({ closeModal }: Props) {
     ticketUser: [{ userId: "cl670yw9102300ppetj4k6vc2" }],
   });
 
+  const [participants, setParticipants] = useState<User[]>([]);
   const [estimatedTime, setEstimatedTime] = useState({ hour: 0, min: 0 });
 
-  const [addTask] = useMutation(AddTicket);
+  const [addTask] = useMutation(AddTicket, {
+    refetchQueries: [{ query: getAllTickets }],
+    onCompleted(data) {
+      console.log(data);
+      closeModal();
+    },
+  });
 
   const { data: allProjects } = useQuery(getNameAndIdProjects);
 
@@ -36,9 +44,17 @@ export default function AddTask({ closeModal }: Props) {
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     let estimatedTimeInHour = estimatedTime.hour + estimatedTime.min / 60;
-    let taskData = { ...taskInformation, estimated_time: estimatedTimeInHour };
-    console.log(taskData);
-    // addTask({variables:{}});
+    let ticketUser: { userId: string }[] = [];
+    participants.forEach((user: User) => {
+      ticketUser.push({ userId: user.id });
+    });
+
+    let taskData = {
+      ...taskInformation,
+      estimated_time: estimatedTimeInHour,
+      ticketUser,
+    };
+    addTask({ variables: { data: taskData } });
   };
 
   return (
@@ -60,8 +76,8 @@ export default function AddTask({ closeModal }: Props) {
           &#8203;
         </span>
 
-        <div className="inline-block align-bottom text-left transform transition-all sm:align-middle w-1/3 max-h-[800px] h-[80vh]">
-          <div className=" bg-lh-primary text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
+        <div className="inline-block align-bottom text-left transform transition-all sm:align-middle w-1/3 max-h-[900px] h-auto">
+          <div className=" bg-lh-primary text-2xl h-12 font-title text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
             <div>Add Task</div>
           </div>
           <div className="bg-white rounded-b-lg rounded-tr-lg flex justify-center min-h-full p-4 text-center sm:p-0 max-h-full h-[80vh]">
@@ -72,18 +88,13 @@ export default function AddTask({ closeModal }: Props) {
               >
                 <AiOutlineClose size={30} />
               </div>
-              <div className="py-8 px-2 sm:pl-6 sm:pr-6">
-                <div className="title">
-                  <h2 className="text-4xl font-title text-lh-primary ">
-                    New Task
-                  </h2>
-                </div>
-                <div className="section-choice-project py-4">
+              <div className="p-4 ">
+                <div className="section-choice-project">
                   <form
                     onSubmit={(e) => handleSubmit(e)}
                     className="flex flex-col"
                   >
-                    <div className="my-4 relative flex flex-col">
+                    <div className="relative flex flex-col">
                       <label
                         htmlFor="project"
                         className="text-lh-primary text-2xl p-2"
@@ -94,18 +105,17 @@ export default function AddTask({ closeModal }: Props) {
                         <div>
                           <select
                             required
-                            onChange={(e) =>{
-                              
+                            onChange={(e) => {
                               setTaskInformation({
                                 ...taskInformation,
                                 [e.target.name]: e.target.value,
-                              })}
-                            }
+                              });
+                            }}
                             className="w-36 rounded bg-lh-light text-lh-dark p-2 mx-2 border-[1.5px] border-lh-dark focus-visible:ring-lh-primary mb-4"
                             id="project"
                             name="project_id"
                           >
-                            <option selected>Chose a project</option>
+                            <option value={"null"}>Chose a project</option>
                             {allProjects.GetAllProjects.map(
                               (project: Project) => (
                                 <option
@@ -205,9 +215,14 @@ export default function AddTask({ closeModal }: Props) {
                         </div>
                       </div>
                     </div>
+                    <AssigneeUser
+                      setParticipants={(value: User[]) =>
+                        setParticipants(value)
+                      }
+                    />
                     <button
                       type="submit"
-                      className="bg-lh-primary w-fit font-title text-lh-light text-2xl py-1.5 px-3 space-x-2 items-center rounded mx-2"
+                      className="bg-lh-primary w-fit font-title text-lh-light text-2xl py-1.5 px-3 space-x-2 items-center rounded my-4"
                     >
                       Add Task
                     </button>

@@ -12,7 +12,7 @@ import { loading as load, TOOGLE_LOAD } from "../../slicer/appSlice";
 import TableDashboard from "../common/TableDashboard";
 import Error from "../common/Error";
 import TaskDetail from "./Modal/TaskDetail";
-import AddTask from "./Modal/AddTask";
+import AddTask from "./Modal/AddTaskComponent/AddTask";
 
 import { Column, Project, TaskInList } from "../global";
 import { theme } from "../common/Utils";
