@@ -76,6 +76,7 @@ export default function TableDashboard({
   updateAction,
 }: PropsComponent) {
   const userRole = useSelector(role);
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
