@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import moment, { Duration, Moment } from "moment";
 
 import UpdateTicket from "../../../graphql/mutation/Ticket/UpdateTicket";
-import GetAllState from "../../../graphql/queries/State/GetAllState";
+import GetAllStates from "../../../graphql/queries/State/GetAllStates";
 import CreateTicketDurationUser from "../../../graphql/mutation/TicketDurationUser/CreateTicketDurationUser";
 import GetTotalTicketDurationUserByTicket from "../../../graphql/queries/TicketDurationUser/GetTotalTicketDurationUserByTicket";
 
@@ -37,7 +37,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const dispatch = useDispatch();
   const userInStore = useSelector(user);
 
-  const { loading: loadingState, data: dataState } = useQuery(GetAllState);
+  const { loading: loadingState, data: dataState } = useQuery(GetAllStates);
   const [updateTicket, { data }] = useMutation(UpdateTicket, {
     refetchQueries: [{ query: getAllTickets }],
   });
@@ -411,7 +411,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                           className="bg-lh-light w-1/2 border-2 border-lh-dark rounded-lg px-1.5"
                         >
                           {!loadingState &&
-                            dataState.GetAllState.map((state: State) => (
+                            dataState.GetAllStates.map((state: State) => (
                               <option key={state.id} value={state.id}>
                                 {state.name}
                               </option>

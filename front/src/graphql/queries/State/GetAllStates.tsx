@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-const getAllProjects = gql`
+const getAllStates = gql`
   query Query {
     GetAllState {
       id
@@ -9,4 +9,4 @@ const getAllProjects = gql`
   }
 `;
 
-export default getAllProjects;
+export default getAllStates;

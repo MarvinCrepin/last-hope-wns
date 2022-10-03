@@ -59,6 +59,7 @@ interface PropsComponent {
   loading: boolean;
   columns: Column[];
   clickHandlerRow?: (params: RowElement) => void;
+  clickAddTask?: () => void;
   handleChangeSelect?: (params: RowElement) => void;
   deleteAction?: (params: RowElement) => void;
   viewAction?: (params: RowElement) => void;
@@ -67,6 +68,7 @@ interface PropsComponent {
 
 export default function TableDashboard({
   dataList,
+  clickAddTask,
   loading,
   columns,
   clickHandlerRow,
