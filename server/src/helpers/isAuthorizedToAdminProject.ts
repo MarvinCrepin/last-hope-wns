@@ -19,6 +19,7 @@ export default async function isAuthorizedToAdminProject(
 
   if (user.roles === ROLES.DEVELOPER) return false;
 
+  console.log(user.roles);
   if (user.roles === ROLES.ADMIN) return true;
 
   const project = await context.prisma.project.findUnique({
