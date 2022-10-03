@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import moment, { Duration, Moment } from "moment";
 
 import UpdateTicket from "../../../graphql/mutation/Ticket/UpdateTicket";
-import GetAllState from "../../../graphql/queries/State/GetAllState";
+import GetAllState from "../../../graphql/queries/State/GetAllStates";
 import CreateTicketDurationUser from "../../../graphql/mutation/TicketDurationUser/CreateTicketDurationUser";
 import GetTotalTicketDurationUserByTicket from "../../../graphql/queries/TicketDurationUser/GetTotalTicketDurationUserByTicket";
 

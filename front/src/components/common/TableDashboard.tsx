@@ -238,7 +238,9 @@ export default function TableDashboard({
                 })
             ) : (
               <StyledTableRow>
-                <StyledTableCell colSpan={5} >Aucun résultat Trouvé</StyledTableCell>
+                <StyledTableCell colSpan={columns.length}>
+                  Aucun résultat Trouvé
+                </StyledTableCell>
               </StyledTableRow>
             )}
           </TableBody>

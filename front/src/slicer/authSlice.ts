@@ -33,7 +33,6 @@ export const authSlice = createSlice({
       state.token = action.payload.token;
     },
     UPDATE_USER_IN_STORE: (state, action) => {
-      console.log(state)
       state.user = { ...action.payload.user };
     },
     LOGOUT_USER: (state) => {
@@ -53,6 +52,7 @@ export const role = (state: { authSlice: TypeState }) =>
   state.authSlice.user.roles;
 export const user = (state: { authSlice: TypeState }) => state.authSlice.user;
 
-export const { AUTHENTICATE_USER_IN_STORE, LOGOUT_USER, UPDATE_USER_IN_STORE } = authSlice.actions;
+export const { AUTHENTICATE_USER_IN_STORE, LOGOUT_USER, UPDATE_USER_IN_STORE } =
+  authSlice.actions;
 
 export default authSlice.reducer;

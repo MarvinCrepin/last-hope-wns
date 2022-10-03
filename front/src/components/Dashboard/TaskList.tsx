@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaPlus } from "react-icons/fa";
 
 import getAllTickets from "../../graphql/queries/Ticket/GetAllTicket";
 import GetAllProjects from "../../graphql/queries/Project/GetAllProject";
@@ -12,6 +12,7 @@ import { loading as load, TOOGLE_LOAD } from "../../slicer/appSlice";
 import TableDashboard from "../common/TableDashboard";
 import Error from "../common/Error";
 import TaskDetail from "./Modal/TaskDetail";
+import AddTask from "./Modal/AddTaskComponent/AddTask";
 
 import { Column, Project, TaskInList } from "../global";
 import { theme } from "../common/Utils";
@@ -50,6 +51,15 @@ export default function TaskList() {
   const [selectedTask, setSelectedTask] = useState<TaskInList | null>();
   const [listTask, setListTask] = useState<TaskInList[]>([]);
   const [projectFiltered, setProjectFiltered] = useState("all");
+  const [displayModalAddTask, setDisplayAddTask] = useState(false);
+
+  const OpenAddTask = () => {
+    setDisplayAddTask(true);
+  };
+
+  const closeAddTask = () => {
+    setDisplayAddTask(false);
+  };
 
   const openTask = (el: TaskInList) => {
     setSelectedTask(el);
@@ -153,6 +163,8 @@ export default function TaskList() {
         />
       )}
 
+      {displayModalAddTask && <AddTask closeModal={() => closeAddTask()} />}
+
       <div
         className={`w-full ${theme(
           userRole,
@@ -160,7 +172,7 @@ export default function TaskList() {
         )}  z-20 py-8 px-2 rounded-tr-md md:h-30`}
       >
         <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center h-12">
-          <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
+          <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row ">
             <label className="sr-only" htmlFor="filterSelect">
               Filter:
             </label>
@@ -209,20 +221,32 @@ export default function TaskList() {
               </label>
             </div>
           </div>
-
-          <div className="relative flex item-centers mr-2">
-            <label htmlFor="searchInput" className="sr-only">
-              Recherche
-            </label>
-            <input
-              type="text"
-              id="searchInput"
-              name="searchInput"
-              placeholder="Search"
-              className="rounded-md h-8 mx-2 px-8 "
-              onChange={(e) => setSearchInput(e.target.value)}
-            />
-            <FaSearch className="absolute top-2 left-4 text-gray-500" />
+          <div className="flex items-center space-x-1 mr-2">
+            <div className="relative flex item-centers mr-2">
+              <label htmlFor="searchInput" className="sr-only">
+                Recherche
+              </label>
+              <input
+                type="text"
+                id="searchInput"
+                name="searchInput"
+                placeholder="Search"
+                className="rounded-md h-8 mx-2 px-8 "
+                onChange={(e) => setSearchInput(e.target.value)}
+              />
+              <FaSearch className="absolute top-2 left-4 text-gray-500" />
+            </div>
+            {userRole === "ROLE_ADMIN" && (
+              <button
+                className=" flex bg-lh-light font-text font-bold text-lh-primary items-center p-1.5 rounded-md space-x-2"
+                onClick={(): void => {
+                  OpenAddTask();
+                }}
+              >
+                <FaPlus className="" />
+                <div className="">Add Task</div>
+              </button>
+            )}
           </div>
         </div>
       </div>
