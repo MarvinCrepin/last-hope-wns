@@ -14,6 +14,10 @@ type Props = {
   closeModal: () => void;
 };
 
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
+
 export default function AddTask({ closeModal }: Props) {
   const [taskInformation, setTaskInformation] = useState({
     title: "",
@@ -262,8 +266,18 @@ export default function AddTask({ closeModal }: Props) {
                 </div>
                 <div className="flex justify-end w-full">
                   <button
+                    disabled={
+                      taskInformation.title === "" ||
+                      taskInformation.project_id === undefined
+                    }
                     type="submit"
-                    className="bg-lh-primary  font-title text-lh-light text-2xl py-1.5 px-3 items-center rounded mt-2"
+                    className={classNames(
+                      taskInformation.title === "" ||
+                        taskInformation.project_id === undefined
+                        ? "bg-lh-dark cursor-not-allowed"
+                        : "bg-lh-primary cursor-pointer",
+                      " font-title text-lh-light text-2xl py-1.5 px-3 items-center rounded mt-2"
+                    )}
                   >
                     Add Task
                   </button>
