@@ -7,8 +7,12 @@
 .project-modal > div:last-child {
     max-height: 100%;
     height: 800px;
-    padding: 1.5em 0;
     border-top-left-radius: 0;
+}
+
+.project-modal.add-modal > div:last-child {
+    height: initial;
+    overflow-y: auto;
 }
 
 .project-modal-inside {
@@ -57,9 +61,17 @@
     padding-bottom: .4em;
 }
 
+.project-modal.add-modal .project-modal-inside {
+    overflow-y: scroll;
+}
+
 @media screen and (max-width: 1000px) {
     .project-modal > div:first-child {
         padding: 1em 0 0.5em 0.5em;
+    }
+
+    .project-modal.add-modal > div:first-child {
+        padding: 0.75em 0.5em;
     }
 
     .project-modal-infos .list-inside li {

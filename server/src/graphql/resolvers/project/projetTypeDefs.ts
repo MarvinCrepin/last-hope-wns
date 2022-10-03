@@ -21,8 +21,8 @@ export default gql`
     title: String!
     description: String
     start_at: DateTime
-    end_at: DateTime
-    product_owner_id: String
+    end_at: DateTime!
+    product_owner_id: String!
     participants: [UserProjectNested]
   }
 

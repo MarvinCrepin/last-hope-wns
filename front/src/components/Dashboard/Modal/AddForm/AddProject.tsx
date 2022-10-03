@@ -93,8 +93,11 @@ function AddProject({ users, closeModal }: Props) {
       },
       onCompleted: () => {
         closeModal();
-        notify()
-      }
+        notify("success", "Successfuly project added");
+      },
+      onError: () => {
+        notify("error", "Error during adding a project");
+      },
     });
   };
 
@@ -138,15 +141,12 @@ function AddProject({ users, closeModal }: Props) {
                 <AiOutlineClose size={30} />
               </div>
               <div className="add-project-modal p-4 sm:pl-6 sm:pr-6">
-                <h2 className="text-4xl font-title text-lh-primary ">
-                  {" "}
-                  Add a project{" "}
-                </h2>
-
                 <form onSubmit={(e) => handleSubmit(e)}>
                   {/* TITLE */}
-                  <div className="part add-title">
-                    <h3 className="text-lh-primary mb-2">Title</h3>
+                  <div className="part add-title flex flex-col mb-4">
+                    <label className="text-lh-primary mb-1.5 text-2xl">
+                      Title
+                    </label>
                     <input
                       onChange={(e) => handleChange(e)}
                       type="text"
@@ -156,8 +156,10 @@ function AddProject({ users, closeModal }: Props) {
                   </div>
 
                   {/* DESCRIPTION */}
-                  <div className="part add-desc">
-                    <h3 className="text-lh-primary mb-2">Description</h3>
+                  <div className="part add-desc flex flex-col mb-4">
+                    <label className="text-lh-primary mb-1.5 text-2xl">
+                      Description
+                    </label>
                     <textarea
                       onChange={(e) => handleChange(e)}
                       name="description"
@@ -166,10 +168,12 @@ function AddProject({ users, closeModal }: Props) {
                   </div>
 
                   {/* PROJECT OWNER */}
-                  <div className="part add-p-owner">
-                    <h3 className="text-lh-primary mb-2">Project Owner</h3>
+                  <div className="part add-p-owner flex flex-col mb-4">
+                    <label className="text-lh-primary mb-1.5 text-2xl">
+                      Project Owner
+                    </label>
                     {(userRole === roleList[1] || userRole === roleList[2]) && (
-                      <div className="pt-4 pb-6 flex items-center">
+                      <div className="flex items-center">
                         <select
                           name="product_owner_id"
                           className="bg-lh-light border-2 border-lh-dark py-1 px-1.5 mr-5 select-product-owner cursor-pointer"
@@ -195,13 +199,14 @@ function AddProject({ users, closeModal }: Props) {
                   </div>
 
                   {/* MEMBERS */}
-                  <div className="part add-members">
-                    <div className="flex items-center">
-                      <h3 className="text-lh-primary mb-2 mr-2">Members</h3>
+                  <div className="part add-members mb-4">
+                    <div className="flex items-center mb-1.5">
+                      <label className="text-lh-primary text-2xl mr-2">
+                        Members
+                      </label>
                       <AiFillSetting
                         onClick={() => openModal("assignee")}
-                        size={30}
-                        className="text-lh-primary cursor-pointer hover:opacity-90 transition-opacity"
+                        className="text-lh-primary cursor-pointer hover:opacity-90 transition-opacity text-2xl"
                       />
                     </div>
 
@@ -221,10 +226,10 @@ function AddProject({ users, closeModal }: Props) {
                   </div>
 
                   {/* DATE */}
-                  <div className="part add-date">
-                    <h3 className="text-lh-primary mb-2 start-date">
+                  <div className="part add-date flex flex-col">
+                    <label className="text-lh-primary mb-1.5 text-2xl start-date">
                       Start date
-                    </h3>
+                    </label>
                     <input
                       onChange={(e) => handleChange(e)}
                       type="date"
@@ -232,7 +237,9 @@ function AddProject({ users, closeModal }: Props) {
                       id="start_at"
                     />
 
-                    <h3 className="text-lh-primary mb-2 end-date">End date</h3>
+                    <label className="text-lh-primary mb-1.5 text-2xl end-date">
+                      End date
+                    </label>
                     <input
                       onChange={(e) => handleChange(e)}
                       type="date"
@@ -241,8 +248,13 @@ function AddProject({ users, closeModal }: Props) {
                     />
                   </div>
 
-                  <div className="add-project-submit">
-                    <button type="submit">Add project</button>
+                  <div className="add-project-submit flex justify-end w-full mt-2">
+                    <button
+                      type="submit"
+                      className="bg-lh-primary w-fit font-title text-lh-light text-2xl py-1.5 px-3 space-x-2 items-center rounded mt-2"
+                    >
+                      Add project
+                    </button>
                   </div>
                 </form>
               </div>
