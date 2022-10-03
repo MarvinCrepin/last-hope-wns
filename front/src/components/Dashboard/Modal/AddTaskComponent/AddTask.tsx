@@ -82,12 +82,12 @@ export default function AddTask({ closeModal }: Props) {
           &#8203;
         </span>
 
-        <div className="inline-block align-bottom text-left transform transition-all sm:align-middle w-1/3 max-h-[900px] h-auto">
+        <div className="inline-block align-bottom text-left transform transition-all sm:align-middle w-1/3  h-auto">
           <div className=" bg-lh-primary text-2xl h-12 font-title text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
             <div>Add Task</div>
           </div>
-          <div className="bg-white rounded-b-lg rounded-tr-lg flex justify-center min-h-full p-4 text-center sm:p-0 max-h-full h-[80vh]">
-            <div className="relative bg-white rounded-lg text-left overflow-auto transform transition-all h-full w-full">
+          <div className=" bg-white rounded-b-lg rounded-tr-lg flex justify-center min-h-full p-4 text-center sm:p-0 h-[80vh]">
+            <div className="relative bg-white rounded-lg text-left overflow-auto transform transition-all h-full w-full  max-h-full ">
               <div
                 className="absolute right-2 top-2 text-lh-primary cursor-pointer"
                 onClick={() => closeModal()}

@@ -163,11 +163,7 @@ export default function TaskList() {
         />
       )}
 
-      {displayModalAddTask && (
-        <AddTask
-          closeModal={() => closeAddTask()}
-        />
-      )}
+      {displayModalAddTask && <AddTask closeModal={() => closeAddTask()} />}
 
       <div
         className={`w-full ${theme(
@@ -241,12 +237,15 @@ export default function TaskList() {
               <FaSearch className="absolute top-2 left-4 text-gray-500" />
             </div>
             {userRole === "ROLE_ADMIN" && (
-                <button 
+              <button
                 className=" flex bg-lh-light font-text font-bold text-lh-primary items-center p-1.5 rounded-md space-x-2"
-                onClick={():void =>{ OpenAddTask() }}>
-                  <FaPlus className="" />
-                  <div className="">Add Task</div>
-                </button>
+                onClick={(): void => {
+                  OpenAddTask();
+                }}
+              >
+                <FaPlus className="" />
+                <div className="">Add Task</div>
+              </button>
             )}
           </div>
         </div>

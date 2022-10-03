@@ -411,7 +411,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                           className="bg-lh-light w-1/2 border-2 border-lh-dark rounded-lg px-1.5"
                         >
                           {!loadingState &&
-                            dataState.GetAllState.map((state: State) => (
+                            dataState.GetAllStates.map((state: State) => (
                               <option key={state.id} value={state.id}>
                                 {state.name}
                               </option>
