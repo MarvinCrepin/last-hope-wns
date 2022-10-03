@@ -12,6 +12,7 @@ import ProjectDetail from "./Modal/ProjectDetail";
 import { Column, Project, User } from "../global";
 import { theme } from "../common/Utils";
 import GetAllUsers from "../../graphql/queries/User/GetAllUsers";
+import AddProject from "./Modal/AddForm/AddProject";
 
 const columns: Column[] = [
   { id: "title", label: "Project", style: "text", metadata: {} },
@@ -23,8 +24,8 @@ const columns: Column[] = [
     metadata: { property: ["firstname", "lastname"] },
   },
   {
-    id: "due_at",
-    label: "Due date",
+    id: "end_at",
+    label: "End date",
     style: "date",
     metadata: { format: "YYYY/MM/DD" },
   },
@@ -40,9 +41,19 @@ export default function ProjectList() {
   const [beMy, setByMe] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [hideDone, setHideDone] = useState(false);
-  const [displayModalProjectDetails, setDisplayModalProjectDetails] =
-    useState(false);
+  const [displayModalProjectDetails, setDisplayModalProjectDetails] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>();
+
+
+  const [displayModalAddProject, setDisplayModalAddProject] = useState(false);
+
+  const openAddProject:any = () => {
+    setDisplayModalAddProject(true);
+  };
+
+  const closeModalAddProject:any = () => {
+    setDisplayModalAddProject(false);
+  };
 
   const openProject = (el: Project) => {
     setSelectedProject(el);
@@ -91,6 +102,12 @@ export default function ProjectList() {
           project={selectedProject}
           users={users}
           closeModal={() => closeModalProjectDetails()}
+        />
+      )}
+      {displayModalAddProject && (
+        <AddProject
+          users={users}
+          closeModal={() => closeModalAddProject()}
         />
       )}
       <div
@@ -146,7 +163,7 @@ export default function ProjectList() {
               <FaSearch className="absolute top-2 left-4 text-gray-500" />
             </div>
             {userRole === "ROLE_ADMIN" && (
-              <button className=" flex bg-lh-light font-text font-bold text-lh-primary items-center p-1.5 rounded-md space-x-2">
+              <button onClick={() => openAddProject()} className=" flex bg-lh-light font-text font-bold text-lh-primary items-center p-1.5 rounded-md space-x-2">
                 <FaPlus className="" />
                 <div className="">Add project</div>
               </button>
