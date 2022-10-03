@@ -4,10 +4,11 @@
     height: 80vh;
 }
 
-.project-modal > div:first-child {
+.project-modal > div:last-child {
     max-height: 100%;
     height: 800px;
     padding: 1.5em 0;
+    border-top-left-radius: 0;
 }
 
 .project-modal-inside {

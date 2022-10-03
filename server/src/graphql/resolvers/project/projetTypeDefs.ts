@@ -4,14 +4,10 @@ export default gql`
   type Project {
     id: ID!
     title: String!
-    description: String!
-    start_at: DateTime!
-    end_at: DateTime!
-    due_at: DateTime!
+    description: String
+    start_at: DateTime
+    end_at: DateTime
     product_owner_id: String
-    advancement: Int!
-    estimated_time: Int
-    passed_time: Int
     product_owner: User
     participants: [UserProject]
   }
@@ -23,12 +19,15 @@ export default gql`
 
   input ProjectInput {
     title: String!
-    description: String!
-    start_at: DateTime!
-    end_at: DateTime!
-    due_at: DateTime!
+    description: String
+    start_at: DateTime
+    end_at: DateTime
     product_owner_id: String
-    advancement: Int!
+    participants: [UserProjectNested]
+  }
+
+  input UserProjectNested {
+    userId: String
   }
 
   input UpdatedProjectInput {
