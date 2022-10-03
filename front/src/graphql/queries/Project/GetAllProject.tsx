@@ -8,9 +8,6 @@ const getAllProjects = gql`
       description
       start_at
       end_at
-      due_at
-      estimated_time
-      advancement
       product_owner {
         id
         lastname

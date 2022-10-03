@@ -25,7 +25,7 @@ export default function Dashboard() {
         <span>{titleByRole(userRole)}</span>
         <FaPencilAlt size={45} />
       </div>
-      <main className="mx-2 md:mx-12 lg:mx-28">
+      <main className="mb-8 mx-2 md:mx-12 lg:mx-28">
         <nav className="space-x-1.5 text-2xl pt-1">
           <NavLink
             to="/dashboard/task"
