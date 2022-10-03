@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import moment, { Duration, Moment } from "moment";
 
 import UpdateTicket from "../../../graphql/mutation/Ticket/UpdateTicket";
-import GetAllStates from "../../../graphql/queries/State/GetAllStates";
+import GetAllState from "../../../graphql/queries/State/GetAllStates";
 import CreateTicketDurationUser from "../../../graphql/mutation/TicketDurationUser/CreateTicketDurationUser";
 import GetTotalTicketDurationUserByTicket from "../../../graphql/queries/TicketDurationUser/GetTotalTicketDurationUserByTicket";
 
@@ -37,7 +37,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const dispatch = useDispatch();
   const userInStore = useSelector(user);
 
-  const { loading: loadingState, data: dataState } = useQuery(GetAllStates);
+  const { loading: loadingState, data: dataState } = useQuery(GetAllState);
   const [updateTicket, { data }] = useMutation(UpdateTicket, {
     refetchQueries: [{ query: getAllTickets }],
   });

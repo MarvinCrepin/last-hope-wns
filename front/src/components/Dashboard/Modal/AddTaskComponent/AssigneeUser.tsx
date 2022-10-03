@@ -13,7 +13,6 @@ type Props = {
 };
 
 function AssigneeUser({ setParticipants }: Props) {
-
   const [userSelected, setUserSelected] = useState<User | null>(null);
   const [participantsSelected, setParticipantsSelected] = useState<User[]>([]);
 
@@ -68,9 +67,9 @@ function AssigneeUser({ setParticipants }: Props) {
   }, [getAllUsersList, participantsSelected]);
 
   return (
-    <div className="mx-2">
-      <h3 className="text-lh-primary font-text text-3xl">Assignee</h3>
-      <div className="my-2 w-full">
+    <>
+      <h3 className="text-lh-primary font-text text-3xl mb-1.5">Assignee</h3>
+      <div className=" w-full">
         <div className="flex w-full justify-between items-center">
           <select
             onChange={(e) => {
@@ -100,30 +99,32 @@ function AssigneeUser({ setParticipants }: Props) {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap  ">
-        {participantsSelected.map((user: User) => {
-          return (
-            <div
-              key={user.id}
-              className="relative bg-lh-secondary rounded-lg px-8 py-2 mb-2 w-fit shadow-lg mr-4"
-            >
-              <span
-                className="absolute -top-3 -right-2.5 bg-white rounded-full"
-                onClick={() => deleteAssigneeUser(user)}
+      {participantsSelected.length > 0 && (
+        <div className="flex flex-wrap  mt-5">
+          {participantsSelected.map((user: User) => {
+            return (
+              <div
+                key={user.id}
+                className="relative bg-lh-secondary rounded-lg px-8 py-2 mb-2 w-fit shadow-lg mr-4"
               >
-                <RiCloseCircleFill
-                  size={30}
-                  className="text-lh-primary cursor-pointer hover:opacity-70"
-                />
-              </span>
-              <span className="text-lh-light font-text text-lg">
-                {user.firstname}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+                <span
+                  className="absolute -top-3 -right-2.5 bg-white rounded-full"
+                  onClick={() => deleteAssigneeUser(user)}
+                >
+                  <RiCloseCircleFill
+                    size={30}
+                    className="text-lh-primary cursor-pointer hover:opacity-70"
+                  />
+                </span>
+                <span className="text-lh-light font-text text-lg">
+                  {user.firstname}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 }
 

@@ -114,6 +114,11 @@ const notifyDefaultOptions: ToastOptions = {
   progress: undefined,
 };
 
+/**
+ * @param type "success" | "error" | "info" | "warning"
+ * @param message  message to display
+ * @param options ToastOptions
+ */
 export const notify = (
   type: string,
   message: string,
