@@ -16,17 +16,28 @@ import UserDetail from "./Modal/UserDetail";
 export default function EmployeesList() {
   const { loading, error, data } = useQuery(getAllUsers);
   const userRole = useSelector(role);
-  const currentUser: any = useSelector(user);
-
   const columns = columnsByRole(userRole, "actions");
   const [list, setList] = useState<User[]>([]);
   const [searchInput, setSearchInput] = useState("");
+
   const [updateUser] = useMutation(UpdateUser, {
     refetchQueries: [{ query: getAllUsers }],
+    onCompleted: () => {
+      notify("success", "User succesfully updated");
+    },
+    onError: (error) => {
+      notify("error",`Something went wrong with the update of the user [${error.message}]`);
+    }
   });
 
   const [deleteUser] = useMutation(DeleteUser, {
     refetchQueries: [{ query: getAllUsers }],
+    onCompleted: () => {
+      notify("success", "User succesfully deleted");
+    },
+    onError: (error) => {
+      notify("error", `Something went wrong with the deletion of the user [${error.message}]`);
+    }
   });
 
   useEffect(() => {
@@ -48,8 +59,6 @@ export default function EmployeesList() {
   const changeStatus = (user: any) => {
     const UserId = user.item.id;
     const newRole = user.value;
-    const name = user.item.user;
-    const roleName: string = returnRoleName(newRole);
     updateUser({
       variables: {
         userId: UserId,
@@ -58,7 +67,6 @@ export default function EmployeesList() {
         },
       },
     });
-    error ? notify("error", "Something went wrong with the update of the employee.") : notify("success", `${name} is now a ${roleName}.`);
   };
 
   const deleteEmployee = (user: any) => {
