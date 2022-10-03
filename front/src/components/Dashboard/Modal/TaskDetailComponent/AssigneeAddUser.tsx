@@ -1,11 +1,11 @@
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { useEffect, useState } from "react";
 
-import CreateTicketUser from "../../../graphql/mutation/TicketUser/CreateTicketUser";
-import DeleteTicketUser from "../../../graphql/mutation/TicketUser/DeleteTicketUser";
-import GetAllUsers from "../../../graphql/queries/User/GetAllUsers";
+import CreateTicketUser from "../../../../graphql/mutation/TicketUser/CreateTicketUser";
+import DeleteTicketUser from "../../../../graphql/mutation/TicketUser/DeleteTicketUser";
+import GetAllUsers from "../../../../graphql/queries/User/GetAllUsers";
 
-import { User, UserParticipant } from "../../global";
+import { User, UserParticipant } from "../../../global";
 
 import { AiOutlineLoading } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa";

@@ -1,5 +1,5 @@
 import { Column, DashboardTitle } from "../global";
-
+import { toast, ToastOptions } from "react-toastify";
 import { BiTask } from "react-icons/bi";
 import { AiOutlineFundProjectionScreen } from "react-icons/ai";
 import { HiOutlineTicket } from "react-icons/hi";
@@ -41,6 +41,9 @@ export const theme = (userRole: string, type: string, meta: any = {}) => {
         ? " bg-lh-primary text-lh-light"
         : " bg-lh-gray text-lh-dark";
     }
+  }
+  if (type === "hidden") {
+    return !meta.isActive ? " hidden" : "";
   }
 };
 
@@ -88,7 +91,7 @@ export const isAuthorizedToManageProject = (userRole: string) => {
   else return false;
 };
 
-export const returnRoleName = (role: string) => {
+export const returnRoleName = (role: string): string => {
   switch (role) {
     case "ROLE_DEVELOPER":
       return "Developer";
@@ -96,5 +99,38 @@ export const returnRoleName = (role: string) => {
       return "Project Manager";
     case "ROLE_ADMIN":
       return "Administrator";
+    default:
+      return "";
+  }
+};
+
+const notifyDefaultOptions: ToastOptions = {
+  position: "top-right",
+  autoClose: 5000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+};
+
+export const notify = (
+  type: string,
+  message: string,
+  options = notifyDefaultOptions
+) => {
+  switch (type) {
+    case "success":
+      toast.success(message, options);
+      break;
+    case "error":
+      toast.error(message, options);
+      break;
+    case "info":
+      toast.info(message, options);
+      break;
+    case "warning":
+      toast.warn(message, options);
+      break;
   }
 };
