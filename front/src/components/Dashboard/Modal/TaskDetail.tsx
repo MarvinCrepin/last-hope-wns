@@ -2,27 +2,36 @@ import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 
-import moment from "moment";
+import moment, { Duration, Moment } from "moment";
 
 import UpdateTicket from "../../../graphql/mutation/Ticket/UpdateTicket";
 import GetAllState from "../../../graphql/queries/State/GetAllState";
+import CreateTicketDurationUser from "../../../graphql/mutation/TicketDurationUser/CreateTicketDurationUser";
+import GetTotalTicketDurationUserByTicket from "../../../graphql/queries/TicketDurationUser/GetTotalTicketDurationUserByTicket";
 
 import { BsHourglass, BsHourglassBottom } from "react-icons/bs";
 import { FaPaperPlane, FaRegUserCircle } from "react-icons/fa";
-import { AiFillSetting, AiOutlineClose } from "react-icons/ai";
+import {
+  AiFillSetting,
+  AiOutlineClose,
+  AiOutlineLoading,
+} from "react-icons/ai";
 
 import { loading as load, TOOGLE_LOAD } from "../../../slicer/appSlice";
 import { State, TaskInList, UserParticipant } from "../../global";
 import { user } from "../../../slicer/authSlice";
-import AssigneeAddUser from "./AssigneeAddUser";
+import AssigneeAddUser from "./TaskDetailComponent/AssigneeAddUser";
 import getAllTickets from "../../../graphql/queries/Ticket/GetAllTicket";
-import AddComment from "../../../graphql/mutation/comment/AddComment";
 import CommentList from "./TaskDetailComponent/CommentList";
 
 type Props = {
   taskPassed: TaskInList;
   closeModal: () => void;
 };
+
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
 
 export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const dispatch = useDispatch();
@@ -32,6 +41,21 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const [updateTicket, { data }] = useMutation(UpdateTicket, {
     refetchQueries: [{ query: getAllTickets }],
   });
+  const { loading: totalDurationError, data: totalDuration } = useQuery(
+    GetTotalTicketDurationUserByTicket,
+    { variables: { ticketId: taskPassed.id } }
+  );
+  const [createTicketDurationUser, { loading: loadCreate }] = useMutation(
+    CreateTicketDurationUser,
+    {
+      refetchQueries: [
+        {
+          query: GetTotalTicketDurationUserByTicket,
+          variables: { ticketId: taskPassed.id },
+        },
+      ],
+    }
+  );
 
   const [task, setTask] = useState<TaskInList | any>({});
   const [hourFrom, setHourFrom] = useState({ hourFrom: 0, minFrom: 0 });
@@ -82,33 +106,37 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
     }
   };
 
-  const addSpentTime = () => {
+  const differenceInHour = () => {
     const timeFrom = moment().hour(hourFrom.hourFrom).minute(hourFrom.minFrom);
     const timeTo = moment().hour(hourTo.hourTo).minute(hourTo.minTo);
 
     const diff = timeTo.diff(timeFrom);
-    const duration = moment.duration(diff);
+    const duration: Duration = moment.duration(diff);
 
-    const differenceInHour = duration.hours() + duration.minutes() / 60;
-
-    const newPassedTime = task.passed_time + differenceInHour;
-
-    dispatch(TOOGLE_LOAD(true));
-    updateTicket({
-      variables: {
-        ticketId: task.id,
-        data: { passed_time: newPassedTime },
-      },
-    });
+    return duration.asMinutes();
   };
 
-  const changeEnum = (
+  const addSpentTime = () => {
+    if (differenceInHour() > 0) {
+      createTicketDurationUser({
+        variables: {
+          data: { minute_passed: differenceInHour(), ticket_id: task.id },
+        },
+        onCompleted: () => {
+          setHourFrom({ hourFrom: 0, minFrom: 0 });
+          setHourTo({ hourTo: 0, minTo: 0 });
+        },
+      });
+    }
+  };
+
+  const changeEnum = async (
     e: React.ChangeEvent<HTMLSelectElement>,
     type: String
   ) => {
     dispatch(TOOGLE_LOAD(true));
 
-    updateTicket({
+    await updateTicket({
       variables: {
         ticketId: task.id,
         data: {
@@ -117,6 +145,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         },
       },
     });
+    // dispatch(TOOGLE_LOAD(false));
   };
 
   return (
@@ -173,14 +202,33 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     </div>
                     <div className="space-y-2">
                       <div className="text-lh-dark font-semibold ">
-                        {task.estimated_time} Hours
+                        {task.estimated_time
+                          ? `${task.estimated_time} Hours`
+                          : "Non-défini"}
                       </div>
-                      <div className="text-lh-primary font-semibold">{`${
-                        task.passed_time
-                      } Hours ( ${(
-                        (task.passed_time * 100) /
-                        task.estimated_time
-                      ).toFixed(2)} % )`}</div>
+                      <div className="text-lh-primary font-semibold">
+                        {`${
+                          totalDuration
+                            ? moment
+                                .duration(
+                                  totalDuration.GetTicketDurationUserByTicket
+                                    .totalTime,
+                                  "minutes"
+                                )
+                                .asHours()
+                                .toFixed(0)
+                            : 0
+                        } Hours  ${
+                          totalDuration && task.estimated_time
+                            ? `( ${(
+                                (totalDuration.GetTicketDurationUserByTicket
+                                  .totalTime *
+                                  100) /
+                                (task.estimated_time * 60)
+                              ).toFixed(2)} %)`
+                            : ""
+                        } `}
+                      </div>
                     </div>
                   </div>
 
@@ -305,10 +353,19 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                       </div>
                       <div className="space-y-4 flex items-center justify-start lg:col-span-3">
                         <button
-                          className="bg-lh-secondary font-text text-lh-light py-1.5 px-3 flex space-x-2 items-center rounded-lg "
+                          disabled={loadCreate || differenceInHour() <= 0}
+                          className={classNames(
+                            loadCreate ? "grayscale cursor-progress" : "",
+                            "bg-lh-secondary font-text text-lh-light py-1.5 px-3 flex space-x-2 items-center rounded-lg "
+                          )}
                           onClick={() => addSpentTime()}
                         >
-                          <BsHourglassBottom />
+                          {!loadCreate ? (
+                            <BsHourglassBottom />
+                          ) : (
+                            <AiOutlineLoading className="animate-spin" />
+                          )}
+
                           <div>Add to Spent Time</div>
                         </button>
                       </div>

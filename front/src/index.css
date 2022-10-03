@@ -10,6 +10,7 @@
   --light-color: #fcfcfc;
   --dark-color: #4f4f4f;
   --light-gray-color: #cfcfcf;
+  --toastify-color-success: #A3E784 !important;
   --title-font: "Cabin Sketch";
   --text-font: "Baloo Da 2";
 }

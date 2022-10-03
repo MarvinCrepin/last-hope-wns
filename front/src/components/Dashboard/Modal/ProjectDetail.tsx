@@ -1,20 +1,19 @@
-import Moment from "react-moment";
 import { useState } from "react";
+import Moment from "react-moment";
 
-import { FaCalendarDay, FaCalendarCheck } from "react-icons/fa";
-import { MdOutlineAccountCircle } from "react-icons/md";
-import { FaCheck } from "react-icons/fa";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import { useMutation } from "@apollo/client";
+import { FaCalendarCheck, FaCalendarDay, FaCheck } from "react-icons/fa";
+import { MdOutlineAccountCircle } from "react-icons/md";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
-import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+import { Line } from "react-chartjs-2";
 
-import "../../../assets/css/projectDetail.css";
-import { Participant, Project, User } from "../../global";
 import { useSelector } from "react-redux";
+import "../../../assets/css/projectDetail.css";
 import { role } from "../../../slicer/authSlice";
 import { roleList } from "../../common/Utils";
+import { Participant, Project, User } from "../../global";
 
 import UpdateProject from "../../../graphql/mutation/Project/UpdateProject";
 import getAllProjects from "../../../graphql/queries/Project/GetAllProject";
@@ -71,7 +70,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
   const [productOwnerId, setProductOwnerId] = useState(
     project.product_owner.id
   );
-  const [updateProject, { data, loading, error }] = useMutation(UpdateProject, {
+  const [updateProject] = useMutation(UpdateProject, {
     refetchQueries: [{ query: getAllProjects }],
   });
 
@@ -97,7 +96,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
       role="dialog"
       aria-modal="true"
     >
-      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div className="flex items-end justify-center  pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div
           className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity "
           onClick={() => closeModal()}

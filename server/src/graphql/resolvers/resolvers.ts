@@ -5,6 +5,7 @@ import ticketResolver from "./ticket/ticket";
 import stateResolver from "./state/state";
 import ticketUserResolver from "./ticketUser/ticketUser";
 import commentResolver from "./comment/comment";
+import ticketDurationUserResolver from "./ticketDurationUser/ticketDurationUser";
 
 const resolvers = [
   projectResolvers,
@@ -14,6 +15,7 @@ const resolvers = [
   ticketResolver,
   ticketUserResolver,
   commentResolver,
+  ticketDurationUserResolver,
 ];
 
 export default resolvers;
