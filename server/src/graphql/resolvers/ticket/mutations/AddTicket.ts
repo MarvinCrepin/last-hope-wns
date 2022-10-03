@@ -16,8 +16,6 @@ export default async (
     throw new ApolloError("Not Authorized");
   }
 
-  console.log(args.data);
-
   try {
     const ticket = await context.prisma.ticket.create({
       data: {

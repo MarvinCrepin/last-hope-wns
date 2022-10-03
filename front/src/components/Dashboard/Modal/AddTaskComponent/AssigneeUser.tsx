@@ -53,7 +53,6 @@ function AssigneeUser({ setParticipants }: Props) {
   };
 
   const handleChangeSelected = (e: any) => {
-    console.log(e.target.value);
     if (e.target.value !== "select") {
       const index = usersAvailable.findIndex(
         (user: User) => user.id === e.target.value

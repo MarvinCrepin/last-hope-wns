@@ -18,36 +18,37 @@ type Props = {
   usersAssignee: any[];
 };
 
-function AddMemberToProject({ closeModal, addUser, deleteUser, usersAssignee }: Props) {
+function AddMemberToProject({
+  closeModal,
+  addUser,
+  deleteUser,
+  usersAssignee,
+}: Props) {
   const [userSelected, setUserSelected] = useState<any>("null");
 
   const [usersAvailable, setUsersAvailable] = useState<User[]>([]);
 
-  const {loading, error, data} = useQuery(GetAllUsers);
+  const { loading, error, data } = useQuery(GetAllUsers);
 
   useEffect(() => {
-      let participantsId: string[] = [];
-      console.log(usersAssignee);
-      usersAssignee.forEach((user: any) => {
-        console.log(user);
-        participantsId.push(user.userId);
+    let participantsId: string[] = [];
+
+    usersAssignee.forEach((user: any) => {
+      participantsId.push(user.userId);
+    });
+    let usersNew: User[] = [];
+
+    if (data) {
+      data.GetAllUsers.forEach((user: User) => {
+        if (!participantsId.includes(user.id)) {
+          usersNew.push(user);
+        }
       });
-      let usersNew: User[] = [];
+    }
 
+    setUsersAvailable(usersNew);
 
-      console.log("data", data);
-
-      if (data) {
-        data.GetAllUsers.forEach((user: User) => {
-          if (!participantsId.includes(user.id)) {
-              usersNew.push(user);
-          }
-        });
-      }
-
-      setUsersAvailable(usersNew);
-
-      setUserSelected("null");
+    setUserSelected("null");
   }, [usersAssignee, data, loading]);
 
   // const [createTicketUser, { loading: loadCreate }] =
@@ -164,15 +165,17 @@ function AddMemberToProject({ closeModal, addUser, deleteUser, usersAssignee }: 
                     </div>
                   )} */}
                   <div
-                      className={
-                        userSelected !== "null"
-                          ? "text-lh-primary cursor-pointer hover:opacity-70"
-                          : "text-gray-500 cursor-not-allowed"
-                      }
-                      onClick={() => userSelected !== "null" && addUser(userSelected)}
-                    >
-                      <FaCheck size={30} />
-                    </div>
+                    className={
+                      userSelected !== "null"
+                        ? "text-lh-primary cursor-pointer hover:opacity-70"
+                        : "text-gray-500 cursor-not-allowed"
+                    }
+                    onClick={() =>
+                      userSelected !== "null" && addUser(userSelected)
+                    }
+                  >
+                    <FaCheck size={30} />
+                  </div>
                 </div>
               </form>
               <div className="flex flex-wrap">

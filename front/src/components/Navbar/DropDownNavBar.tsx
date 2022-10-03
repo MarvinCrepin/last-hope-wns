@@ -22,8 +22,6 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-
-
 export default function DropDownNavBar() {
   const [notificationsList, setNotificationsList] = useState<Notification[]>(
     []
@@ -179,7 +177,12 @@ export default function DropDownNavBar() {
             </Menu.Items>
           </Transition>
         </Menu>
-        {displayModalUserDetails && <UserDetail user={userInStore}  closeModal={() => closeModalUserDetails()}></UserDetail>}
+        {displayModalUserDetails && (
+          <UserDetail
+            user={userInStore}
+            closeModal={() => closeModalUserDetails()}
+          ></UserDetail>
+        )}
       </div>
     </nav>
   );
