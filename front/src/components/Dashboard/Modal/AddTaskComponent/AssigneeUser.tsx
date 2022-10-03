@@ -68,12 +68,9 @@ function AssigneeUser({ setParticipants }: Props) {
   }, [getAllUsersList, participantsSelected]);
 
   return (
-    <div>
-      <h3 className="text-lh-primary font-title text-4xl">Assignee</h3>
-      <div className="my-4 w-full">
-        <label htmlFor="user" className="text-lg font-text text-lh-dark">
-          Available User
-        </label>
+    <div className="mx-2">
+      <h3 className="text-lh-primary font-text text-3xl">Assignee</h3>
+      <div className="my-2 w-full">
         <div className="flex w-full justify-between items-center">
           <select
             onChange={(e) => {

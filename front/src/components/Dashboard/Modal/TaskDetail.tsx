@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 
 import UpdateTicket from "../../../graphql/mutation/Ticket/UpdateTicket";
-import GetAllState from "../../../graphql/queries/State/GetAllState";
+import GetAllState from "../../../graphql/queries/State/GetAllStates";
 
 import { BsHourglass, BsHourglassBottom } from "react-icons/bs";
 import { FaPaperPlane, FaRegUserCircle } from "react-icons/fa";

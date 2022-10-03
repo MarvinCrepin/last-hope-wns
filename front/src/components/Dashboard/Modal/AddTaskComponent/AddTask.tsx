@@ -1,12 +1,13 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 
 import AddTicket from "../../../../graphql/mutation/Ticket/AddTicket";
 import getNameAndIdProjects from "../../../../graphql/queries/Project/GetNameAndIdOfAllProject";
 import AssigneeUser from "./AssigneeUser";
 import getAllTickets from "../../../../graphql/queries/Ticket/GetAllTicket";
-import { Project, User } from "../../../global";
+import getAllStates from "../../../../graphql/queries/State/GetAllStates";
+import { Project, User, State } from "../../../global";
 
 type Props = {
   closeModal: () => void;
@@ -35,6 +36,7 @@ export default function AddTask({ closeModal }: Props) {
   });
 
   const { data: allProjects } = useQuery(getNameAndIdProjects);
+  const { data: allStates } = useQuery(getAllStates);
 
   const parseAndSetTime = (target: HTMLInputElement) => {
     let value = parseInt(target.value);
@@ -56,6 +58,10 @@ export default function AddTask({ closeModal }: Props) {
     };
     addTask({ variables: { data: taskData } });
   };
+
+  useEffect(() => {
+    console.log(allStates);
+  }, [allStates]);
 
   return (
     <div
@@ -88,7 +94,7 @@ export default function AddTask({ closeModal }: Props) {
               >
                 <AiOutlineClose size={30} />
               </div>
-              <div className="p-4 ">
+              <div className="pl-6 pr-4 py-4">
                 <div className="section-choice-project">
                   <form
                     onSubmit={(e) => handleSubmit(e)}
@@ -215,6 +221,41 @@ export default function AddTask({ closeModal }: Props) {
                         </div>
                       </div>
                     </div>
+                    <div>
+                      <label
+                        htmlFor="project"
+                        className="text-lh-primary text-2xl p-2"
+                      >
+                        Status
+                      </label>
+                      {allStates && (
+                        <div>
+                          <select
+                            required
+                            onChange={(e) => {
+                              setTaskInformation({
+                                ...taskInformation,
+                                [e.target.name]: e.target.value,
+                              });
+                            }}
+                            className="w-36 rounded bg-lh-light text-lh-dark p-2 m-2 border-[1.5px] border-lh-dark focus-visible:ring-lh-primary"
+                            id="project"
+                            name="project_id"
+                          >
+                            <option value={"null"}>Chose a state</option>
+                            {allStates.GetAllState.map((state: State) => (
+                              <option
+                                value={state.id}
+                                key="project_id"
+                                className="hover:outline-lh-primary font-medium"
+                              >
+                                {state.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+                    </div>
                     <AssigneeUser
                       setParticipants={(value: User[]) =>
                         setParticipants(value)
@@ -222,7 +263,7 @@ export default function AddTask({ closeModal }: Props) {
                     />
                     <button
                       type="submit"
-                      className="bg-lh-primary w-fit font-title text-lh-light text-2xl py-1.5 px-3 space-x-2 items-center rounded my-4"
+                      className="bg-lh-primary w-fit font-title text-lh-light text-2xl py-1.5 px-3 space-x-2 items-center rounded mx-2 my-4"
                     >
                       Add Task
                     </button>
