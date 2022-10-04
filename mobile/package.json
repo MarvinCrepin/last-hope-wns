@@ -25,7 +25,8 @@
     "react-native-screens": "~3.15.0",
     "react-native-web": "~0.18.7",
     "tailwindcss": "^3.1.8",
-    "twrnc": "^3.4.0"
+    "twrnc": "^3.4.0",
+    "expo-splash-screen": "~0.16.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
