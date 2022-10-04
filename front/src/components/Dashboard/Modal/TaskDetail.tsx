@@ -23,6 +23,7 @@ import { user } from "../../../slicer/authSlice";
 import AssigneeAddUser from "./TaskDetailComponent/AssigneeAddUser";
 import getAllTickets from "../../../graphql/queries/Ticket/GetAllTicket";
 import CommentList from "./TaskDetailComponent/CommentList";
+import { notify } from "../../common/Utils";
 
 type Props = {
   taskPassed: TaskInList;
@@ -123,6 +124,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
           data: { minute_passed: differenceInHour(), ticket_id: task.id },
         },
         onCompleted: () => {
+          notify("success", "You have added time successfully");
           setHourFrom({ hourFrom: 0, minFrom: 0 });
           setHourTo({ hourTo: 0, minTo: 0 });
         },
@@ -145,7 +147,6 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         },
       },
     });
-    // dispatch(TOOGLE_LOAD(false));
   };
 
   return (
