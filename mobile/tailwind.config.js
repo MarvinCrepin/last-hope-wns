@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        text: ["baloo-da-2", "cursive"],
+        text: ["Baloo Da 2 Regular", "cursive"],
         title: ["Cabin Sketch", "cursive"],
       },
       colors: {
