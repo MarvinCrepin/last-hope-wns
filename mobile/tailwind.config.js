@@ -11,12 +11,11 @@ module.exports = {
         title: ["Cabin Sketch", "cursive"],
       },
       colors: {
-        "lh-primary": "#d66060",
-        "lh-secondary": "#fe9595",
-        "lh-light": "#fcfcfc",
-        "lh-dark": "#4f4f4f",
-        "lh-gray": "#e5e5e5",
-        "lh-light-gray": "#cfcfcf",
+        primary: '#1B3464',
+        secondary: '#98B8E8',
+        tertiary: '#D66060',
+        white: '#FFFFFF',
+        darkgrey: '#4F4F4F'
       },
     },
   },
