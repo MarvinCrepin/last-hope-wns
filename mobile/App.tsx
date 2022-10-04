@@ -1,5 +1,3 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -9,8 +7,34 @@ import HomeScreen from "./src/screens/HomeScreen";
 import SearchScreen from "./src/screens/SearchScreen";
 import AccountScreen from "./src/screens/AccountScreen";
 
+// import { isLoaded, isLoading, useFonts } from "expo-font";
+// import AppLoading from 'expo-app-loading';
+import * as Font from "expo-font";
+import { useState } from "react";
+import { useEffect } from "react";
+
 const Tab = createBottomTabNavigator();
+
+const fetchFonts = () =>
+  Font.loadAsync({
+    "baloo-da-2": require("./src/assets/fonts/BalooDa2-Medium.ttf"),
+    "Cabin Sketch": require("./src/assets/fonts/CabinSketch-Regular.ttf"),
+  });
+
 export default function App() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+  useEffect(() => {
+    async function getFonts() {
+      await fetchFonts();
+      setFontsLoaded(true);
+    }
+    getFonts();
+  }, []);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <NavigationContainer>
       <Tab.Navigator
