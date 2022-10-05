@@ -13,7 +13,7 @@ export default function Task() {
       <View key="header" style={taskStyles.header}>
         <View key="badge-priority" style={taskStyles.badge}>
           <Image
-            style={styles.tinyIcon}
+            style={styles.flameIcon}
             source={require("../../assets/img/fire.png")}
           />
           <Text style={styles.text}>Priority</Text>
@@ -32,7 +32,7 @@ export default function Task() {
         <Text key="sub-title" style={taskStyles.subTitle}>
           Sous-titre
         </Text>
-        <View key="progress">
+        <View key="progress" style={tw.style("my-3")}>
           <View style={taskStyles.progress}>
             <Text style={taskStyles.progressText}>Progress</Text>
             <Text style={taskStyles.progressText}>30 %</Text>
@@ -47,6 +47,15 @@ export default function Task() {
             height={15}
             borderRadius={10}
           />
+        </View>
+      </View>
+      <View key="footer">
+        <View key="badge-priority" style={taskStyles.badge}>
+          <Image
+            style={styles.chronoIcon}
+            source={require("../../assets/img/chronometer.png")}
+          />
+          <Text style={styles.text}>5 days left</Text>
         </View>
       </View>
     </View>
