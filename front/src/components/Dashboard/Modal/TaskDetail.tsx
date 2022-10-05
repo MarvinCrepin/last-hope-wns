@@ -270,29 +270,31 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                                 size={22}
                                 color="var(--primary-color)"
                               />
-                              Delete
+                              Delete task
                             </div>
                           )}
                         </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <div
-                              onClick={() => setModalConfirmArchive(true)}
-                              className={classNames(
-                                active
-                                  ? "bg-gray-100 text-gray-900"
-                                  : "text-lh-dark",
-                                "flex items-center gap-x-2 px-4 py-2 text-md cursor-pointer"
-                              )}
-                            >
-                              <FaArchive
-                                size={22}
-                                color="var(--primary-color)"
-                              />
-                              Archive
-                            </div>
-                          )}
-                        </Menu.Item>
+                        {!task.isArchived && (
+                          <Menu.Item>
+                            {({ active }) => (
+                              <div
+                                onClick={() => setModalConfirmArchive(true)}
+                                className={classNames(
+                                  active
+                                    ? "bg-gray-100 text-gray-900"
+                                    : "text-lh-dark",
+                                  "flex items-center gap-x-2 px-4 py-2 text-md cursor-pointer"
+                                )}
+                              >
+                                <FaArchive
+                                  size={22}
+                                  color="var(--primary-color)"
+                                />
+                                Archive task
+                              </div>
+                            )}
+                          </Menu.Item>
+                        )}
                       </div>
                     </Menu.Items>
                   </Transition>
