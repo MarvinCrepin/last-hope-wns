@@ -8,7 +8,10 @@ module.exports = {
     extend: {
       fontFamily: {
         text: ["Baloo Da 2 Regular", "cursive"],
+        textMedium : ["Baloo Da 2 Medium", "cursive"],
+        textBold : ["Baloo Da 2 SemiBold", "cursive"],
         title: ["Cabin Sketch", "cursive"],
+        titleBold: ["Cabin Sketch Bold", "cursive"],
       },
       colors: {
         primary: '#1B3464',
