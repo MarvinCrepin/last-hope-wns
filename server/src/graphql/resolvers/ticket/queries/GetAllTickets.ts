@@ -1,12 +1,24 @@
 import isConnected from "../../../../helpers/isConnected";
-import { Context } from "../../../resolvers/types";
+import { Context, FindManyArgs } from "../../../resolvers/types";
 import { ROLES } from "../../../../Constant";
 
-export default async (_obj: any, _args: any, context: Context) => {
+/**
+ * Get all tickets
+ * @param _obj
+ * @param {isArchive} Si isArchive est à true, on récupère les tickets archivés
+ * à false, on récupère les tickets non archivés
+ * undefined, on récupère tous les tickets
+ * @param context
+ */
+export default async (
+  _obj: any,
+  { isarchive }: { isarchive: boolean },
+  context: Context
+) => {
   isConnected(context.authenticatedUser);
 
   if (context.authenticatedUser.roles === ROLES.ADMIN) {
-    const result = await context.prisma.ticket.findMany({
+    const options: FindManyArgs = {
       include: {
         state: true,
         project: true,
@@ -17,7 +29,15 @@ export default async (_obj: any, _args: any, context: Context) => {
           },
         },
       },
-    });
+    };
+
+    if (isarchive !== undefined) {
+      options.where = {
+        isArchived: isarchive,
+      };
+    }
+
+    const result = await context.prisma.ticket.findMany(options);
 
     return result;
   }
@@ -37,7 +57,7 @@ export default async (_obj: any, _args: any, context: Context) => {
     projectsId.push(project.projectId);
   });
 
-  const result = await context.prisma.ticket.findMany({
+  const options: FindManyArgs = {
     where: {
       project: {
         id: {
@@ -54,7 +74,13 @@ export default async (_obj: any, _args: any, context: Context) => {
         },
       },
     },
-  });
+  };
+
+  if (isarchive !== undefined) {
+    options.where = { ...options.where, isArchived: isarchive };
+  }
+
+  const result = await context.prisma.ticket.findMany(options);
 
   return result;
 };

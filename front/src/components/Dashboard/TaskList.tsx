@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { FaSearch, FaPlus } from "react-icons/fa";
 
-import getAllTickets from "../../graphql/queries/Ticket/GetAllTicket";
+import getAllTicketsNotArchive from "../../graphql/queries/Ticket/GetAllTicketsNotArchive";
 import GetAllProjects from "../../graphql/queries/Project/GetAllProject";
 
 import { role } from "../../slicer/authSlice";
@@ -41,7 +41,9 @@ export default function TaskList() {
   const userRole = useSelector(role);
   const loadingInStore = useSelector(load);
 
-  const { loading, error, data } = useQuery(getAllTickets);
+  const { loading, error, data } = useQuery(getAllTicketsNotArchive, {
+    variables: { isarchive: false },
+  });
   const { data: dataProjects } = useQuery(GetAllProjects);
 
   const [hideDone, setHideDone] = useState(false);
