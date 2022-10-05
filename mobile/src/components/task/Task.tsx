@@ -24,6 +24,10 @@ export default function Task() {
           />
         </View>
       </View>
+      <View key="body" style={taskStyles.body}>
+        <Text key="title" style={taskStyles.title}>Titre de la tâche</Text>
+        <Text key="sub-title" style={taskStyles.subTitle}>Sous-titre</Text>
+      </View>
     </View>
   );
 }
