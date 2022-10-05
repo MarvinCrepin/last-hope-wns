@@ -11,14 +11,13 @@ generator client {
 }
 
 model Project {
-  id               String   @id @default(cuid())
+  id               String    @id @default(cuid())
   title            String
-  description      String
-  start_at         DateTime
-  due_at           DateTime
-  end_at           DateTime
-  advancement      Int
-  product_owner    User?    @relation(fields: [product_owner_id], references: [id], onUpdate: SetNull, onDelete: SetNull)
+  description      String?
+  created_at       DateTime  @default(now())
+  start_at         DateTime?
+  end_at           DateTime?
+  product_owner    User?     @relation(fields: [product_owner_id], references: [id], onUpdate: SetNull, onDelete: SetNull)
   product_owner_id String?
 
   participants UserProject[]
@@ -47,7 +46,6 @@ model User {
   ticketUser         TicketUser[]
   comments           Comment[]
   ticketDurationUser TicketDurationUser[]
-
 }
 
 model Notification {
@@ -70,16 +68,17 @@ model TicketUser {
 }
 
 model Ticket {
-  id             String    @id @default(cuid())
+  id             String   @id @default(cuid())
   title          String
-  description    String?   @db.Text
-  due_at         DateTime?
-  project        Project   @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  description    String?  @db.Text
+  project        Project  @relation(fields: [project_id], references: [id], onDelete: Cascade)
   project_id     String
   estimated_time Int?
   advancement    Int?
-  state          State     @relation(fields: [state_id], references: [id])
-  state_id       String
+  state          State?   @relation(fields: [state_id], references: [id])
+  state_id       String?
+  created_at     DateTime @default(now())
+  isArchived     Boolean  @default(false)
 
   ticketUser         TicketUser[]
   comments           Comment[]
