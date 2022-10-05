@@ -24,5 +24,5 @@ interface AddTicketInput {
   due_at: ?DateTime;
   description: ?string;
   state_id: string;
-  ticketUser:[TicketUser];
+  ticketUser: [TicketUser];
 }

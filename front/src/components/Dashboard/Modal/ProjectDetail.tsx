@@ -113,8 +113,11 @@ function ProjectDetail({ project, users, closeModal }: Props) {
             <div>{`Project detail`}</div>
           </div>
           <div className=" relative bg-white rounded-lg text-left overflow-hidden transform transition-all project-modal-inside">
-            <div className="absolute right-2 top-2 text-lh-primary cursor-pointer" onClick={() => closeModal()}>
-                <AiOutlineClose size={30} />
+            <div
+              className="absolute right-2 top-2 text-lh-primary cursor-pointer"
+              onClick={() => closeModal()}
+            >
+              <AiOutlineClose size={30} />
             </div>
             <div className="project-modal-infos py-8 px-2 sm:pl-6 sm:pr-6">
               <div>
@@ -227,9 +230,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                 </ul>
               </div>
               <div>
-                <h2 className="text-4xl font-title text-lh-primary ">
-                  Infos
-                </h2>
+                <h2 className="text-4xl font-title text-lh-primary ">Infos</h2>
                 <div className="pt-4 pb-6">
                   <p className="text-gray-700 font-title text-xl flex">
                     <FaCalendarDay />

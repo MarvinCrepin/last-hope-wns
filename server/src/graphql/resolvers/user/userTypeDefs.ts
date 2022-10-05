@@ -7,7 +7,6 @@ export default gql`
     firstname: String
     mail: String
     roles: String
-    password: String
   }
 
   type ResponseSecurity {
