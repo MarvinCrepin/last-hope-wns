@@ -8,5 +8,7 @@ const taskStyles = StyleSheet.create({
   body: tw.style("py-3"),
   title: tw.style("text-2xl", "font-textBold", "text-white"),
   subTitle: tw.style("text-xl", "font-text", "text-white"),
+  progress:tw.style("flex-row", "justify-between"),
+  progressText: tw.style("text-xl", "font-textBold", "text-primary"),
 });
 export default taskStyles;

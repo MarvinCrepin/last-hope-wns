@@ -1,10 +1,11 @@
+import { nonNull } from "nexus";
 import React from "react";
 import { View, Text, Image } from "react-native";
+import * as Progress from "react-native-progress";
+import tw from "../../../lib/tailwind";
 
 import taskStyles from "../../assets/styles/components/taskStyle";
 import styles from "../../assets/styles/styles";
-
-import tw from "../../../lib/tailwind";
 
 export default function Task() {
   return (
@@ -25,8 +26,28 @@ export default function Task() {
         </View>
       </View>
       <View key="body" style={taskStyles.body}>
-        <Text key="title" style={taskStyles.title}>Titre de la tâche</Text>
-        <Text key="sub-title" style={taskStyles.subTitle}>Sous-titre</Text>
+        <Text key="title" style={taskStyles.title}>
+          Titre de la tâche
+        </Text>
+        <Text key="sub-title" style={taskStyles.subTitle}>
+          Sous-titre
+        </Text>
+        <View key="progress">
+          <View style={taskStyles.progress}>
+            <Text style={taskStyles.progressText}>Progress</Text>
+            <Text style={taskStyles.progressText}>30 %</Text>
+          </View>
+
+          <Progress.Bar
+            progress={0.3}
+            width={null}
+            color={tw.color("primary")}
+            unfilledColor={tw.color("white")}
+            borderWidth={0}
+            height={15}
+            borderRadius={10}
+          />
+        </View>
       </View>
     </View>
   );
