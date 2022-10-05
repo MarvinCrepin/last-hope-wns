@@ -234,7 +234,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
           </span>
 
           <div className="p-8 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full">
-            <div className="flex">
+            <div className="flex w-full">
               <div className=" bg-lh-primary text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
                 <div>{`Task detail - ${task.title}`}</div>
               </div>
@@ -253,7 +253,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-56  origin-top-right rounded-md bg-lh-light shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="absolute right-0 z-10 mt-2  max-w-lg min-w-[11rem] origin-top-right rounded-md bg-lh-light shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-1">
                         <Menu.Item>
                           {({ active }) => (
