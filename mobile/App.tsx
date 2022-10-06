@@ -5,22 +5,30 @@ import {
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
+  useLazyQuery,
+  useQuery,
 } from "@apollo/client";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./store";
 import { useEffect, useState } from "react";
 import { setContext } from "@apollo/client/link/context";
 import LoadedFont from "./src/utils/LoadedFont";
 import Navigation from "./src/components/Navigation";
+import VerifyToken from "./src/graphql/queries/User/VerifyToken";
 
 import * as SplashScreen from "expo-splash-screen";
+import { LOGOUT_USER } from "./src/slicer/authReducer";
+import AppEntry from "./AppEntry";
+
 SplashScreen.preventAutoHideAsync();
 
 const authLink = setContext((_, { headers }) => {
+  const token = store.getState().token;
   return {
     headers: {
       ...headers,
+      authorization: token ? token : "",
     },
   };
 });
@@ -34,32 +42,12 @@ const client = new ApolloClient({
 });
 
 export default function App() {
-  const [appIsReady, setAppIsReady] = useState(false);
-  const [isLogged, setIsLogged] = useState(false);
-  console.log(store.getState().token);
-  useEffect(() => {
-    store.getState().token !== null ? setIsLogged(true) : setIsLogged(false);
-    async function prepare() {
-      try {
-        await LoadedFont();
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setAppIsReady(true);
-        await SplashScreen.hideAsync();
-      }
-    }
-    prepare();
-  }, [store.getState().token]);
-  if (!appIsReady) {
-    return null;
-  }
+
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          {isLogged ? <Navigation appIsReady={appIsReady} /> : <Login />}
+          <AppEntry/>
         </PersistGate>
       </Provider>
     </ApolloProvider>

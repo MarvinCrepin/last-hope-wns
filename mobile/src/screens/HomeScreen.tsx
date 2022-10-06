@@ -1,20 +1,27 @@
-import React, { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
+import { useQuery } from "@apollo/client";
+import GetAllTickets from "../graphql/queries/Ticket/GetAllTickets";
+
 import * as SplashScreen from "expo-splash-screen";
 import tw from "../../lib/tailwind";
 import styles from "../assets/styles/styles";
 import TasksList from "../components/task/TasksList";
 
+import { TaskInList } from "../../global";
+
 export default function HomeScreen({ route }: { route: any; navigation: any }) {
   const { appIsReady } = route.params;
+  const [allTickets, setAllTickets] = useState<TaskInList[]>([]);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
+  useQuery(GetAllTickets, {
+    onCompleted(data) {
+      console.log(data);
+    },
+  });
+
   return (
-    <View style={tw.style("p-5")} onLayout={onLayoutRootView}>
+    <View style={tw.style("p-5")}>
       <View key="title">
         <Text style={styles.mainTitle}>
           Hi{" "}
@@ -24,7 +31,10 @@ export default function HomeScreen({ route }: { route: any; navigation: any }) {
           <Text style={styles.mainTitle}>No release on friday !</Text>
         </View>
       </View>
-      <View key="tasksAndProjects" style={tw.style("items-center", 'py-3', 'my-3')}>
+      <View
+        key="tasksAndProjects"
+        style={tw.style("items-center", "py-3", "my-3")}
+      >
         <View key="header" style={styles.homeHeader}>
           <TouchableOpacity style={styles.tab}>
             <Text style={styles.subTitle}>TASKS</Text>
