@@ -10,7 +10,7 @@ import {
 } from "@apollo/client";
 import { Provider, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import store from "./store";
+import {store, persistor} from "./store";
 import VerifyToken from "./src/graphql/queries/User/VerifyToken";
 import { useEffect } from "react";
 import { user } from "./src/slicer/authReducer";
@@ -33,9 +33,14 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-const persistor = persistStore(store);
 
 export default function App() {
+
+  useEffect(() => {
+    persistStore(store, null, () => {
+      console.log(store.getState().user);
+    });
+  }, [])
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>

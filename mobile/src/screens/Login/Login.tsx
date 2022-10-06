@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import tw from "../../../lib/tailwind";
 import LoginQuery from "../../graphql/mutations/User/LoginQuery";
 import { AUTHENTICATE_USER_IN_STORE, user } from "../../slicer/authReducer";
+import * as SecureStore from 'expo-secure-store';
 
 export default function Login() {
 
@@ -29,12 +30,12 @@ export default function Login() {
           token: data.Login.token,
         })
       );
-      console.log(useSelector(user));
     },
     onError(error) {
       console.error(JSON.stringify(error, null, 2));
     },
   });
+  async () => console.log(await SecureStore.getItemAsync('token'));
 
   return (
     <KeyboardAvoidingView behavior="padding">
@@ -52,7 +53,9 @@ export default function Login() {
             placeholder="Mail"
           ></TextInput>
           <TextInput
-            onChangeText={(password) => setPassword(password)}
+            onChangeText={(password) => {
+              setPassword(password)
+            }}
             style={tw`border  text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
             placeholder="Password"
             secureTextEntry={true}

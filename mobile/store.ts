@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, createStore } from "@reduxjs/toolkit";
 import storage from "redux-persist/es/storage";
 import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
@@ -7,11 +7,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { combineReducers } from "@reduxjs/toolkit";
 const persistConfig = {
 	key: "root",
-	version: 1,
 	storage: AsyncStorage,
 }
 
 const persistedReducer = persistReducer(persistConfig, authSlice)
-export default configureStore({
-  reducer: persistedReducer
-})
+
+const store = createStore(persistedReducer); // 5. create persisted store
+const persistor = persistStore(store) // 6. create the store persistor
+
+export { store, persistor }; 

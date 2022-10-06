@@ -48,8 +48,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const role = (state: { authSlice: TypeState }) =>
-  state.authSlice.user.roles;
+export const role = (state: { authSlice: TypeState }) => state.authSlice.user.roles;
 export const user = (state: { authSlice: TypeState }) => state.authSlice.user;
 
 export const { AUTHENTICATE_USER_IN_STORE, LOGOUT_USER, UPDATE_USER_IN_STORE } =
