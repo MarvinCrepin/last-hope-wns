@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Fragment } from "react";
-import { useQuery } from "@apollo/client";
+import { useApolloClient, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Menu, Transition } from "@headlessui/react";
@@ -23,6 +23,7 @@ function classNames(...classes: string[]) {
 }
 
 export default function DropDownNavBar() {
+  const client = useApolloClient();
   const [notificationsList, setNotificationsList] = useState<Notification[]>(
     []
   );
@@ -47,6 +48,7 @@ export default function DropDownNavBar() {
     dispatch(LOGOUT_USER);
     localStorage.removeItem("KeyLastHope");
     navigate("/login");
+    client.resetStore();
   };
 
   useEffect(() => {

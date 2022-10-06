@@ -1,14 +1,19 @@
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
 import Login from "./src/screens/Login/Login";
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
+  useLazyQuery,
   createHttpLink,
 } from "@apollo/client";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./store";
+import VerifyToken from "./src/graphql/queries/User/VerifyToken";
 import { useEffect, useState } from "react";
+import { user } from "./src/slicer/authReducer";
 import { persistStore } from "redux-persist";
 import { setContext } from "@apollo/client/link/context";
 import LoadedFont from "./src/utils/LoadedFont";
@@ -36,10 +41,9 @@ const client = new ApolloClient({
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
+
   useEffect(() => {
-    persistStore(store, null, () => {
-      store.getState().token ? setIsLogged(true) : setIsLogged(false);
-    });
+    (store.getState().token) ? setIsLogged(true) : setIsLogged(false);
     async function prepare() {
       try {
         await LoadedFont();
@@ -52,7 +56,6 @@ export default function App() {
     }
     prepare();
   }, []);
-
   if (!appIsReady) {
     return null;
   }

@@ -47,14 +47,14 @@ export default function Login() {
         <View style={tw`flex flex-col items-center justify-center w-80 m-auto`}>
           <TextInput
             onChangeText={(mail) => setMail(mail)}
-            style={tw`border   mb-6 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+            style={tw`border   mb-6  rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
             placeholder="Mail"
           ></TextInput>
           <TextInput
             onChangeText={(password) => {
               setPassword(password)
             }}
-            style={tw`border  text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+            style={tw`border   rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
             placeholder="Password"
             secureTextEntry={true}
           ></TextInput>
@@ -64,7 +64,7 @@ export default function Login() {
             onPress={() => loginMutation()}
             style={tw`bg-primary w-80 mt-4 m-auto text-white font-bold py-2 px-4 rounded`}
           >
-            <Text style={tw`text-center text-white p-1 text-lg	 font-base`}>
+            <Text style={tw`text-center text-white p-1 text-lg`}>
               Login
             </Text>
           </Pressable>

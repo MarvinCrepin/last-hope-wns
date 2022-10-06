@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
-
 import tw from "../../lib/tailwind";
 import styles from "../assets/styles/styles";
 import TasksList from "../components/task/TasksList";

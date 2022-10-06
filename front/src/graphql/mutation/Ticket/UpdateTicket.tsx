@@ -6,6 +6,7 @@ const UpdateTicket = gql`
       id
       title
       project {
+        id
         title
       }
       description
@@ -13,11 +14,17 @@ const UpdateTicket = gql`
       estimated_time
       advancement
       ticketUser {
+        id
         user {
           id
           lastname
           firstname
+          roles
         }
+      }
+      state_id
+      state {
+        name
       }
     }
   }

@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 const getAllTickets = gql`
-  query Query {
-    GetAllTickets {
+  query GetAllTickets($isarchive: Boolean) {
+    GetAllTickets(isarchive: $isarchive) {
       id
       title
       project {
