@@ -13,7 +13,7 @@ export default function HomeScreen({ route }: { route: any; navigation: any }) {
   }, [appIsReady]);
   return (
     <View style={tw.style("bg-primary")} onLayout={onLayoutRootView}>
-      <Text style={tw.style("font-textMedium", "text-secondary")}>Home</Text>
+      <Text style={tw.style("font-title", "text-secondary")}>Home</Text>
     </View>
   );
 }
