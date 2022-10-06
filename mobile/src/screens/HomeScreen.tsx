@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import { View, Text } from "react-native";
 import * as SplashScreen from "expo-splash-screen";
-
 import tw from "../../lib/tailwind";
 
 export default function HomeScreen({ route }: { route: any; navigation: any }) {

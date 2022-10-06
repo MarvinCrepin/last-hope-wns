@@ -39,11 +39,10 @@ const client = new ApolloClient({
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-  const [isLogged, setIsLogged] = useState(false)
+  const [isLogged, setIsLogged] = useState(false);
+
   useEffect(() => {
-    persistStore(store, null, () => {
-      store.getState().token ? setIsLogged(true) : setIsLogged(false)
-    });
+    (store.getState().token) ? setIsLogged(true) : setIsLogged(false);
     async function prepare() {
       try {
         await LoadedFont();
@@ -63,7 +62,7 @@ export default function App() {
     <ApolloProvider client={client}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-         {isLogged ? <Navigation appIsReady={appIsReady} /> : <Login />}
+          {isLogged ? <Navigation appIsReady={appIsReady} /> : <Login />}
         </PersistGate>
       </Provider>
     </ApolloProvider>
