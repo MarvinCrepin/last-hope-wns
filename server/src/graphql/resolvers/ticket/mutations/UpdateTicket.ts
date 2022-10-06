@@ -47,6 +47,16 @@ export default async (
     where: {
       id: ticketId,
     },
+    include: {
+      state: true,
+      project: true,
+      ticketUser: {
+        include: {
+          user: true,
+          ticket: true,
+        },
+      },
+    },
 
     data: newData,
   });

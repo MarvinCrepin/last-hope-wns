@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-const getAllTickets = gql`
+const getAllTicketsNotArchive = gql`
   query GetAllTickets($isarchive: Boolean) {
     GetAllTickets(isarchive: $isarchive) {
       id
@@ -30,4 +30,4 @@ const getAllTickets = gql`
   }
 `;
 
-export default getAllTickets;
+export default getAllTicketsNotArchive;

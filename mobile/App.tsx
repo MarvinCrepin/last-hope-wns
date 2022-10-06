@@ -1,3 +1,4 @@
+
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import Login from "./src/screens/Login/Login";
@@ -16,7 +17,11 @@ import { useEffect } from "react";
 import { user } from "./src/slicer/authReducer";
 import { persistStore } from "redux-persist";
 import { setContext } from "@apollo/client/link/context";
+import LoadedFont from "./src/utils/LoadedFont";
+import Navigation from "./src/components/Navigation";
 
+import * as SplashScreen from "expo-splash-screen";
+SplashScreen.preventAutoHideAsync();
 const authLink = setContext((_, { headers }) => {
   return {
     headers: {
@@ -27,7 +32,7 @@ const authLink = setContext((_, { headers }) => {
 const httpLink = createHttpLink({
   uri: "http://192.168.1.94:4000/graphql",
 });
-
+const [appIsReady, setAppIsReady] = useState(false);
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
@@ -40,14 +45,29 @@ export default function App() {
     persistStore(store, null, () => {
       console.log(store.getState().user);
     });
+       async function prepare() {
+      try {
+        await LoadedFont();
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
+          prepare();
   }, [])
+    if (!appIsReady) {
+    return null;
+  }
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <Login />
+          <Navigation appIsReady={appIsReady} />
         </PersistGate>
       </Provider>
     </ApolloProvider>
   );
 }
+
+

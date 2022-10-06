@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,23 +8,27 @@ import moment, { Duration, Moment } from "moment";
 
 import UpdateTicket from "../../../graphql/mutation/Ticket/UpdateTicket";
 import GetAllState from "../../../graphql/queries/State/GetAllStates";
+import DeleteTicket from "../../../graphql/mutation/Ticket/DeleteTicket";
 import CreateTicketDurationUser from "../../../graphql/mutation/TicketDurationUser/CreateTicketDurationUser";
 import GetTotalTicketDurationUserByTicket from "../../../graphql/queries/TicketDurationUser/GetTotalTicketDurationUserByTicket";
 
 import { BsHourglass, BsHourglassBottom } from "react-icons/bs";
-import { FaPaperPlane, FaRegUserCircle } from "react-icons/fa";
+import { FaArchive, FaRegUserCircle, FaTrashAlt } from "react-icons/fa";
 import {
   AiFillSetting,
   AiOutlineClose,
   AiOutlineLoading,
 } from "react-icons/ai";
+import { FiMoreHorizontal } from "react-icons/fi";
 
-import { loading as load, TOOGLE_LOAD } from "../../../slicer/appSlice";
+import { TOOGLE_LOAD } from "../../../slicer/appSlice";
 import { State, TaskInList, UserParticipant } from "../../global";
 import { user } from "../../../slicer/authSlice";
 import AssigneeAddUser from "./TaskDetailComponent/AssigneeAddUser";
-import getAllTickets from "../../../graphql/queries/Ticket/GetAllTicket";
+import getAllTicketsNotArchive from "../../../graphql/queries/Ticket/GetAllTicketsNotArchive";
 import CommentList from "./TaskDetailComponent/CommentList";
+import { isAuthorizedToManageProject, notify } from "../../common/Utils";
+import ModalConfirm from "../../common/ModalConfirm";
 
 type Props = {
   taskPassed: TaskInList;
@@ -37,14 +43,23 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const dispatch = useDispatch();
   const userInStore = useSelector(user);
 
+  // Query
   const { loading: loadingState, data: dataState } = useQuery(GetAllState);
   const [updateTicket, { data }] = useMutation(UpdateTicket, {
-    refetchQueries: [{ query: getAllTickets }],
+    refetchQueries: [
+      { query: getAllTicketsNotArchive, variables: { isarchive: false } },
+    ],
+    onCompleted() {
+      closeModal();
+      notify("success", "Updtate ticket success");
+    },
   });
   const { loading: totalDurationError, data: totalDuration } = useQuery(
     GetTotalTicketDurationUserByTicket,
     { variables: { ticketId: taskPassed.id } }
   );
+
+  // Mutation
   const [createTicketDurationUser, { loading: loadCreate }] = useMutation(
     CreateTicketDurationUser,
     {
@@ -56,11 +71,23 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
       ],
     }
   );
+  const [deleteTicket, { loading: loadDelete }] = useMutation(DeleteTicket, {
+    refetchQueries: [
+      { query: getAllTicketsNotArchive, variables: { isarchive: false } },
+    ],
+    onCompleted() {
+      closeModal();
+      notify("success", "Delete ticket success");
+    },
+  });
 
+  // State
   const [task, setTask] = useState<TaskInList | any>({});
   const [hourFrom, setHourFrom] = useState({ hourFrom: 0, minFrom: 0 });
   const [hourTo, setHourTo] = useState({ hourTo: 0, minTo: 0 });
   const [modalAssignee, setModalAssignee] = useState(false);
+  const [modalConfirmDelete, setModalConfirmDelete] = useState(false);
+  const [modalConfirmArchive, setModalConfirmArchive] = useState(false);
 
   const openModal = (modal: string) => {
     if (modal === "assignee") {
@@ -123,6 +150,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
           data: { minute_passed: differenceInHour(), ticket_id: task.id },
         },
         onCompleted: () => {
+          notify("success", "You have added time successfully");
           setHourFrom({ hourFrom: 0, minFrom: 0 });
           setHourTo({ hourTo: 0, minTo: 0 });
         },
@@ -145,11 +173,42 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         },
       },
     });
-    // dispatch(TOOGLE_LOAD(false));
+  };
+
+  const deleteTask = async (id: string) => {
+    deleteTicket({ variables: { ticketId: id } });
+  };
+
+  const archiveTask = async (id: string) => {
+    updateTicket({
+      variables: {
+        ticketId: id,
+        data: { isArchived: true },
+      },
+    });
   };
 
   return (
     <>
+      <ModalConfirm
+        textButtonConfirm="Delete"
+        textButtonCancel="Cancel"
+        title="Delete Task ?"
+        text="Are you sure you want to delete this task? 
+      This action cannot be canceled."
+        onConfirm={() => deleteTask(task.id)}
+        onCancel={() => setModalConfirmDelete(false)}
+        isOpen={modalConfirmDelete ? true : false}
+      />
+      <ModalConfirm
+        textButtonConfirm="Archive"
+        textButtonCancel="Cancel"
+        title="Archive Task ?"
+        text="Are you sure you want to archive this task?"
+        onConfirm={() => archiveTask(task.id)}
+        onCancel={() => setModalConfirmArchive(false)}
+        isOpen={modalConfirmArchive ? true : false}
+      />
       {modalAssignee && (
         <AssigneeAddUser
           closeModal={() => setModalAssignee(false)}
@@ -175,8 +234,72 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
           </span>
 
           <div className="p-8 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full">
-            <div className=" bg-lh-primary text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
-              <div>{`Task detail - ${task.title}`}</div>
+            <div className="flex w-full">
+              <div className=" bg-lh-primary text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
+                <div>{`Task detail - ${task.title}`}</div>
+              </div>
+              {isAuthorizedToManageProject(userInStore.roles) && (
+                <Menu as="div" className="relative inline-block text-left">
+                  <Menu.Button className=" bg-lh-dark text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
+                    <FiMoreHorizontal />
+                  </Menu.Button>
+
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute right-0 z-10 mt-2  max-w-lg min-w-[11rem] origin-top-right rounded-md bg-lh-light shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <div className="py-1">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <div
+                              onClick={() => setModalConfirmDelete(true)}
+                              className={classNames(
+                                active
+                                  ? "bg-gray-100 text-gray-900"
+                                  : "text-lh-dark",
+                                "flex items-center gap-x-2 px-4 py-2 text-md cursor-pointer"
+                              )}
+                            >
+                              <FaTrashAlt
+                                size={22}
+                                color="var(--primary-color)"
+                              />
+                              Delete task
+                            </div>
+                          )}
+                        </Menu.Item>
+                        {!task.isArchived && (
+                          <Menu.Item>
+                            {({ active }) => (
+                              <div
+                                onClick={() => setModalConfirmArchive(true)}
+                                className={classNames(
+                                  active
+                                    ? "bg-gray-100 text-gray-900"
+                                    : "text-lh-dark",
+                                  "flex items-center gap-x-2 px-4 py-2 text-md cursor-pointer"
+                                )}
+                              >
+                                <FaArchive
+                                  size={22}
+                                  color="var(--primary-color)"
+                                />
+                                Archive task
+                              </div>
+                            )}
+                          </Menu.Item>
+                        )}
+                      </div>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+              )}
             </div>
             <div className="relative bg-white rounded-b-lg rounded-tr-lg flex flex-col lg:grid lg:grid-cols-2 py-8 ">
               <div

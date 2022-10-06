@@ -5,7 +5,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import AddTicket from "../../../../graphql/mutation/Ticket/AddTicket";
 import getNameAndIdProjects from "../../../../graphql/queries/Project/GetNameAndIdOfAllProject";
 import AssigneeUser from "./AssigneeUser";
-import getAllTickets from "../../../../graphql/queries/Ticket/GetAllTicket";
+import getAllTicketsNotArchive from "../../../../graphql/queries/Ticket/GetAllTicketsNotArchive";
 import getAllStates from "../../../../graphql/queries/State/GetAllStates";
 import { Project, User, State } from "../../../global";
 import { notify } from "../../../common/Utils";
@@ -33,7 +33,9 @@ export default function AddTask({ closeModal }: Props) {
   const [estimatedTime, setEstimatedTime] = useState({ hour: 0, min: 0 });
 
   const [addTask] = useMutation(AddTicket, {
-    refetchQueries: [{ query: getAllTickets }],
+    refetchQueries: [
+      { query: getAllTicketsNotArchive, variables: { isarchive: false } },
+    ],
     onCompleted() {
       closeModal();
       notify("success", "Task added successfully");
