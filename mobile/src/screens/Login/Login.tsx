@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Image,
   KeyboardAvoidingView,
@@ -8,10 +8,10 @@ import {
   Pressable,
   View,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import tw from "../../../lib/tailwind";
 import LoginQuery from "../../graphql/mutations/User/LoginQuery";
-import { AUTHENTICATE_USER_IN_STORE, user } from "../../slicer/authReducer";
+import { AUTHENTICATE_USER_IN_STORE } from "../../slicer/authReducer";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ export default function Login() {
       loginUserInput: { mail, password },
     },
     onCompleted(data) {
-      console.log(data.Login.token);
+      console.log("data login token", data.Login.token);
 
       dispatch(
         AUTHENTICATE_USER_IN_STORE({

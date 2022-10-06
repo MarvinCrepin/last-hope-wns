@@ -1,11 +1,19 @@
 import React from "react";
 import { View } from "react-native";
+import { TaskInList } from "../../../global";
 import Task from "./Task";
 
-export default function TasksList() {
+interface IProps {
+  data: TaskInList[];
+}
+
+export default function TasksList({ data }: IProps) {
+  console.log(data);
+
   return (
-    <View style={{width:'100%'}}>
-      <Task/>
+    <View style={{ width: "100%" }}>
+      data.map()
+      <Task />
     </View>
   );
 }

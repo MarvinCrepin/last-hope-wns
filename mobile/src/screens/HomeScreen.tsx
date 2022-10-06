@@ -2,8 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { useQuery } from "@apollo/client";
 import GetAllTickets from "../graphql/queries/Ticket/GetAllTickets";
-
-import * as SplashScreen from "expo-splash-screen";
 import tw from "../../lib/tailwind";
 import styles from "../assets/styles/styles";
 import TasksList from "../components/task/TasksList";
@@ -14,9 +12,9 @@ export default function HomeScreen({ route }: { route: any; navigation: any }) {
   const { appIsReady } = route.params;
   const [allTickets, setAllTickets] = useState<TaskInList[]>([]);
 
-  useQuery(GetAllTickets, {
-    onCompleted(data) {
-      console.log(data);
+  const { data } = useQuery(GetAllTickets, {
+    onError(error) {
+      console.log(error);
     },
   });
 
@@ -43,7 +41,7 @@ export default function HomeScreen({ route }: { route: any; navigation: any }) {
             <Text style={styles.subTitle}>PROJECTS</Text>
           </TouchableOpacity>
         </View>
-        <TasksList />
+        <TasksList data={data.GetAllTickets} />
       </View>
     </View>
   );

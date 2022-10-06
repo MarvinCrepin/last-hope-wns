@@ -1,9 +1,8 @@
 import React from "react";
 import Login from "./src/screens/Login/Login";
-import { ApolloProvider, useLazyQuery } from "@apollo/client";
-import { Provider, useDispatch } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
-import { store, persistor } from "./store";
+import { useLazyQuery } from "@apollo/client";
+import { useDispatch } from "react-redux";
+import { store } from "./store";
 import { useEffect, useState } from "react";
 import LoadedFont from "./src/utils/LoadedFont";
 import Navigation from "./src/components/Navigation";
@@ -35,8 +34,8 @@ export default function AppEntry() {
   }, [data, error]);
 
   useEffect(() => {
-    console.log('token', store.getState().token);
-    
+    console.log("token", store.getState().token);
+
     store.getState().token !== null ? setIsLogged(true) : setIsLogged(false);
     async function prepare() {
       try {
@@ -48,7 +47,7 @@ export default function AppEntry() {
         setAppIsReady(true);
         await SplashScreen.hideAsync();
       }
-    } 
+    }
     prepare();
   }, [store.getState().token]);
   if (!appIsReady) {
