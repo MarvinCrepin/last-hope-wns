@@ -68,16 +68,17 @@ model TicketUser {
 }
 
 model Ticket {
-  id             String    @id @default(cuid())
+  id             String   @id @default(cuid())
   title          String
-  description    String?   @db.Text
-  due_at         DateTime?
-  project        Project   @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  description    String?  @db.Text
+  project        Project  @relation(fields: [project_id], references: [id], onDelete: Cascade)
   project_id     String
   estimated_time Int?
   advancement    Int?
-  state          State     @relation(fields: [state_id], references: [id])
-  state_id       String
+  state          State?   @relation(fields: [state_id], references: [id])
+  state_id       String?
+  created_at     DateTime @default(now())
+  isArchived     Boolean  @default(false)
 
   ticketUser         TicketUser[]
   comments           Comment[]

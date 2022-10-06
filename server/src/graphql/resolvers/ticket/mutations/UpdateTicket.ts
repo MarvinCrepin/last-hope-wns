@@ -1,6 +1,7 @@
 import isConnected from "../../../../helpers/isConnected";
 import { Context } from "../../../resolvers/types";
 import createNotification from "../../../../helpers/createNotification";
+import { TicketInputPatch } from "../types";
 
 export default async (
   _: any,
@@ -45,6 +46,16 @@ export default async (
   return await context.prisma.ticket.update({
     where: {
       id: ticketId,
+    },
+    include: {
+      state: true,
+      project: true,
+      ticketUser: {
+        include: {
+          user: true,
+          ticket: true,
+        },
+      },
     },
 
     data: newData,

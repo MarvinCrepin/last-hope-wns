@@ -66,6 +66,7 @@ export type TaskInList = {
   state_id: string;
   state: State;
   project: ProjectInTask;
+  isArchived: boolean;
 };
 
 export interface State {

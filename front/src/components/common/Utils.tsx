@@ -24,15 +24,23 @@ export const notificationIcone = (type: string, classname: string) => {
   }
 };
 
+export const ROLES = {
+  ADMIN: "ROLE_ADMIN",
+  PRODUCT_MANAGER: "ROLE_PROJECT_MANAGER",
+  DEVELOPER: "ROLE_DEVELOPER",
+};
+
+export const roleList = [ROLES.ADMIN, ROLES.PRODUCT_MANAGER, ROLES.DEVELOPER];
+
 export const theme = (userRole: string, type: string, meta: any = {}) => {
   if (type === "dashboard") {
-    if (userRole === "administrator") {
+    if (userRole === ROLES.ADMIN) {
       return "bg-lh-dark";
     } else {
       return "bg-lh-primary";
     }
   } else if (type === "nav-link") {
-    if (userRole === "administrator") {
+    if (userRole === ROLES.ADMIN) {
       return meta.isActive
         ? " bg-lh-dark text-lh-light"
         : " bg-lh-gray text-lh-dark";
@@ -46,12 +54,6 @@ export const theme = (userRole: string, type: string, meta: any = {}) => {
     return !meta.isActive ? " hidden" : "";
   }
 };
-
-export const roleList = [
-  "ROLE_DEVELOPER",
-  "ROLE_PROJECT_MANAGER",
-  "ROLE_ADMIN",
-];
 
 export const titleByRole = (userRole: string): string => {
   const dashboardTitle: DashboardTitle = {
@@ -114,6 +116,11 @@ const notifyDefaultOptions: ToastOptions = {
   progress: undefined,
 };
 
+/**
+ * @param type "success" | "error" | "info" | "warning"
+ * @param message  message to display
+ * @param options ToastOptions
+ */
 export const notify = (
   type: string,
   message: string,

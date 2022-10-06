@@ -1,6 +1,6 @@
-import { SetStateAction, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Moment from "react-moment";
-import { ApolloError, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useSelector } from "react-redux";
 import { Chart, registerables } from "chart.js";
 import { Line } from "react-chartjs-2";
@@ -20,7 +20,6 @@ import getAllProjects from "../../../graphql/queries/Project/GetAllProject";
 import AddMemberToProject from "./AddForm/AddMemberToProject";
 import CreateUserProject from "../../../graphql/mutation/UserProject/CreateUserProject";
 import DeleteUserProject from "../../../graphql/mutation/UserProject/DeleteUserProject";
-import moment from "moment";
 
 Chart.register(...registerables);
 

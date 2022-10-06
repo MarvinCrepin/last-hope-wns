@@ -12,7 +12,6 @@ export default async (_parent: any, args: { data: any }, context: Context) => {
   }
 
   try {
-    console.log(args.data);
     const project = await context.prisma.project.create({
       data: {
         ...args.data,
