@@ -22,6 +22,7 @@ export type product_owner_in_project = {
 
 export interface Participant {
   user: UserParticipant;
+  id: string;
 }
 
 export interface UserParticipant {

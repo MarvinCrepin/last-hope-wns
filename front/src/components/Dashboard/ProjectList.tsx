@@ -75,6 +75,14 @@ export default function ProjectList() {
     if (data) {
       let dataFiltered: Project[] = [...data.GetAllProjects];
 
+      // Si un project est sélectionné, on le met à jour
+      if (selectedProject) {
+        const index = dataFiltered.findIndex((el: Project) => el.id === selectedProject.id);
+        if (index !== -1) {
+          setSelectedProject(dataFiltered[index]);
+        }
+      }
+
       if (searchInput.length > 0) {
         dataFiltered = dataFiltered.filter((el: Project) =>
           el.title.toLowerCase().includes(searchInput.toLowerCase())

@@ -42,6 +42,9 @@ export default async (
       id: projectId,
     },
     data: newData,
+    include: {
+      participants: true
+    }
   });
 
   return projectUpdated;
