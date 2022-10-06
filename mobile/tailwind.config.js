@@ -8,6 +8,7 @@ module.exports = {
       tertiary: '#D66060',
       white: '#FFFFFF',
       darkgrey: '#4F4F4F'
+    },
   content: [
     "./App.{js,jsx,ts,tsx}",
     "./<custom directory>/**/*.{js,jsx,ts,tsx}",
@@ -31,4 +32,4 @@ module.exports = {
     },
   },
   plugins: [],
-};
+}};

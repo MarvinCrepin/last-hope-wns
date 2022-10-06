@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import tw from "../../../lib/tailwind";
 import LoginQuery from "../../graphql/mutations/User/LoginQuery";
 import { AUTHENTICATE_USER_IN_STORE, user } from "../../slicer/authReducer";
-import * as SecureStore from 'expo-secure-store';
 
 export default function Login() {
 
@@ -35,7 +34,6 @@ export default function Login() {
       console.error(JSON.stringify(error, null, 2));
     },
   });
-  async () => console.log(await SecureStore.getItemAsync('token'));
 
   return (
     <KeyboardAvoidingView behavior="padding">
