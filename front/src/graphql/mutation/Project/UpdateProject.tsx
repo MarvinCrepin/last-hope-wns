@@ -8,11 +8,7 @@ const UpdateProject = gql`
       description
       start_at
       end_at
-      due_at
       product_owner_id
-      advancement
-      estimated_time
-      passed_time
       participants {
         user {
           id
