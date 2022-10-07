@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Text, View, Image } from "react-native";
-import taskStyles from "../../assets/styles/components/taskStyle";
-import styles from "../../assets/styles/styles";
-import { Comment, Priority } from "../../../global";
+import taskStyles from "../../../assets/styles/components/taskStyle";
+import styles from "../../../assets/styles/styles";
+import { Comment, Priority } from "../../../../global";
 
 interface IPropsHeader {
   due: number;
@@ -12,7 +12,7 @@ interface IPropsHeader {
 export default function Header({ due, comments }: IPropsHeader) {
   const [priority, setPriority] = useState<Priority>({
     priority: "Overdue",
-    icon: require("../../assets/img/danger.png"),
+    icon: require("../../../assets/img/danger.png"),
   });
   const [messages, setMessages] = useState<Comment[]>([]);
 
@@ -21,22 +21,22 @@ export default function Header({ due, comments }: IPropsHeader) {
       if (due <= 0) {
         setPriority({
           priority: "Overdue",
-          icon: require("../../assets/img/danger.png"),
+          icon: require("../../../assets/img/danger.png"),
         });
       } else if (due <= 3) {
         setPriority({
           priority: "Urgent",
-          icon: require("../../assets/img/fire.png"),
+          icon: require("../../../assets/img/fire.png"),
         });
       } else if (due <= 7) {
         setPriority({
           priority: "High priority",
-          icon: require("../../assets/img/sun.png"),
+          icon: require("../../../assets/img/sun.png"),
         });
       } else {
         setPriority({
           priority: "Low priority",
-          icon: require("../../assets/img/cool.png"),
+          icon: require("../../../assets/img/cool.png"),
         });
       }
     }
@@ -55,7 +55,7 @@ export default function Header({ due, comments }: IPropsHeader) {
       <View key="comment">
         <Image
           style={taskStyles.messageIcon}
-          source={require("../../assets/img/comment.png")}
+          source={require("../../../assets/img/comment.png")}
         />
         <Text style={taskStyles.textIcon}>
           {messages ? messages.length : 0}

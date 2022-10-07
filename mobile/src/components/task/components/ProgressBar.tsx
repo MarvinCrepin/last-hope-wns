@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import * as Progress from "react-native-progress";
-import tw from "../../../lib/tailwind";
-import taskStyles from "../../assets/styles/components/taskStyle";
+import tw from "../../../../lib/tailwind";
+import taskStyles from "../../../assets/styles/components/taskStyle";
 
 interface IProgressProps {
   total: number;

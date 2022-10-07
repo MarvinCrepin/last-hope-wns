@@ -3,9 +3,9 @@ import { View, Text } from "react-native";
 
 import taskStyles from "../../assets/styles/components/taskStyle";
 import { TaskInList } from "../../../global";
-import ProgressBar from "./ProgressBar";
-import DeadLine from "./DeadLine";
-import Header from "./Header";
+import ProgressBar from "./components/ProgressBar";
+import DeadLine from "./components/DeadLine";
+import Header from "./components/Header";
 
 export default function Task({ ticketData }: any) {
   const [ticket, setTicket] = useState<TaskInList | null>(null);
