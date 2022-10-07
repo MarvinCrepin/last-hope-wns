@@ -10,6 +10,9 @@ export default gql`
     product_owner_id: String
     product_owner: User
     participants: [UserProject]
+    tickets: [Ticket]
+    time_spent: Int
+    advancement: Int
   }
 
   type Query {
@@ -21,8 +24,9 @@ export default gql`
     title: String!
     description: String
     start_at: DateTime
-    end_at: DateTime!
+    end_at: DateTime
     product_owner_id: String!
+    estimated_time: Int
     participants: [UserProjectNested]
   }
 
@@ -36,7 +40,7 @@ export default gql`
     start_at: DateTime
     end_at: DateTime
     due_at: DateTime
-    product_owner_id: String
+    product_owner_id: String!
     advancement: Int
   }
 

@@ -32,6 +32,7 @@ import CommentList from "./TaskDetailComponent/CommentList";
 import { isAuthorizedToManageProject, notify } from "../../common/Utils";
 import ModalConfirm from "../../common/ModalConfirm";
 import EditTaskText from "./TaskDetailComponent/EditTaskText";
+import getAllProjects from "../../../graphql/queries/Project/GetAllProject";
 
 type Props = {
   taskPassed: TaskInList;
@@ -66,6 +67,9 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         {
           query: GetTotalTicketDurationUserByTicket,
           variables: { ticketId: taskPassed.id },
+        },
+        {
+          query: getAllProjects,
         },
       ],
     }

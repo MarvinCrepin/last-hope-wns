@@ -1,41 +1,44 @@
 .add-project-modal {
-    width: 100%;
+  width: 100%;
 }
 
 .add-project-modal h3 {
-    font-size: 1.5em;
+  font-size: 1.5em;
 }
 
-.add-modal input, .add-modal textarea {
-    border: 1.5px solid var(--dark-color);
-    border-radius: 4px;
-    padding: 5px 10px;
+.add-modal input,
+.add-modal textarea,
+.add-modal select {
+  width: 100%;
+  border: 1.5px solid var(--dark-color);
+  border-radius: 4px;
+  padding: 5px 10px;
 }
 
-.add-modal input[type=number]::-webkit-outer-spin-button,
-.add-modal input[type=number]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+.add-modal input[type="number"]::-webkit-outer-spin-button,
+.add-modal input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-.add-modal input:focus-visible, .add-modal textarea:focus-visible {
-    outline-color: var(--primary-color);
+.add-modal input:focus-visible,
+.add-modal textarea:focus-visible {
+  outline-color: var(--primary-color);
 }
 
 .add-modal textarea {
-    max-height: 150px;
-    min-height: 70px;
+  max-height: 150px;
+  min-height: 70px;
 }
 
-.add-modal .estimated-time input[type=number] {
-    text-align: center;
-    width: 40px;
-    font-weight: 500;
+.add-modal .estimated-time input[type="number"] {
+  text-align: center;
+  width: 40px;
+  font-weight: 500;
 }
 
 .add-modal .estimated-time span {
-    font-weight: 500;
-    font-size: 1.2em;
-    margin-left: 5px;
+  font-weight: 500;
+  font-size: 1.2em;
+  margin-left: 5px;
 }
-
