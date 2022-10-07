@@ -14,6 +14,7 @@ export default function Header({ due, comments }: IPropsHeader) {
     priority: "Overdue",
     icon: require("../../assets/img/danger.png"),
   });
+  const [messages, setMessages] = useState<Comment[]>([]);
 
   useEffect(() => {
     if (due) {
@@ -40,6 +41,11 @@ export default function Header({ due, comments }: IPropsHeader) {
       }
     }
   }, [due]);
+
+  useEffect(() => {
+    if (comments) setMessages(comments);
+  }, [comments]);
+
   return (
     <View key="header" style={taskStyles.header}>
       <View key="badge-priority" style={taskStyles.badge}>
@@ -51,7 +57,9 @@ export default function Header({ due, comments }: IPropsHeader) {
           style={taskStyles.messageIcon}
           source={require("../../assets/img/comment.png")}
         />
-        <Text style={taskStyles.textIcon}>{comments ? comments.length : 0}</Text>
+        <Text style={taskStyles.textIcon}>
+          {messages ? messages.length : 0}
+        </Text>
       </View>
     </View>
   );
