@@ -26,6 +26,7 @@ export default gql`
     start_at: DateTime
     end_at: DateTime
     product_owner_id: String!
+    estimated_time: Int
     participants: [UserProjectNested]
   }
 

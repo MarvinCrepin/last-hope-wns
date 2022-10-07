@@ -31,10 +31,16 @@ function AddProject({ users, closeModal }: Props) {
   );
 
   const [modalAssignee, setModalAssignee] = useState(false);
-
   const [usersAssignee, setUsersAssignee] = useState<any[]>([]);
-
   const [dataProject, setDataProject] = useState<any>({});
+  const [estimatedTime, setEstimatedTime] = useState({ hour: 0, min: 0 });
+
+  const parseAndSetTime = (target: HTMLInputElement) => {
+    let value = parseInt(target.value);
+    setEstimatedTime({ ...estimatedTime, [target.name]: value });
+  };
+
+  console.log(estimatedTime);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -76,6 +82,11 @@ function AddProject({ users, closeModal }: Props) {
     usersAssignee.forEach((user) => participants.push({ userId: user.userId }));
 
     let dataProjectUsers = { ...dataProject, participants: participants };
+
+    dataProjectUsers = {
+      ...dataProjectUsers,
+      estimated_time: estimatedTime.hour * 60 + estimatedTime.min,
+    };
 
     addProject({
       variables: {
@@ -126,7 +137,7 @@ function AddProject({ users, closeModal }: Props) {
             &#8203;
           </span>
 
-          <div className="add-modal inline-block align-bottom text-left transform transition-all sm:align-middle project-modal">
+          <div className="add-modal inline-block align-bottom text-left transform transition-all sm:align-middle project-modal ">
             <div className=" bg-lh-primary text-2xl h-12 font-title text-lh-light w-40 flex justify-center items-center rounded-t-lg">
               <div>Add Project</div>
             </div>
@@ -192,6 +203,70 @@ function AddProject({ users, closeModal }: Props) {
                     </select>
                   </div>
 
+                  {/* DATE */}
+                  <div className="part add-date flex flex-col">
+                    <div className="mb-4">
+                      <label className="text-lh-primary mb-1.5 text-2xl start-date">
+                        Start date
+                      </label>
+                      <input
+                        onChange={(e) => handleChange(e)}
+                        type="date"
+                        name="start_at"
+                        id="start_at"
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label className="text-lh-primary mb-1.5 text-2xl end-date">
+                        End date
+                      </label>
+                      <input
+                        onChange={(e) => handleChange(e)}
+                        type="date"
+                        name="end_at"
+                        id="end_at"
+                      />
+                    </div>
+                  </div>
+
+                  {/* TIME */}
+                  <div className="mb-4 relative flex flex-col">
+                    <label
+                      htmlFor="estimated-time"
+                      className="text-lh-primary text-2xl py-2 mb-1.5"
+                    >
+                      Estimated time
+                    </label>
+                    <div className="flex">
+                      <div className="time-hours mr-5">
+                        <input
+                          type="number"
+                          name="hour"
+                          min={0}
+                          onChange={(e) => parseAndSetTime(e.target)}
+                          id="estimated-time"
+                          className="border-[1.5px] border-lh-dark text-center w-16 appearance-none rounded font-medium"
+                        />
+                        <span className="font-text ml-1.5 text-lh-dark font-medium">
+                          Hours
+                        </span>
+                      </div>
+                      <div className="time-minutes mr-5">
+                        <input
+                          type="number"
+                          name="min"
+                          min={0}
+                          onChange={(e) => parseAndSetTime(e.target)}
+                          id="estimated-time"
+                          className="border-[1.5px] border-lh-dark text-center w-16 appearance-none rounded font-medium"
+                        />
+                        <span className="font-text ml-1.5 font-medium text-lh-dark">
+                          Minutes
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* MEMBERS */}
                   <div className="part add-members mb-4">
                     <div className="flex items-center mb-1.5">
@@ -217,29 +292,6 @@ function AddProject({ users, closeModal }: Props) {
                         );
                       })}
                     </div>
-                  </div>
-
-                  {/* DATE */}
-                  <div className="part add-date flex flex-col">
-                    <label className="text-lh-primary mb-1.5 text-2xl start-date">
-                      Start date
-                    </label>
-                    <input
-                      onChange={(e) => handleChange(e)}
-                      type="date"
-                      name="start_at"
-                      id="start_at"
-                    />
-
-                    <label className="text-lh-primary mb-1.5 text-2xl end-date">
-                      End date
-                    </label>
-                    <input
-                      onChange={(e) => handleChange(e)}
-                      type="date"
-                      name="end_at"
-                      id="end_at"
-                    />
                   </div>
 
                   <div className="add-project-submit flex justify-end w-full mt-2">

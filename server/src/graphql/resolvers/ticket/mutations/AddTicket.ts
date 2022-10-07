@@ -24,7 +24,8 @@ export default async (
         project_id: args.data.project_id,
         estimated_time: args.data.estimated_time,
         state_id: args.data.state_id,
-        ticketUser: {
+        due_at: new Date(args.data.due_at),
+        ticketUser: { 
           create: [...args.data.ticketUser],
         },
       },

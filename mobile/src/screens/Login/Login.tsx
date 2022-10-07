@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Image,
   KeyboardAvoidingView,
@@ -8,13 +8,12 @@ import {
   Pressable,
   View,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import tw from "../../../lib/tailwind";
 import LoginQuery from "../../graphql/mutations/User/LoginQuery";
-import { AUTHENTICATE_USER_IN_STORE, user } from "../../slicer/authReducer";
+import { AUTHENTICATE_USER_IN_STORE } from "../../slicer/authReducer";
 
 export default function Login() {
-
   const dispatch = useDispatch();
   const [password, setPassword] = useState("");
   const [mail, setMail] = useState("");
@@ -23,6 +22,8 @@ export default function Login() {
       loginUserInput: { mail, password },
     },
     onCompleted(data) {
+      console.log("data login token", data.Login.token);
+
       dispatch(
         AUTHENTICATE_USER_IN_STORE({
           user: data.Login.user,
@@ -52,7 +53,7 @@ export default function Login() {
           ></TextInput>
           <TextInput
             onChangeText={(password) => {
-              setPassword(password)
+              setPassword(password);
             }}
             style={tw`border   rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
             placeholder="Password"
@@ -61,12 +62,12 @@ export default function Login() {
         </View>
         <View style={tw`mt-10`}>
           <Pressable
-            onPress={() => loginMutation()}
+            onPress={() => {
+              loginMutation();
+            }}
             style={tw`bg-primary w-80 mt-4 m-auto text-white font-bold py-2 px-4 rounded`}
           >
-            <Text style={tw`text-center text-white p-1 text-lg`}>
-              Login
-            </Text>
+            <Text style={tw`text-center text-white p-1 text-lg`}>Login</Text>
           </Pressable>
           <View style={tw`text-center mt-6`}>
             <Text style={tw`text-center p-2`}>Lost password ?</Text>
