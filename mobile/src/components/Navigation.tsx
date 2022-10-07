@@ -11,7 +11,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 const Tab = createBottomTabNavigator();
 export default function navigation({ appIsReady }: { appIsReady: boolean }) {
-  return (
+  return appIsReady ? (
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
@@ -25,14 +25,10 @@ export default function navigation({ appIsReady }: { appIsReady: boolean }) {
           tabBarShowLabel: false,
         })}
       >
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          initialParams={{ appIsReady: appIsReady }}
-        />
+        <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Account" component={AccountScreen} />
         <Tab.Screen name="Search" component={SearchScreen} />
       </Tab.Navigator>
     </NavigationContainer>
-  );
+  ) : null;
 }

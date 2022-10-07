@@ -1,24 +1,17 @@
 import React from "react";
-import Login from "./src/screens/Login/Login";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./store";
+
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
-  useLazyQuery,
-  useQuery,
 } from "@apollo/client";
-import { Provider, useDispatch } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
-import { store, persistor } from "./store";
-import { useEffect, useState } from "react";
 import { setContext } from "@apollo/client/link/context";
-import LoadedFont from "./src/utils/LoadedFont";
-import Navigation from "./src/components/Navigation";
-import VerifyToken from "./src/graphql/queries/User/VerifyToken";
-
 import * as SplashScreen from "expo-splash-screen";
-import { LOGOUT_USER } from "./src/slicer/authReducer";
+
 import AppEntry from "./AppEntry";
 
 SplashScreen.preventAutoHideAsync();

@@ -13,6 +13,15 @@ const GetAllTickets = gql`
       due_at
       estimated_time
       advancement
+      comments {
+        content
+        created_at
+        user {
+          lastname
+          firstname
+        }
+        id
+      }
       ticketUser {
         id
         user {

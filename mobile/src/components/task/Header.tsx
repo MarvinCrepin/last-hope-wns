@@ -2,9 +2,14 @@ import { useEffect, useState } from "react";
 import { Text, View, Image } from "react-native";
 import taskStyles from "../../assets/styles/components/taskStyle";
 import styles from "../../assets/styles/styles";
-import { Priority } from "../../../global";
+import { Comment, Priority } from "../../../global";
 
-export default function Header({ due }: { due: number }) {
+interface IPropsHeader {
+  due: number;
+  comments: Comment[];
+}
+
+export default function Header({ due, comments }: IPropsHeader) {
   const [priority, setPriority] = useState<Priority>({
     priority: "Overdue",
     icon: require("../../assets/img/danger.png"),
@@ -38,17 +43,15 @@ export default function Header({ due }: { due: number }) {
   return (
     <View key="header" style={taskStyles.header}>
       <View key="badge-priority" style={taskStyles.badge}>
-        <Image
-          style={styles.flameIcon}
-          source={priority.icon}
-        />
+        <Image style={taskStyles.flameIcon} source={priority.icon} />
         <Text style={styles.text}>{priority.priority}</Text>
       </View>
       <View key="comment">
         <Image
-          style={styles.messageIcon}
+          style={taskStyles.messageIcon}
           source={require("../../assets/img/comment.png")}
         />
+        <Text style={taskStyles.textIcon}>{comments ? comments.length : 0}</Text>
       </View>
     </View>
   );

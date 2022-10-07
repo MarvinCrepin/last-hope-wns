@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { useQuery } from "@apollo/client";
 import GetAllTickets from "../graphql/queries/Ticket/GetAllTickets";
@@ -8,8 +8,7 @@ import TasksList from "../components/task/TasksList";
 
 import { TaskInList } from "../../global";
 
-export default function HomeScreen({ route }: { route: any; navigation: any }) {
-  const { appIsReady } = route.params;
+export default function HomeScreen() {
   const [allTickets, setAllTickets] = useState<TaskInList[]>([]);
 
   const { data } = useQuery(GetAllTickets, {
@@ -17,6 +16,12 @@ export default function HomeScreen({ route }: { route: any; navigation: any }) {
       console.log(error);
     },
   });
+
+  useEffect(()=>{
+    if(data){
+      setAllTickets(data.GetAllTickets)
+    }
+  },[data])
 
   return (
     <View style={tw.style("p-5")}>
@@ -41,8 +46,7 @@ export default function HomeScreen({ route }: { route: any; navigation: any }) {
             <Text style={styles.subTitle}>PROJECTS</Text>
           </TouchableOpacity>
         </View>
-        <TasksList data={data.GetAllTickets} />
-        
+        <TasksList data={allTickets} />
       </View>
     </View>
   );

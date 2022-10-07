@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Image } from "react-native";
-import tw from "../../../lib/tailwind";
+import { useEffect, useState } from "react";
+import { View, Text } from "react-native";
 
 import taskStyles from "../../assets/styles/components/taskStyle";
-import styles from "../../assets/styles/styles";
 import { TaskInList } from "../../../global";
 import ProgressBar from "./ProgressBar";
 import DeadLine from "./DeadLine";
@@ -25,7 +23,7 @@ export default function Task({ ticketData }: any) {
 
   return ticket ? (
     <View key="card" style={taskStyles.card}>
-      <Header due={timeLeft} />
+      <Header due={timeLeft} comments={ticket.comments} />
       <View key="body" style={taskStyles.body}>
         <Text key="title" style={taskStyles.title}>
           {ticket.title ? ticket.title : "Untitled"}

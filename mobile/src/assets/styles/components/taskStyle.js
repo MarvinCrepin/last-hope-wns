@@ -10,5 +10,9 @@ const taskStyles = StyleSheet.create({
   subTitle: tw.style("text-xl", "font-text", "text-white"),
   progress:tw.style("flex-row", "justify-between"),
   progressText: tw.style("text-xl", "font-textBold", "text-primary"),
+  flameIcon: tw.style("w-6", "h-6", "mr-2"),
+  chronoIcon: tw.style("w-7", "h-7", "mr-2"),
+  messageIcon: tw.style("w-7", "h-7"),
+  textIcon: tw.style("font-textBold","text-white", {position:"absolute", top:2, left:10}),
 });
 export default taskStyles;

@@ -66,8 +66,17 @@ export type TaskInList = {
   state: State;
   project: ProjectInTask;
   isArchived: boolean;
+  comments: Comment[];
 };
 
+export interface Comment {
+  id: string;
+  created_at: Date;
+  user: User;
+  user_id: string;
+  ticket_id: string;
+  content: string;
+}
 export interface State {
   id: string;
   name: string;
