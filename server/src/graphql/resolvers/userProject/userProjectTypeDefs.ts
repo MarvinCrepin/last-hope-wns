@@ -8,5 +8,15 @@ export default gql`
     project: Project
     projectId: String
   }
+
+  input AddUserProject {
+    projectId: String
+    userId: String
+  }
+
+  type Mutation {
+    AddUserProject(data: AddUserProject!): UserProject
+    DeleteUserProject(userProjectId: String!): UserProject
+  }
 `;
 

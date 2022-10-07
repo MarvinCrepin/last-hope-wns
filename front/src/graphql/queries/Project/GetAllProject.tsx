@@ -14,6 +14,7 @@ const getAllProjects = gql`
         firstname
       }
       participants {
+        id
         user {
           id
           firstname
