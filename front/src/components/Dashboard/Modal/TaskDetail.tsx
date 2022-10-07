@@ -186,6 +186,10 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         ticketId: id,
         data: { isArchived: true },
       },
+      onCompleted() {
+        closeModal();
+        notify("success", "Archive ticket success");
+      },
     });
   };
 
