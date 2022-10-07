@@ -73,7 +73,7 @@ export default function EmployeesList() {
           el.lastname.toLowerCase().includes(searchInput.toLowerCase())
         );
       }
-      console.log(userRoleFilter);
+
       if (userRoleFilter !== "all") {
         dataFiltered = dataFiltered.filter(
           (el: User) => el.roles === userRoleFilter
