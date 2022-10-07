@@ -7,6 +7,7 @@ import ticketUserTypeDefs from "./ticketUser/ticketUserTypeDefs";
 import projectUserTypeDefs from "./userProject/userProjectTypeDefs";
 import commentTypeDefs from "./comment/commentTypeDefs";
 import ticketDurationUserTypeDefs from "./ticketDurationUser/ticketDurationUserTypeDefs";
+import userProjectTypeDefs from "./userProject/userProjectTypeDefs";
 
 const typeDefs = [
   projectType,
@@ -18,6 +19,7 @@ const typeDefs = [
   projectUserTypeDefs,
   commentTypeDefs,
   ticketDurationUserTypeDefs,
+  userProjectTypeDefs,
 ];
 
 export default typeDefs;

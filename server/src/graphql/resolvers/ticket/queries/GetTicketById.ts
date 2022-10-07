@@ -15,6 +15,7 @@ export default async (
     include: {
       state: true,
       project: true,
+      comments: true,
       ticketUser: {
         include: {
           user: true,

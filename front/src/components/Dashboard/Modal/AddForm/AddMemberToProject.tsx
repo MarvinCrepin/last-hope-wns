@@ -1,8 +1,5 @@
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-
-// import CreateTicketUser from "../../../../graphql/mutation/TicketUser/CreateTicketUser";
-// import DeleteTicketUser from "../../../../graphql/mutation/TicketUser/DeleteTicketUser";
 import GetAllUsers from "../../../../graphql/queries/User/GetAllUsers";
 
 import { User, UserParticipant } from "../../../global";
@@ -16,6 +13,7 @@ type Props = {
   addUser: (user: any) => void;
   deleteUser: (user: any) => void;
   usersAssignee: any[];
+  onCreate?: boolean;
 };
 
 function AddMemberToProject({
@@ -23,6 +21,7 @@ function AddMemberToProject({
   addUser,
   deleteUser,
   usersAssignee,
+  onCreate = true,
 }: Props) {
   const [userSelected, setUserSelected] = useState<any>("null");
 
@@ -32,10 +31,17 @@ function AddMemberToProject({
 
   useEffect(() => {
     let participantsId: string[] = [];
+    if (onCreate) {
+      usersAssignee.forEach((user: any) => {
+        participantsId.push(user.userId);
+      });
+    } else {
+      usersAssignee.forEach((userProject: any) => {
+        participantsId.push(userProject.user.id);
+      });
+    }
+    console.log(participantsId);
 
-    usersAssignee.forEach((user: any) => {
-      participantsId.push(user.userId);
-    });
     let usersNew: User[] = [];
 
     if (data) {
@@ -50,43 +56,6 @@ function AddMemberToProject({
 
     setUserSelected("null");
   }, [usersAssignee, data, loading]);
-
-  // const [createTicketUser, { loading: loadCreate }] =
-  //   useMutation(CreateTicketUser);
-
-  // const [deleteTicketUser, { loading: loadDelete }] =
-  //   useMutation(DeleteTicketUser);
-
-  // const deleteAssigneeUser = async (user: any) => {
-  //   await deleteTicketUser({
-  //     variables: {
-  //       userTicketId: user.tickerUserId,
-  //     },
-  //     update(cache) {
-  //       const normalizedId = cache.identify({
-  //         id: user.tickerUserId,
-  //         __typename: "TicketUser",
-  //       });
-  //       cache.evict({ id: normalizedId });
-  //       cache.gc();
-  //     },
-  //   });
-  // };
-
-  // const assigneeUserToTask = async () => {
-  //   if (userSelected !== "null") {
-  //     const data = {
-  //       ticketId: task.id,
-  //       userId: userSelected,
-  //     };
-  //     await createTicketUser({
-  //       variables: {
-  //         data,
-  //       },
-  //     });
-  //     setUserSelected("null");
-  //   }
-  // };
 
   const handleChangeSelected = (e: any) => {
     const index = usersAvailable.findIndex(
@@ -134,8 +103,7 @@ function AddMemberToProject({
                 </label>
                 <div className="flex w-full justify-between items-center">
                   <select
-                    // disabled={loadCreate || loadDelete ? true : false}
-                    onChange={(e) => {
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                       handleChangeSelected(e);
                     }}
                     value={userSelected}
@@ -148,22 +116,6 @@ function AddMemberToProject({
                     })}
                     <option value={"null"}>Select</option>
                   </select>
-                  {/* {loadCreate || loadDelete ? (
-                    <div className="text-lh-secondary cursor-pointer hover:opacity-70">
-                      <AiOutlineLoading size={30} className="animate-spin" />
-                    </div>
-                  ) : (
-                    <div
-                      className={
-                        userSelected !== "null"
-                          ? "text-lh-primary cursor-pointer hover:opacity-70"
-                          : "text-gray-500 cursor-not-allowed"
-                      }
-                      onClick={() => assigneeUserToTask()}
-                    >
-                      <FaCheck size={30} />
-                    </div>
-                  )} */}
                   <div
                     className={
                       userSelected !== "null"
@@ -179,7 +131,7 @@ function AddMemberToProject({
                 </div>
               </form>
               <div className="flex flex-wrap">
-                {usersAssignee.map((user: UserParticipant) => {
+                {usersAssignee.map((user: any) => {
                   return (
                     <div
                       key={user.id}
@@ -195,7 +147,8 @@ function AddMemberToProject({
                         />
                       </span>
                       <span className="text-lh-light font-text text-lg">
-                        {user.firstname}
+                        
+                        {onCreate ? user.firstname : user.user.firstname}
                       </span>
                     </div>
                   );

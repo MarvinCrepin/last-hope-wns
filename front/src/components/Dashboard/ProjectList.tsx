@@ -41,17 +41,17 @@ export default function ProjectList() {
   const [beMy, setByMe] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [hideDone, setHideDone] = useState(false);
-  const [displayModalProjectDetails, setDisplayModalProjectDetails] = useState(false);
+  const [displayModalProjectDetails, setDisplayModalProjectDetails] =
+    useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>();
-
 
   const [displayModalAddProject, setDisplayModalAddProject] = useState(false);
 
-  const openAddProject:any = () => {
+  const openAddProject: any = () => {
     setDisplayModalAddProject(true);
   };
 
-  const closeModalAddProject:any = () => {
+  const closeModalAddProject: any = () => {
     setDisplayModalAddProject(false);
   };
 
@@ -75,15 +75,25 @@ export default function ProjectList() {
     if (data) {
       let dataFiltered: Project[] = [...data.GetAllProjects];
 
+      // Si un project est sélectionné, on le met à jour
+      if (selectedProject) {
+        const index = dataFiltered.findIndex(
+          (el: Project) => el.id === selectedProject.id
+        );
+        if (index !== -1) {
+          setSelectedProject(dataFiltered[index]);
+        }
+      }
+
       if (searchInput.length > 0) {
         dataFiltered = dataFiltered.filter((el: Project) =>
           el.title.toLowerCase().includes(searchInput.toLowerCase())
         );
       }
 
-      if (hideDone) {
-        dataFiltered = dataFiltered.filter((el) => el.advancement < 100);
-      }
+      // if (hideDone) {
+      //   dataFiltered = dataFiltered.filter((el) => el.advancement < 100);
+      // }
 
       if (beMy) {
         dataFiltered = dataFiltered.filter(
@@ -105,10 +115,7 @@ export default function ProjectList() {
         />
       )}
       {displayModalAddProject && (
-        <AddProject
-          users={users}
-          closeModal={() => closeModalAddProject()}
-        />
+        <AddProject users={users} closeModal={() => closeModalAddProject()} />
       )}
       <div
         className={`w-full ${theme(
@@ -133,7 +140,7 @@ export default function ProjectList() {
                 </label>
               </div>
             )}
-            <div className="mx-2 flex items-center space-x-1">
+            {/* <div className="mx-2 flex items-center space-x-1">
               <input
                 className="rounded-md h-5 w-5"
                 type="checkbox"
@@ -144,7 +151,7 @@ export default function ProjectList() {
               <label htmlFor="hideDone" className="text-lh-light">
                 Hide done
               </label>
-            </div>
+            </div> */}
           </div>
 
           <div className="flex items-center space-x-1 mr-2">
@@ -163,7 +170,10 @@ export default function ProjectList() {
               <FaSearch className="absolute top-2 left-4 text-gray-500" />
             </div>
             {userRole === "ROLE_ADMIN" && (
-              <button onClick={() => openAddProject()} className=" flex bg-lh-light font-text font-bold text-lh-primary items-center p-1.5 rounded-md space-x-2">
+              <button
+                onClick={() => openAddProject()}
+                className=" flex bg-lh-light font-text font-bold text-lh-primary items-center p-1.5 rounded-md space-x-2"
+              >
                 <FaPlus className="" />
                 <div className="">Add project</div>
               </button>

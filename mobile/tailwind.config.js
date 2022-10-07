@@ -18,7 +18,8 @@ module.exports = {
         secondary: '#98B8E8',
         tertiary: '#D66060',
         white: '#FFFFFF',
-        darkgrey: '#4F4F4F'
+        whiteOpacity: 'rgba(250,250,250,0.2)',
+        darkgrey: '#4F4F4F',
       },
     },
   },

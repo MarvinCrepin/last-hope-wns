@@ -1,31 +1,48 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./store";
 
-import LoadedFont from "./src/utils/LoadedFont";
-import Navigation from "./src/components/Navigation";
-
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import * as SplashScreen from "expo-splash-screen";
+
+import AppEntry from "./AppEntry";
 
 SplashScreen.preventAutoHideAsync();
 
+const authLink = setContext((_, { headers }) => {
+  const token = store.getState().token;
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? token : "",
+    },
+  };
+});
+const httpLink = createHttpLink({
+  uri: "http://192.168.1.122:4000/graphql",
+}); 
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
+
 export default function App() {
-  const [appIsReady, setAppIsReady] = useState(false);
 
-  useEffect(() => {
-    async function prepare() {
-      try {
-        await LoadedFont();
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setAppIsReady(true);
-      }
-    }
-    prepare();
-  }, []);
-
-  if (!appIsReady) {
-    return null;
-  }
-  return <Navigation appIsReady={appIsReady} />;
+  return (
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <AppEntry/>
+        </PersistGate>
+      </Provider>
+    </ApolloProvider>
+  );
 }
