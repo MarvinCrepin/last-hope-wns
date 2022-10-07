@@ -42,6 +42,7 @@ export default function HomeScreen({ route }: { route: any; navigation: any }) {
           </TouchableOpacity>
         </View>
         <TasksList data={data.GetAllTickets} />
+        
       </View>
     </View>
   );

@@ -1,62 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image } from "react-native";
-import * as Progress from "react-native-progress";
 import tw from "../../../lib/tailwind";
 
 import taskStyles from "../../assets/styles/components/taskStyle";
 import styles from "../../assets/styles/styles";
+import { TaskInList } from "../../../global";
+import ProgressBar from "./ProgressBar";
+import DeadLine from "./DeadLine";
+import Header from "./Header";
 
-export default function Task() {
-  return (
+export default function Task({ ticketData }: any) {
+  const [ticket, setTicket] = useState<TaskInList | null>(null);
+  const [timeLeft, setTimeLeft] = useState<number>(0);
+
+  useEffect(() => {
+    if (ticketData) {
+      setTicket(ticketData);
+      if (ticketData.due_at && ticketData.due_at !== null)
+        setTimeLeft(
+          new Date(ticketData.due_at).getDate() - new Date().getDate()
+        );
+    }
+  }, [ticketData]);
+
+  return ticket ? (
     <View key="card" style={taskStyles.card}>
-      <View key="header" style={taskStyles.header}>
-        <View key="badge-priority" style={taskStyles.badge}>
-          <Image
-            style={styles.flameIcon}
-            source={require("../../assets/img/fire.png")}
-          />
-          <Text style={styles.text}>Priority</Text>
-        </View>
-        <View key="comment">
-          <Image
-            style={styles.messageIcon}
-            source={require("../../assets/img/comment.png")}
-          />
-        </View>
-      </View>
+      <Header due={timeLeft} />
       <View key="body" style={taskStyles.body}>
         <Text key="title" style={taskStyles.title}>
-          Titre de la tâche
+          {ticket.title ? ticket.title : "Untitled"}
         </Text>
         <Text key="sub-title" style={taskStyles.subTitle}>
-          Sous-titre
+          {ticket.project ? ticket.project.title : "Untitled"}
         </Text>
-        <View key="progress" style={tw.style("my-3")}>
-          <View style={taskStyles.progress}>
-            <Text style={taskStyles.progressText}>Progress</Text>
-            <Text style={taskStyles.progressText}>30 %</Text>
-          </View>
 
-          <Progress.Bar
-            progress={0.3}
-            width={null}
-            color={tw.color("primary")}
-            unfilledColor={tw.color("white")}
-            borderWidth={0}
-            height={15}
-            borderRadius={10}
-          />
-        </View>
+        <ProgressBar
+          total={ticket.estimated_time}
+          timePassed={ticket.advancement}
+        />
       </View>
-      <View key="footer">
-        <View key="badge-priority" style={taskStyles.badge}>
-          <Image
-            style={styles.chronoIcon}
-            source={require("../../assets/img/chronometer.png")}
-          />
-          <Text style={styles.text}>5 days left</Text>
-        </View>
-      </View>
+      <DeadLine due={timeLeft} />
     </View>
-  );
+  ) : null;
 }

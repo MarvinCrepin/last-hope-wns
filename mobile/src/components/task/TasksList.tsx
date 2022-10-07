@@ -1,5 +1,5 @@
-import React from "react";
-import { View } from "react-native";
+import { useEffect, useState } from "react";
+import { FlatList } from "react-native";
 import { TaskInList } from "../../../global";
 import Task from "./Task";
 
@@ -8,12 +8,20 @@ interface IProps {
 }
 
 export default function TasksList({ data }: IProps) {
-  console.log(data);
+  const [tickets, setTickets] = useState<TaskInList[]>([]);
 
-  return (
-    <View style={{ width: "100%" }}>
-      data.map()
-      <Task />
-    </View>
-  );
+  useEffect(() => {
+    if (data) setTickets(data);
+  }, [data]);
+
+  return tickets.length > 0 ? (
+    <FlatList
+      style={{ width: "100%" }}
+      data={tickets}
+      keyExtractor={(ticket) => ticket.id}
+      renderItem={(ticketData) => {
+        return <Task ticketData={ticketData.item} />;
+      }}
+    />
+  ) : null;
 }

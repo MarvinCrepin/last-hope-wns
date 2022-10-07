@@ -70,5 +70,10 @@ export type TaskInList = {
 
 export interface State {
   id: string;
-  name: String;
+  name: string;
+}
+
+export interface Priority {
+  priority: string;
+  icon: any;
 }
