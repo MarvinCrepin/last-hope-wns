@@ -40,8 +40,6 @@ function AddProject({ users, closeModal }: Props) {
     setEstimatedTime({ ...estimatedTime, [target.name]: value });
   };
 
-  console.log(estimatedTime);
-
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
