@@ -19,6 +19,7 @@ model Project {
   end_at           DateTime?
   product_owner    User?     @relation(fields: [product_owner_id], references: [id], onUpdate: SetNull, onDelete: SetNull)
   product_owner_id String?
+  estimated_time   Int?
 
   participants UserProject[]
   tickets      Ticket[]

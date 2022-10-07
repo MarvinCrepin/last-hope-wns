@@ -4,6 +4,8 @@ const getAllProjects = gql`
   query Query {
     GetAllProjects {
       id
+      time_spent
+      advancement
       title
       description
       start_at
@@ -20,6 +22,13 @@ const getAllProjects = gql`
           firstname
           lastname
           roles
+        }
+      }
+      tickets {
+        ticketDurationUser {
+          user_id
+          user_id
+          minute_passed
         }
       }
     }

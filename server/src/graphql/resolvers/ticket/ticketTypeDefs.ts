@@ -13,6 +13,7 @@ export default gql`
     state_id: String
     ticketUser: [TicketUser]
     description: String
+    ticketDurationUser: [TicketDurationUser]
   }
 
   input TicketInputPatch {
