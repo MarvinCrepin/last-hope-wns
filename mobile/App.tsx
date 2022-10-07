@@ -1,36 +1,33 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import Login from "./src/screens/Login/Login";
+import React from "react";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./store";
+
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  useLazyQuery,
   createHttpLink,
 } from "@apollo/client";
-import { Provider, useSelector } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
-import { store, persistor } from "./store";
-import VerifyToken from "./src/graphql/queries/User/VerifyToken";
-import { useEffect, useState } from "react";
-import { user } from "./src/slicer/authReducer";
-import { persistStore } from "redux-persist";
 import { setContext } from "@apollo/client/link/context";
-import LoadedFont from "./src/utils/LoadedFont";
-import Navigation from "./src/components/Navigation";
-
 import * as SplashScreen from "expo-splash-screen";
+
+import AppEntry from "./AppEntry";
+
 SplashScreen.preventAutoHideAsync();
+
 const authLink = setContext((_, { headers }) => {
+  const token = store.getState().token;
   return {
     headers: {
       ...headers,
+      authorization: token ? token : "",
     },
   };
 });
 const httpLink = createHttpLink({
-  uri: "http://192.168.1.94:4000/graphql",
-});
+  uri: "http://192.168.1.122:4000/graphql",
+}); 
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
@@ -38,31 +35,12 @@ const client = new ApolloClient({
 });
 
 export default function App() {
-  const [appIsReady, setAppIsReady] = useState(false);
-  const [isLogged, setIsLogged] = useState(false);
 
-  useEffect(() => {
-    (store.getState().token) ? setIsLogged(true) : setIsLogged(false);
-    async function prepare() {
-      try {
-        await LoadedFont();
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setAppIsReady(true);
-      }
-    }
-    prepare();
-  }, []);
-  if (!appIsReady) {
-    return null;
-  }
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          {isLogged ? <Navigation appIsReady={appIsReady} /> : <Login />}
+          <AppEntry/>
         </PersistGate>
       </Provider>
     </ApolloProvider>

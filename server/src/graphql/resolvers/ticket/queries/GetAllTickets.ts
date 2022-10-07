@@ -22,6 +22,7 @@ export default async (
       include: {
         state: true,
         project: true,
+        comments: true,
         ticketUser: {
           include: {
             user: true,
@@ -68,6 +69,7 @@ export default async (
     include: {
       state: true,
       project: true,
+      comments: true,
       ticketUser: {
         include: {
           user: true,
