@@ -2,23 +2,37 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { Transition } from "@headlessui/react";
 import { useSelector } from "react-redux";
+
 import { FaSearch } from "react-icons/fa";
+
 import { User } from "../global";
 import TableDashboard from "../common/TableDashboard";
 import Error from "../common/Error";
-import { columnsByRole, notify, returnRoleName, theme } from "../common/Utils";
+import {
+  columnsByRole,
+  notify,
+  returnRoleName,
+  roleList,
+  ROLELISTFORSELECT,
+  ROLES,
+  theme,
+} from "../common/Utils";
 import { role, user } from "../../slicer/authSlice";
+
 import getAllUsers from "../../graphql/queries/User/GetAllUsers";
 import UpdateUser from "../../graphql/queries/User/UpdateUser";
 import DeleteUser from "../../graphql/queries/User/DeleteUser";
-import UserDetail from "./Modal/UserDetail";
 
 export default function EmployeesList() {
-  const { loading, error, data } = useQuery(getAllUsers);
   const userRole = useSelector(role);
+  const myInformation = useSelector(user);
   const columns = columnsByRole(userRole, "actions");
+
   const [list, setList] = useState<User[]>([]);
   const [searchInput, setSearchInput] = useState("");
+  const [userRoleFilter, userRoleFilterSet] = useState("all");
+
+  const { loading, error, data } = useQuery(getAllUsers);
 
   const [updateUser] = useMutation(UpdateUser, {
     refetchQueries: [{ query: getAllUsers }],
@@ -26,8 +40,11 @@ export default function EmployeesList() {
       notify("success", "User succesfully updated");
     },
     onError: (error) => {
-      notify("error",`Something went wrong with the update of the user [${error.message}]`);
-    }
+      notify(
+        "error",
+        `Something went wrong with the update of the user [${error.message}]`
+      );
+    },
   });
 
   const [deleteUser] = useMutation(DeleteUser, {
@@ -36,8 +53,11 @@ export default function EmployeesList() {
       notify("success", "User succesfully deleted");
     },
     onError: (error) => {
-      notify("error", `Something went wrong with the deletion of the user [${error.message}]`);
-    }
+      notify(
+        "error",
+        `Something went wrong with the deletion of the user [${error.message}]`
+      );
+    },
   });
 
   useEffect(() => {
@@ -46,15 +66,25 @@ export default function EmployeesList() {
         ...user,
         user: user.firstname.concat(" ", user.lastname),
       }));
+
       let dataFiltered: User[] = [...dataObject];
       if (searchInput.length > 0) {
         dataFiltered = dataFiltered.filter((el: User) =>
           el.lastname.toLowerCase().includes(searchInput.toLowerCase())
         );
       }
-      setList([...dataFiltered]);
+
+      if (userRoleFilter !== "all") {
+        dataFiltered = dataFiltered.filter(
+          (el: User) => el.roles === userRoleFilter
+        );
+      }
+
+      setList([
+        ...dataFiltered.filter((el: User) => el.id !== myInformation.id),
+      ]);
     }
-  }, [data, searchInput]);
+  }, [data, searchInput, userRoleFilter]);
 
   const changeStatus = (user: any) => {
     const UserId = user.item.id;
@@ -72,7 +102,12 @@ export default function EmployeesList() {
   const deleteEmployee = (user: any) => {
     const UserId = user.id;
     deleteUser({ variables: { userId: UserId } });
-    error ? notify("error", "Something went wrong with the deletion of the employee.") : notify("success", `${user.user} has been deleted.`);
+    error
+      ? notify(
+          "error",
+          "Something went wrong with the deletion of the employee."
+        )
+      : notify("success", `${user.user} has been deleted.`);
   };
 
   return (
@@ -89,11 +124,18 @@ export default function EmployeesList() {
               Filter:
             </label>
             <select
+              value={userRoleFilter}
               name="filterSelect"
               id="filterSelect"
-              className="w-36 rounded-md bg-lh-primary text-lh-light p-2 mx-2"
+              className="w-36 rounded-md bg-lh-secondary text-lh-light p-2 mx-2"
+              onChange={(e) => userRoleFilterSet(e.target.value)}
             >
-              <option value="allProject">All Users</option>
+              <option value={"all"}>All</option>
+              {ROLELISTFORSELECT.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
             </select>
           </div>
 

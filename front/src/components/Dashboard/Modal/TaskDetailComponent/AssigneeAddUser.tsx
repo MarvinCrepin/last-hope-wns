@@ -108,55 +108,60 @@ function AssigneeAddUser({ closeModal, task }: Props) {
           &#8203;
         </span>
 
-        <div className="p-8 inline-block align-bottom text-left transform transition-all  sm:align-middle w-1/2  h-full">
-          <div className="w-full relative bg-white rounded-lg flex flex-col py-8 ">
+        <div className="inline-block align-bottom text-left transform transition-all  sm:align-middle sm:w-1/3 w-full  h-full">
+          <div className="w-full relative bg-white rounded-lg flex flex-col">
             <div
               className="absolute right-2 top-2 text-lh-primary cursor-pointer"
               onClick={() => closeModal()}
             >
               <AiOutlineClose size={30} />
             </div>
-            <div className="px-8 w-full">
+            <div className="px-6 py-4 w-full">
               <h3 className="text-lh-primary font-title text-4xl">Assignee</h3>
-              <form className="my-4 w-full">
-                <label
-                  htmlFor="user"
-                  className="text-lg font-text text-lh-dark"
-                >
-                  Available User
-                </label>
-                <div className="flex w-full justify-between items-center">
-                  <select
-                    disabled={loadCreate || loadDelete ? true : false}
-                    onChange={(e) => {
-                      handleChangeSelected(e);
-                    }}
-                    value={userSelected}
-                    name="advancement"
-                    id="advancement"
-                    className="bg-lh-light w-2/3 border-2 border-lh-dark rounded-lg px-1.5 py-2"
+
+              <form className="my-4 w-full h-full">
+                <div className="mb-4 relative flex flex-col">
+                  <label
+                    htmlFor="title"
+                    className="text-lh-primary text-2xl mb-1.5"
                   >
-                    {usersAvailable.map((user: User) => {
-                      return <option value={user.id}>{user.firstname}</option>;
-                    })}
-                    <option value={"null"}>Select</option>
-                  </select>
-                  {loadCreate || loadDelete ? (
-                    <div className="text-lh-secondary cursor-pointer hover:opacity-70">
-                      <AiOutlineLoading size={30} className="animate-spin" />
-                    </div>
-                  ) : (
-                    <div
-                      className={
-                        userSelected !== "null"
-                          ? "text-lh-primary cursor-pointer hover:opacity-70"
-                          : "text-gray-500 cursor-not-allowed"
-                      }
-                      onClick={() => assigneeUserToTask()}
+                    Available User
+                  </label>
+                  <div className="flex w-full justify-between items-center">
+                    <select
+                      disabled={loadCreate || loadDelete ? true : false}
+                      onChange={(e) => {
+                        handleChangeSelected(e);
+                      }}
+                      value={userSelected}
+                      name="advancement"
+                      id="advancement"
+                      className="w-1/2 rounded bg-lh-light text-lh-dark p-2 border-[1.5px] border-lh-dark focus-visible:ring-lh-primary"
                     >
-                      <FaCheck size={30} />
-                    </div>
-                  )}
+                      {usersAvailable.map((user: User) => {
+                        return (
+                          <option value={user.id}>{user.firstname}</option>
+                        );
+                      })}
+                      <option value={"null"}>Select</option>
+                    </select>
+                    {loadCreate || loadDelete ? (
+                      <div className="text-lh-secondary cursor-pointer hover:opacity-70">
+                        <AiOutlineLoading size={30} className="animate-spin" />
+                      </div>
+                    ) : (
+                      <div
+                        className={
+                          userSelected !== "null"
+                            ? "text-lh-primary cursor-pointer hover:opacity-70"
+                            : "text-gray-500 cursor-not-allowed"
+                        }
+                        onClick={() => assigneeUserToTask()}
+                      >
+                        <FaCheck size={30} />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </form>
               <div className="flex flex-wrap  ">

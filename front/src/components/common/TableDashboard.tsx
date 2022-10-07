@@ -15,7 +15,7 @@ import { styled } from "@mui/material/styles";
 import Moment from "react-moment";
 import React from "react";
 import Actions from "../Dashboard/Actions";
-import { roleList } from "./Utils";
+import { returnRoleName, roleList } from "./Utils";
 import { role } from "../../slicer/authSlice";
 import { useSelector } from "react-redux";
 import { Project, User, Column, TaskInList, RowElement } from "../global";
@@ -193,8 +193,6 @@ export default function TableDashboard({
                               <StyledTableCell>
                                 {deleteAction && viewAction && updateAction && (
                                   <Actions
-                                    updateItem={() => console.log(item)}
-                                    viewItem={() => console.log(item)}
                                     deleteItem={() => deleteAction(item)}
                                   />
                                 )}
@@ -222,7 +220,7 @@ export default function TableDashboard({
                                   >
                                     {roleList.map((roleName, index) => (
                                       <option key={index} value={roleName}>
-                                        {roleName}
+                                        {returnRoleName(roleName)}
                                       </option>
                                     ))}
                                   </select>

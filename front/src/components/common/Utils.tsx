@@ -32,6 +32,12 @@ export const ROLES = {
 
 export const roleList = [ROLES.ADMIN, ROLES.PRODUCT_MANAGER, ROLES.DEVELOPER];
 
+export const ROLELISTFORSELECT = [
+  { value: ROLES.ADMIN, label: "Administrator" },
+  { value: ROLES.PRODUCT_MANAGER, label: "Product Manager" },
+  { value: ROLES.DEVELOPER, label: "Developer" },
+];
+
 export const theme = (userRole: string, type: string, meta: any = {}) => {
   if (type === "dashboard") {
     if (userRole === ROLES.ADMIN) {

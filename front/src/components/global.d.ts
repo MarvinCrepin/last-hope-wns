@@ -38,7 +38,7 @@ export type User = {
   id: string;
   firstname: string;
   lastname: string;
-  role: string;
+  roles: string;
   mail: string;
 };
 

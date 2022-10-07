@@ -20,15 +20,18 @@ import {
   AiOutlineLoading,
 } from "react-icons/ai";
 import { FiMoreHorizontal } from "react-icons/fi";
+import { FaPencilAlt } from "react-icons/fa";
 
-import { TOOGLE_LOAD } from "../../../slicer/appSlice";
 import { State, TaskInList, UserParticipant } from "../../global";
+import { TOOGLE_LOAD } from "../../../slicer/appSlice";
 import { user } from "../../../slicer/authSlice";
+
 import AssigneeAddUser from "./TaskDetailComponent/AssigneeAddUser";
 import getAllTicketsNotArchive from "../../../graphql/queries/Ticket/GetAllTicketsNotArchive";
 import CommentList from "./TaskDetailComponent/CommentList";
 import { isAuthorizedToManageProject, notify } from "../../common/Utils";
 import ModalConfirm from "../../common/ModalConfirm";
+import EditTaskText from "./TaskDetailComponent/EditTaskText";
 
 type Props = {
   taskPassed: TaskInList;
@@ -49,10 +52,6 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
     refetchQueries: [
       { query: getAllTicketsNotArchive, variables: { isarchive: false } },
     ],
-    onCompleted() {
-      closeModal();
-      notify("success", "Updtate ticket success");
-    },
   });
   const { loading: totalDurationError, data: totalDuration } = useQuery(
     GetTotalTicketDurationUserByTicket,
@@ -88,6 +87,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const [modalAssignee, setModalAssignee] = useState(false);
   const [modalConfirmDelete, setModalConfirmDelete] = useState(false);
   const [modalConfirmArchive, setModalConfirmArchive] = useState(false);
+  const [modalEditTask, setModalEditTask] = useState(false);
 
   const openModal = (modal: string) => {
     if (modal === "assignee") {
@@ -173,6 +173,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         },
       },
     });
+    notify("success", "Updtate ticket success");
   };
 
   const deleteTask = async (id: string) => {
@@ -185,6 +186,10 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         ticketId: id,
         data: { isArchived: true },
       },
+      onCompleted() {
+        closeModal();
+        notify("success", "Archive ticket success");
+      },
     });
   };
 
@@ -194,8 +199,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         textButtonConfirm="Delete"
         textButtonCancel="Cancel"
         title="Delete Task ?"
-        text="Are you sure you want to delete this task? 
-      This action cannot be canceled."
+        text="Are you sure you want to delete this task? This action cannot be canceled."
         onConfirm={() => deleteTask(task.id)}
         onCancel={() => setModalConfirmDelete(false)}
         isOpen={modalConfirmDelete ? true : false}
@@ -215,6 +219,16 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
           task={task}
         />
       )}
+
+      <EditTaskText
+        task={task}
+        closeModal={() => setModalEditTask(false)}
+        isOpen={modalEditTask ? true : false}
+        updatedTask={async (data) => {
+          updateTicket({ variables: { ticketId: task.id, data } });
+          setModalEditTask(false);
+        }}
+      />
       <div
         className="task-detail fixed z-10 inset-0 overflow-y-auto"
         aria-labelledby="modal-title"
@@ -357,12 +371,21 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
 
                   {/* Description */}
                   <div className="space-y-4">
-                    <h3 className="text-lh-primary font-title text-4xl">
-                      {task.title}
-                    </h3>
-                    <p className="font_weight_400 font-text text-xl	">
-                      {task.description}
-                    </p>
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-lh-primary font-title text-4xl">
+                        {task.title}
+                      </h3>
+                      <FaPencilAlt
+                        size={30}
+                        onClick={() => setModalEditTask(true)}
+                        className="text-lh-primary cursor-pointer hover:opacity-90 transition-opacity"
+                      />
+                    </div>
+                    <div>
+                      <p className="font_weight_400 font-text text-xl	">
+                        {task.description}
+                      </p>
+                    </div>
                   </div>
 
                   {/* Assignee */}
