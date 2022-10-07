@@ -194,8 +194,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         textButtonConfirm="Delete"
         textButtonCancel="Cancel"
         title="Delete Task ?"
-        text="Are you sure you want to delete this task? 
-      This action cannot be canceled."
+        text="Are you sure you want to delete this task? This action cannot be canceled."
         onConfirm={() => deleteTask(task.id)}
         onCancel={() => setModalConfirmDelete(false)}
         isOpen={modalConfirmDelete ? true : false}
