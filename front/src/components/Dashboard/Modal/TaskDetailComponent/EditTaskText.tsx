@@ -1,14 +1,11 @@
 import React, { useEffect } from "react";
+import { classNames } from "../../../common/Utils";
 
 interface IProps {
   task: any;
   closeModal: () => void;
   isOpen: boolean;
   updatedTask: (data: { title: string; description: string }) => void;
-}
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
 }
 
 export default function EditTaskText({
