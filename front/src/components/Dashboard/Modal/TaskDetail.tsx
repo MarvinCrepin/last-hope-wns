@@ -385,10 +385,16 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                         className="text-lh-primary cursor-pointer hover:opacity-90 transition-opacity"
                       />
                     </div>
-                    <div>
-                      <p className="font_weight_400 font-text text-xl	">
-                        {task.description}
-                      </p>
+                    <div className="h-32 overflow-y-scroll scrollbar-style">
+                      {task.description.lenght > 0 ? (
+                        <p className="font_weight_400 font-text text-xl	">
+                          {task.description}
+                        </p>
+                      ) : (
+                        <p className="font_weight_400 font-text text-xl	italic">
+                          No description for this task
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -420,21 +426,21 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                         })}
                       </div>
                     ) : (
-                      <div className="font_weight_400 font-text text-xl	flex items-center space-x-2">
+                      <div className="font_weight_400 font-text text-xl	flex items-center space-x-2 italic">
                         No users found
                       </div>
                     )}
                   </div>
 
                   {/* Document */}
-                  <div className="space-y-4">
+                  {/* <div className="space-y-4">
                     <h3 className="text-lh-primary font-title text-4xl">
                       Documents
                     </h3>
                     <div className="font_weight_400 font-text text-xl	flex items-center space-x-2">
                       No documents found
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Edit */}
                   <div className="space-y-4">
