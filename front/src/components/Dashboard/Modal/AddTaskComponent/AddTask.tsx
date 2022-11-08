@@ -8,15 +8,11 @@ import AssigneeUser from "./AssigneeUser";
 import getAllTicketsNotArchive from "../../../../graphql/queries/Ticket/GetAllTicketsNotArchive";
 import getAllStates from "../../../../graphql/queries/State/GetAllStates";
 import { Project, User, State } from "../../../global";
-import { notify } from "../../../common/Utils";
+import { classNames, notify } from "../../../common/Utils";
 
 type Props = {
   closeModal: () => void;
 };
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export default function AddTask({ closeModal }: Props) {
   const [taskInformation, setTaskInformation] = useState({

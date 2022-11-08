@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
-/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useState } from "react";
 
 import { FaRegUserCircle } from "react-icons/fa";
@@ -7,8 +5,6 @@ import { useMutation } from "@apollo/client";
 
 import "../../../../assets/css/addProject.css";
 import { User } from "../../../global";
-import { useSelector } from "react-redux";
-import { role } from "../../../../slicer/authSlice";
 import { classNames, roleList } from "../../../common/Utils";
 
 import { AiFillSetting, AiOutlineClose } from "react-icons/ai";

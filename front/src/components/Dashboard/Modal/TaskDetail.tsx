@@ -29,7 +29,11 @@ import { user } from "../../../slicer/authSlice";
 import AssigneeAddUser from "./TaskDetailComponent/AssigneeAddUser";
 import getAllTicketsNotArchive from "../../../graphql/queries/Ticket/GetAllTicketsNotArchive";
 import CommentList from "./TaskDetailComponent/CommentList";
-import { isAuthorizedToManageProject, notify } from "../../common/Utils";
+import {
+  classNames,
+  isAuthorizedToManageProject,
+  notify,
+} from "../../common/Utils";
 import ModalConfirm from "../../common/ModalConfirm";
 import EditTaskText from "./TaskDetailComponent/EditTaskText";
 import getAllProjects from "../../../graphql/queries/Project/GetAllProject";
@@ -38,10 +42,6 @@ type Props = {
   taskPassed: TaskInList;
   closeModal: () => void;
 };
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const dispatch = useDispatch();
