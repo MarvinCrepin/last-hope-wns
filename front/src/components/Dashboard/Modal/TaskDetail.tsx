@@ -427,14 +427,14 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                   </div>
 
                   {/* Document */}
-                  <div className="space-y-4">
+                  {/* <div className="space-y-4">
                     <h3 className="text-lh-primary font-title text-4xl">
                       Documents
                     </h3>
                     <div className="font_weight_400 font-text text-xl	flex items-center space-x-2">
                       No documents found
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Edit */}
                   <div className="space-y-4">

@@ -10,15 +10,12 @@ async function addSpentTime(projects: any) {
         totalDuration += ticketDurationUser.minute_passed;
       });
     });
+
     project["time_spent"] = totalDuration;
-    console.log(project);
-    console.log(
-      (totalDuration / (project.estimated_time ? project.estimated_time : 0)) *
-        100
-    );
-    project["advancement"] = Math.round(
-      (totalDuration / project.estimated_time) * 100
-    );
+
+    project["advancement"] = project.estimated_time
+      ? Math.round((totalDuration / project.estimated_time) * 100)
+      : 0;
   });
 
   return projects;

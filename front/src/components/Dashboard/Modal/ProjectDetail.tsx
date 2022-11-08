@@ -99,7 +99,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
         },
       },
     });
-    notify('success', 'Project manager has been successfuly changed!');
+    notify("success", "Project manager has been successfuly changed!");
   }
 
   // MEMBERS
@@ -119,7 +119,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
         },
       },
     });
-    notify('success', 'User successfuly added to the project!');
+    notify("success", "User successfuly added to the project!");
   };
 
   const [deleteUserProject] = useMutation(DeleteUserProject);
@@ -138,7 +138,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
         cache.gc();
       },
     });
-    notify('success', 'User successfuly deleted from the project!');
+    notify("success", "User successfuly deleted from the project!");
   };
 
   // DATE
@@ -157,21 +157,21 @@ function ProjectDetail({ project, users, closeModal }: Props) {
   }, [startAt, endAt]);
 
   const handleChangeStart = () => {
-    setInputStart(false)
+    setInputStart(false);
     updateDate();
-  }
+  };
 
   const handleChangeEnd = () => {
-    setInputEnd(false)
+    setInputEnd(false);
     updateDate();
-  }
+  };
 
   const [updateDate] = useMutation(UpdateProject, {
     variables: {
       projectId: project.id,
       data: {
-        ...dataToSend
-      }
+        ...dataToSend,
+      },
     },
   });
 
@@ -341,26 +341,32 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                   </h2>
                   <div className="pt-4 pb-6">
                     <p className="text-gray-700 font-title text-xl flex">
-                      <FaCalendarDay className="mr-2"/>
-                      Start date: 
+                      <FaCalendarDay className="mr-2" />
+                      Start date:
                       {inputStart === true ? (
                         <>
                           <input
                             type="date"
                             name="start_at"
                             onChange={(e: any) => {
-                              if(new Date(e.target.value) <= new Date(endAt)) {
+                              if (new Date(e.target.value) <= new Date(endAt)) {
                                 setStartAt(e.target.value);
                               } else {
                                 setInputStart(false);
-                                notify("error", "Please put a start date less than or equal to the end date.");
+                                notify(
+                                  "error",
+                                  "Please put a start date less than or equal to the end date."
+                                );
                               }
                             }}
                           />
                           <MdDone
                             onClick={() => {
-                              handleChangeStart()
-                              notify("success", "Start date successfuly changed!");
+                              handleChangeStart();
+                              notify(
+                                "success",
+                                "Start date successfuly changed!"
+                              );
                             }}
                             size={25}
                             className="cursor-pointer ml-2"
@@ -382,47 +388,53 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                       )}
                     </p>
                     <p className="text-gray-700 font-title text-xl flex pt-3">
-                      <FaCalendarCheck className="mr-2"/>
-                        End date: 
-                        {inputEnd === true ? (
-                          <>
-                            <input
-                              type="date"
-                              name="end_at"
-                              onChange={(e: any) => {
-                                if(new Date(e.target.value) >= new Date(startAt)) {
-                                  setEndAt(e.target.value);
-                                } else {
-                                  setInputEnd(false);
-                                  notify("error", "Please put an end date higher than or equal to the start date.");
-                                }
-                              }}
-                            />
-                            <MdDone
-                              onClick={() => {
-                                handleChangeEnd()
-                                notify("success", "End date successfuly changed!");
-                              }}
-                              size={25}
-                              className="cursor-pointer ml-2"
-                            />
-                          </>
-                        ) : (
-                          <>
-                            <span className="pl-3">
-                              <Moment format="MM/DD/YYYY">
-                                {endAt
-                                  ? endAt.toString()
-                                  : "Not Defined"}
-                              </Moment>
-                            </span>
-                            <MdOutlineEdit
-                              onClick={() => setInputEnd(true)}
-                              size={25}
-                              className="cursor-pointer ml-2"
-                            />
-                          </>
-                        )}
+                      <FaCalendarCheck className="mr-2" />
+                      End date:
+                      {inputEnd === true ? (
+                        <>
+                          <input
+                            type="date"
+                            name="end_at"
+                            onChange={(e: any) => {
+                              if (
+                                new Date(e.target.value) >= new Date(startAt)
+                              ) {
+                                setEndAt(e.target.value);
+                              } else {
+                                setInputEnd(false);
+                                notify(
+                                  "error",
+                                  "Please put an end date higher than or equal to the start date."
+                                );
+                              }
+                            }}
+                          />
+                          <MdDone
+                            onClick={() => {
+                              handleChangeEnd();
+                              notify(
+                                "success",
+                                "End date successfuly changed!"
+                              );
+                            }}
+                            size={25}
+                            className="cursor-pointer ml-2"
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <span className="pl-3">
+                            <Moment format="MM/DD/YYYY">
+                              {endAt ? endAt.toString() : "Not Defined"}
+                            </Moment>
+                          </span>
+                          <MdOutlineEdit
+                            onClick={() => setInputEnd(true)}
+                            size={25}
+                            className="cursor-pointer ml-2"
+                          />
+                        </>
+                      )}
                     </p>
                   </div>
                 </div>
