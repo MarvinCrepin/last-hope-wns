@@ -10,7 +10,7 @@
   --light-color: #fcfcfc;
   --dark-color: #4f4f4f;
   --light-gray-color: #cfcfcf;
-  --toastify-color-success: #A3E784 !important;
+  --toastify-color-success: #a3e784 !important;
   --title-font: "Cabin Sketch";
   --text-font: "Baloo Da 2";
 }
@@ -27,4 +27,16 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.scrollbar-style::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+.scrollbar-style::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  border: 5px solid transparent;
+  background-clip: content-box;
+  background-color: #fe9595;
 }
