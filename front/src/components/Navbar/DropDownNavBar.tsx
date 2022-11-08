@@ -17,10 +17,7 @@ import { VscAccount } from "react-icons/vsc";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { IoIosNotifications } from "react-icons/io";
 import UserDetail from "../Dashboard/Modal/UserDetail";
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
+import { classNames } from "../common/Utils";
 
 export default function DropDownNavBar() {
   const client = useApolloClient();

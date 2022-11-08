@@ -3,10 +3,7 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { AiFillCaretDown } from "react-icons/ai";
 import { FaLaptopCode } from "react-icons/fa";
-
-function classNames(...classes: any) {
-  return classes.filter(Boolean).join(" ");
-}
+import { classNames } from "../common/Utils";
 
 export default function Example() {
   return (
