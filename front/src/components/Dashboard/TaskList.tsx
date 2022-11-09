@@ -76,6 +76,7 @@ export default function TaskList() {
   const formatData = (entries: any[]) => {
     let result: TaskInList[] = [];
     entries.forEach((element) => {
+      console.log(element);
       let newData: any = {
         id: element.id,
         title: element.title,
@@ -88,8 +89,7 @@ export default function TaskList() {
         state_id: element.state_id,
         project_name: element.project.title,
         project: {
-          id: element.project.id,
-          title: element.project.title,
+          ...element.project,
         },
       };
 
@@ -111,6 +111,7 @@ export default function TaskList() {
 
   useEffect(() => {
     if (data && !loadingInStore) {
+      console.log(data.GetAllTickets);
       let dataFiltered: TaskInList[] = [...formatData(data.GetAllTickets)];
 
       // si une tache est selectionnée, on la met à jour dans le tableau

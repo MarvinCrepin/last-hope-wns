@@ -2,32 +2,32 @@ import React, { useEffect } from "react";
 import { classNames } from "../../../common/Utils";
 
 interface IProps {
-  task: any;
+  project: any;
   closeModal: () => void;
-  updatedTask: (data: { title: string; description: string }) => void;
+  updatedProject: (data: { title: string; description: string }) => void;
 }
 
-export default function EditTaskText({
+export default function EditProjectText({
   closeModal,
-  task,
-  updatedTask,
+  project,
+  updatedProject,
 }: IProps) {
-  const [taskInformation, setTaskInformation] = React.useState({
+  const [projectInformation, setProjectInformation] = React.useState({
     title: "",
     description: "",
   });
 
   useEffect(() => {
-    setTaskInformation({
-      title: task.title,
-      description: task.description,
+    setProjectInformation({
+      title: project.title,
+      description: project.description,
     });
-  }, [task]);
+  }, [project]);
 
   const isDifferent = () => {
     if (
-      task.title !== taskInformation.title ||
-      task.description !== taskInformation.description
+      project.title !== projectInformation.title ||
+      project.description !== projectInformation.description
     ) {
       return true;
     }
@@ -36,7 +36,7 @@ export default function EditTaskText({
 
   const updatedTaskIfDifferent = () => {
     if (isDifferent()) {
-      updatedTask(taskInformation);
+      updatedProject(projectInformation);
     }
   };
 
@@ -75,12 +75,12 @@ export default function EditTaskText({
                 <input
                   required
                   onChange={(e) =>
-                    setTaskInformation({
-                      ...taskInformation,
+                    setProjectInformation({
+                      ...projectInformation,
                       [e.target.name]: e.target.value,
                     })
                   }
-                  value={taskInformation.title}
+                  value={projectInformation.title}
                   className="rounded bg-lh-light text-lh-dark p-2 border-[1.5px] border-lh-dark focus-visible:ring-lh-primary"
                   id="title"
                   type="text"
@@ -97,10 +97,10 @@ export default function EditTaskText({
                   Description
                 </label>
                 <textarea
-                  value={taskInformation.description}
+                  value={projectInformation.description}
                   onChange={(e) =>
-                    setTaskInformation({
-                      ...taskInformation,
+                    setProjectInformation({
+                      ...projectInformation,
                       [e.target.name]: e.target.value,
                     })
                   }
@@ -121,6 +121,7 @@ export default function EditTaskText({
                     Cancel
                   </button>
                   <button
+                    type="button"
                     className={classNames(
                       !isDifferent()
                         ? "bg-lh-dark cursor-not-allowed"
