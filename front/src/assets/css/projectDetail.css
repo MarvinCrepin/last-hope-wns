@@ -1,7 +1,7 @@
 /* .project-modal {
-    width: 80%;
-    max-height: 800px;
-    height: 80vh;
+  width: 80%;
+  max-height: 800px;
+  height: 80vh;
 } */
 
 .project-modal > div:last-child {
@@ -17,7 +17,7 @@
 /* 
 .project-modal-inside {
   width: 100%;
-  height: 100%; 
+  height: 100%;
   display: flex;
 } */
 
@@ -41,19 +41,19 @@
   margin: auto 0;
 } */
 /* .project-modal-inside::-webkit-scrollbar  */
-.project-modal-stats::-webkit-scrollbar,
+/* .project-modal-stats::-webkit-scrollbar,
 .project-modal-infos::-webkit-scrollbar {
   width: 16px;
   height: 16px;
-}
+} */
 /* .project-modal-inside::-webkit-scrollbar-thumb */
-.project-modal-stats::-webkit-scrollbar-thumb,
+/* .project-modal-stats::-webkit-scrollbar-thumb,
 .project-modal-infos::-webkit-scrollbar-thumb {
   border-radius: 100px;
   border: 5px solid transparent;
   background-clip: content-box;
   background-color: #fe9595;
-}
+} */
 
 /* .project-modal .section-po .select-product-owner {
   border-radius: 4px;
@@ -70,43 +70,43 @@
 } */
 
 @media screen and (max-width: 1000px) {
-  .project-modal > div:first-child {
+  /* .project-modal > div:first-child {
     padding: 1em 0 0.5em 0.5em;
-  }
+  } */
 
-  .project-modal.add-modal > div:first-child {
+  /* .project-modal.add-modal > div:first-child {
     padding: 0.75em 0.5em;
   }
 
   .project-modal-infos .list-inside li {
     padding-right: 0;
-  }
+  } */
   /* .project-modal-stats,  */
   /* .project-modal-infos {
     overflow-y: auto;
     width: 100%;
   } */
 
-  .project-modal-inside {
+  /* .project-modal-inside {
     flex-wrap: wrap;
     overflow-y: scroll;
-  }
+  } */
 
-  .project-modal-inside hr {
+  /* .project-modal-inside hr {
     border: solid 0.5px black;
     height: 0;
     width: 90%;
     margin: 0 auto;
-  }
+  } */
 
-  .project-modal-infos .list-inside li p {
+  /* .project-modal-infos .list-inside li p {
     width: 100%;
     word-break: break-word;
-  }
+  } */
 }
 
 @media screen and (max-width: 600px) {
-  .project-modal-mstats canvas,
+  /* .project-modal-mstats canvas,
   .project-modal-pstats canvas {
     min-width: 300px;
     min-height: 150px;
@@ -115,7 +115,7 @@
   .project-modal-mstats {
     min-width: 350px;
     min-height: 175px;
-  }
+  } */
 }
 
 @media screen and (max-width: 450px) {
