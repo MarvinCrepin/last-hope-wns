@@ -33,6 +33,7 @@ export default async (
         ticket_id: args.data.ticket_id,
         user_id: context.authenticatedUser.id,
         minute_passed: args.data.minute_passed,
+        project_id: ticket.project.id,
       },
     });
     return ticketDurationUser;

@@ -1,4 +1,4 @@
-import { Tabs } from "@mui/material";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,8 +10,10 @@ import {
   Filler,
   Legend,
 } from "chart.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
+
+import GetTotalTicketDurationUserByProject from "../../../../graphql/queries/TicketDurationUser/GetTotalTicketDurationByProjet7DayAgo";
 import { classNames } from "../../../common/Utils";
 
 ChartJS.register(
@@ -57,6 +59,21 @@ type Props = {};
 
 export default function StatsPanel({}: Props) {
   const [selectedTab, setSelectedTab] = useState(tabs[0].value);
+
+  const { loading, error, data } = useQuery(
+    GetTotalTicketDurationUserByProject
+  );
+
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+    }
+  }, [data]);
+
+  //   if (loading)
+
+  return <p>Loading...</p>;
+
   return (
     <div>
       <nav className="flex flex-col sm:flex-row mb-4 justify-center">
@@ -74,7 +91,10 @@ export default function StatsPanel({}: Props) {
           </button>
         ))}
       </nav>
-      {selectedTab === 1 && <Line options={options.hourPerDay} data={data} />}
+
+      {/* {selectedTab === 1 && 
+      <Line options={options.hourPerDay} data={data} />
+      } */}
     </div>
   );
 }
