@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import UpdateUser from "../../../graphql/queries/User/UpdateUser";
@@ -16,6 +17,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { UPDATE_USER_IN_STORE } from "../../../slicer/authSlice";
 import { useDispatch } from "react-redux";
 import GetAllUsers from "../../../graphql/queries/User/GetAllUsers";
+import ModalConfirm from "../../common/ModalConfirm";
 
 type Props = {
   user: any;
@@ -55,20 +57,34 @@ function UserDetail({ user, closeModal }: Props) {
     passwordConfirm: string
   ) => password === passwordConfirm;
 
-  const submitPasswordChange = () => {
+  const submitPasswordChange = async () => {
     if (PasswordAndConfirmIsSame(password, passwordConfirm)) {
-      updateUser({
-        variables: {
-          userId: user.id,
-          data: {
-            password: password,
+      try {
+        await updateUser({
+          variables: {
+            userId: user.id,
+            data: {
+              password: password,
+            },
           },
-        },
-      });
+        });
+        displayConfirmModalPassword(false);
+      } catch (error) {
+        console.error(error);
+        notify("error", "Server error");
+      }
     } else {
       return notify("error", "Password confirmation is not ok");
     }
   };
+
+  const displayConfirmModalPassword = (state: boolean) => {
+    setModalConfirmPassword(state);
+  }
+
+  const displayConfirmModalUser = (state: boolean) => {
+    setModalConfirmUser(state);
+  }
 
   const submitUserChange = () => {
     const updatedUser = {
@@ -83,153 +99,204 @@ function UserDetail({ user, closeModal }: Props) {
           ...updatedUser,
         },
       },
+    }).then(() => {
+      displayConfirmModalUser(false);
+    }).catch((error) => {
+      console.error(error);
+      notify("error", "Server error");
     });
   };
+
+  const [modalConfirmPassword, setModalConfirmPassword] = useState(false);
+  const [modalConfirmUser, setModalConfirmUser] = useState(false);
+
   return (
-    <div
-      className="fixed z-10 inset-0 overflow-y-auto"
-      aria-labelledby="modal-title"
-      role="dialog"
-      aria-modal="true"
-    >
-      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity "></div>
-        <div className="inline-block text-left transform transition-all sm:align-middle user-modal ">
-          <a
-            onClick={(e) => setDetailsIsActive(true)}
-            className={
-              "pg-nav-user-modal px-2 font-title rounded-t-md" +
-              theme(roleList[0], "nav-link", { isActive: detailsIsActive })
-            }
-          >
-            Details
-          </a>
-          <a
-            onClick={(e) => setDetailsIsActive(false)}
-            className={
-              "pg-nav-user-modal px-2 font-title rounded-t-md" +
-              theme(roleList[0], "nav-link", { isActive: !detailsIsActive })
-            }
-          >
-            Security
-          </a>
+    <>
+      <ModalConfirm
+        textButtonConfirm="Save"
+        textButtonCancel="Cancel"
+        title="Change your password?"
+        text="Are you sure you want to change your password? This action cannot be canceled."
+        onConfirm={() => submitPasswordChange()}
+        onCancel={() => setModalConfirmPassword(false)}
+        isOpen={modalConfirmPassword ? true : false}
+      />
+      <ModalConfirm
+        textButtonConfirm="Save"
+        textButtonCancel="Cancel"
+        title="Save your user info?"
+        text="Are you sure you want to save your user info?"
+        onConfirm={() => submitUserChange()}
+        onCancel={() => setModalConfirmUser(false)}
+        isOpen={modalConfirmUser ? true : false}
+      />
+      <div
+        className="fixed z-10 inset-0 overflow-y-auto"
+        aria-labelledby="modal-title"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="flex justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity "></div>
+          <div className="inline-block text-left transform transition-all sm:align-middle user-modal">
+            <div className="flex">
+              <div className="text-2xl font-title text-lh-light flex justify-center items-center rounded-t-lg mr-2">
+                <a
+                  onClick={() => setDetailsIsActive(true)}
+                  className={
+                    "pg-nav-user-modal py-1.5 px-2 font-title rounded-t-md cursor-pointer " +
+                    theme(roleList[0], "nav-link", {
+                      isActive: detailsIsActive,
+                    })
+                  }
+                >
+                  Details
+                </a>
+              </div>
+              <div className="text-2xl font-title text-lh-light flex justify-center items-center rounded-t-lg">
+                <a
+                  onClick={(e) => setDetailsIsActive(false)}
+                  className={
+                    "pg-nav-user-modal py-1.5 px-2 font-title rounded-t-md cursor-pointer " +
+                    theme(roleList[0], "nav-link", {
+                      isActive: !detailsIsActive,
+                    })
+                  }
+                >
+                  Security
+                </a>
+              </div>
+            </div>
+            <div
+              className={
+                "bg-white  rounder-user-modal min-h-full p-4 text-center sm:p-0"
+              }
+            >
+              <div className="relative rounded-lg text-left overflow-hidden transform transition-all ">
+                <button
+                  className="close-modal-btn"
+                  onClick={(e) => closeModal()}
+                >
+                  <AiOutlineClose className="close-modal-icon" />
+                </button>
 
-          <div
-            className={
-              "bg-white  rounder-user-modal min-h-full p-4 text-center sm:p-0"
-            }
-          >
-            <div className="relative rounded-lg text-left overflow-hidden transform transition-all ">
-              <button className="close-modal-btn" onClick={(e) => closeModal()}>
-                <AiOutlineClose className="close-modal-icon" />
-              </button>
-
-              <div className="py-8 px-2 sm:pl-6 sm:pr-6">
-                <div>
-                  <div className="flex flex-col justify-center ">
-                    <h1 className="font-title mb-3 text-center text-lh-dark text-4xl">
-                      {user.firstname.concat(" ", user.lastname)}
-                    </h1>
-                    <h2 className="font-title  text-center text-lh-primary text-2xl">
-                      {returnRoleName(user.roles)}
-                    </h2>
-                    {detailsIsActive && (
-                      <form
-                        onSubmit={(e) => {
-                          e.preventDefault();
-                          submitUserChange();
-                        }}
-                        className="flex flex-col   justify-center "
-                      >
-                        <div className={"details"}>
-                          <div className="my-2">
-                            <label htmlFor="email">
-                              Mail
+                <div className="py-8 px-2 sm:pl-6 sm:pr-6">
+                  <div>
+                    <div className="flex flex-col justify-center ">
+                      <h1 className="font-title mb-1 text-center text-lh-dark text-4xl">
+                        {user.firstname.concat(" ", user.lastname)}
+                      </h1>
+                      <h2 className="font-title mb-4 text-center text-lh-primary text-2xl">
+                        {returnRoleName(user.roles)}
+                      </h2>
+                      {detailsIsActive && (
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            displayConfirmModalUser(true);
+                          }}
+                          className="flex flex-col justify-center "
+                        >
+                          <div className={"details"}>
+                            <div className="my-2">
+                              <label
+                                htmlFor="email"
+                                className="text-lh-primary text-2xl"
+                              >
+                                Mail
+                              </label>
                               <input
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight "
                                 id="email"
                                 type="email"
                               />
-                            </label>
-                          </div>
-                          <div className="mb-2">
-                            <label htmlFor="firstname">
-                              Firstname
+                            </div>
+                            <div className="mb-2">
+                              <label
+                                htmlFor="firstname"
+                                className="text-lh-primary text-2xl"
+                              >
+                                Firstname
+                              </label>
                               <input
                                 value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
-                                className="w-full appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none"
                                 id="firstname"
                                 type="firstname"
                                 placeholder="Jean"
                               />
-                            </label>
-                          </div>
-                          <div className="mb-4">
-                            <label htmlFor="lastname">
-                              Lastname
+                            </div>
+                            <div>
+                              <label
+                                htmlFor="lastname"
+                                className="text-lh-primary text-2xl"
+                              >
+                                Lastname
+                              </label>
                               <input
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
-                                className="w-full appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none"
                                 id="lastname"
                                 type="lastname"
                                 placeholder="Dupont"
                               />
-                            </label>
-                          </div>
-                          <ButtonForm
-                            text="Save"
-                            type="submit"
-                            customClass="w-32"
-                          />
-                        </div>
-                      </form>
-                    )}
-                    <div>
-                      {!detailsIsActive && (
-                        <form
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            submitPasswordChange();
-                          }}
-                        >
-                          <div className={"security"}>
-                            <div className="mb-4 mt-2 relative">
-                              <label htmlFor="password">
-                                Password
-                                <input
-                                  onChange={(e) => setPassword(e.target.value)}
-                                  className="w-full  appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none"
-                                  id="password"
-                                  type="password"
-                                />
-                              </label>
-                              <div className="mb-8 my-2 relative">
-                                <label htmlFor="confirmPassword">
-                                  Confirm password
-                                  <input
-                                    onChange={(e) =>
-                                      setPasswordConfirm(e.target.value)
-                                    }
-                                    className="w-full appearance-none border border-lh-dark rounded-lg mb-9 py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none"
-                                    id="confirmPassword"
-                                    type="password"
-                                  />
-                                </label>
-                              </div>
                             </div>
-
                             <ButtonForm
                               text="Save"
                               type="submit"
-                              customClass="w-32 mt-4"
+                              customClass="bg-lh-primary cursor-pointer w-32 mt-12 font-title text-lh-light text-2xl py-1.5 px-3 items-center rounded mt-2 save-user"
                             />
                           </div>
                         </form>
                       )}
+                      <div>
+                        {!detailsIsActive && (
+                          <form
+                            onSubmit={(e) => {
+                              e.preventDefault();
+                              displayConfirmModalPassword(true)
+                            }}
+                          >
+                            <div className={"security"}>
+                              <div className="my-2 relative">
+                                <label
+                                  htmlFor="password"
+                                  className="text-lh-primary text-2xl"
+                                >
+                                  Password
+                                </label>
+                                <input
+                                  onChange={(e) => setPassword(e.target.value)}
+                                  id="password"
+                                  type="password"
+                                />
+                              </div>
+                              <div className="relative">
+                                <label
+                                  htmlFor="confirmPassword"
+                                  className="text-lh-primary text-2xl"
+                                >
+                                  Confirm password
+                                </label>
+                                <input
+                                  onChange={(e) =>
+                                    setPasswordConfirm(e.target.value)
+                                  }
+                                  id="confirmPassword"
+                                  type="password"
+                                />
+                              </div>
+
+                              <ButtonForm
+                                text="Save"
+                                type="submit"
+                                customClass="bg-lh-primary cursor-pointer w-32 mt-12 font-title text-lh-light text-2xl py-1.5 px-3 items-center rounded mt-2 save-user"
+                              />
+                            </div>
+                          </form>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -238,7 +305,7 @@ function UserDetail({ user, closeModal }: Props) {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

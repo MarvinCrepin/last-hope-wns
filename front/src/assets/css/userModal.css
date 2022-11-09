@@ -1,7 +1,9 @@
 .user-modal {
   height: 40vh !important;
-  width: 20vw !important;
-  margin-top: 25vh;
+  width: 100%;
+  max-width: 500px;
+  min-width: 325px;
+  margin-top: 18vh;
   align-items: center;
   justify-content: center;
   border-radius: 22em;
@@ -19,28 +21,34 @@
 }
 
 .close-modal-icon {
-    color:var(--primary-color);
-    font-size: 1.5em;
-    font-weight: 1500;
+  color:var(--primary-color);
+  font-size: 1.5em;
+  font-weight: 1500;
 }
-
 
 .pdng-5 {
-    padding: 2em;
+  padding: 2em;
 }
 
-.pg-nav-user-modal {
-  padding: 0.20rem 0.25rem 0.15rem 0.20rem !important;
-  cursor: pointer;
+.user-modal input {
+  width: 100%;
+  border: 1.5px solid var(--dark-color);
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin-top: 0.375rem;
+}
+
+.save-user {
+  border: none;
 }
 
 .user-modal input:focus {
-    outline: var(--primary-color) solid 1px;
-    border: none;
+  outline: none;
+  border: 1.5px solid var(--primary-color);
 }
 
-.user-modal label {
-    font-size: 0.9em;
-    font-weight: 500;
-    color: var(--primary-color);
+@media screen and (max-width: 640px) {
+  .user-modal {
+    margin-top: 20%;
+  }
 }

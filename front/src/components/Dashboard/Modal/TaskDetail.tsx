@@ -386,7 +386,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                       />
                     </div>
                     <div className="h-32 overflow-y-scroll scrollbar-style">
-                      {task.description.lenght > 0 ? (
+                      {task.description ? (
                         <p className="font_weight_400 font-text text-xl	">
                           {task.description}
                         </p>
@@ -398,7 +398,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     </div>
                   </div>
 
-                  {/* Assignee */}
+                  {/* Assignee */} 
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <h3 className="text-lh-primary font-title text-4xl">
