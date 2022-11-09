@@ -13,7 +13,7 @@ generator client {
 model Project {
   id               String    @id @default(cuid())
   title            String
-  description      String?
+  description      String?   @db.Text
   created_at       DateTime  @default(now())
   start_at         DateTime?
   end_at           DateTime?
@@ -21,8 +21,9 @@ model Project {
   product_owner_id String?
   estimated_time   Int?
 
-  participants UserProject[]
-  tickets      Ticket[]
+  participants    UserProject[]
+  tickets         Ticket[]
+  ticketsDuration TicketDurationUser[]
 }
 
 model UserProject {
@@ -108,6 +109,8 @@ model TicketDurationUser {
   user_id       String
   ticket        Ticket   @relation(fields: [ticket_id], references: [id], onDelete: Cascade)
   ticket_id     String
+  project       Project  @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  project_id    String
   created_at    DateTime @default(now())
   minute_passed Int
 }

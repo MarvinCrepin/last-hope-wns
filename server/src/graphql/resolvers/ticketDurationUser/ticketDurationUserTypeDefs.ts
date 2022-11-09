@@ -27,5 +27,6 @@ export default gql`
 
   type Query {
     GetTicketDurationUserByTicket(ticketId: ID): TicketDurationUserResponse
+    GetTicketDurationUserByProject(projectId: ID): TicketDurationUserResponse
   }
 `;
