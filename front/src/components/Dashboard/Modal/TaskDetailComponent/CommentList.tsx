@@ -123,7 +123,7 @@ const CommentList = ({ taskId, userId }: Props) => {
         </button>
       </form>
       <div>
-        <div className="space-y-4 h-96 overflow-y-auto">
+        <div className="space-y-4 h-96 overflow-y-auto scrollbar-style">
           {dataComments &&
             _DATA.currentData().map((comment: any) => {
               return (

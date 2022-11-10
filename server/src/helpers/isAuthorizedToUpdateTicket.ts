@@ -2,7 +2,7 @@ import { Context } from "../graphql/resolvers/types";
 import { ROLES } from "../Constant";
 
 /**
- * Vérifie si un user à le d'update le ticket'(product owner ou admin)
+ * Vérifie si un user à le droit d'update le ticket(product owner ou admin)
  * @param context context qui est passé dans le resolver
  * @param   ticket ticket à vérifier
  * @returns Boolean

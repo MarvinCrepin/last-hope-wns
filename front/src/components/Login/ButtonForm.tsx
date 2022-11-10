@@ -12,7 +12,7 @@ export default function ButtonForm({ type, action, text, customClass }: Props) {
     <button
       className={
         (customClass && customClass) +
-        " shadow p-0.5 bg-lh-secondary text-lh-light font-title border rounded-md border-lh-dark p"
+        " shadow p-0.5 bg-lh-secondary text-lh-light font-title rounded-md border-lh-dark p"
       }
       type={type}
       onClick={type === "button" ? () => action : undefined}

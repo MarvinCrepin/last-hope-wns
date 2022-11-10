@@ -92,11 +92,41 @@ export const columnsByRole = (
   }
 };
 
-export const isAuthorizedToManageProject = (userRole: string) => {
+/**
+ * Retourne si l'utilisateur est authorisé à devenir project manager d'un projet
+ * @param userRole "ROLE_ADMIN" | "ROLE_DEVELOPER" | "ROLE_PROJECT_MANAGER"
+ * @returns Boolean
+ */
+export const isAuthorizedTakeProjectManagerRole = (userRole: string) => {
   const authorizedRole = ["ROLE_PROJECT_MANAGER", "ROLE_ADMIN"];
 
   if (authorizedRole.includes(userRole)) return true;
   else return false;
+};
+
+/**
+ * Retourn true si l'utilisateur est autorisé à manager le projet
+ * @param user
+ * @param projectId
+ * @returns Boolean
+ */
+export const isAuthorizedToManageProject = (
+  user: {
+    roles: string;
+    id: string;
+  },
+  productOwnerId: string
+) => {
+  if (!productOwnerId) {
+    return false;
+  }
+
+  const authorizedRole = ["ROLE_PROJECT_MANAGER", "ROLE_ADMIN"];
+
+  if (!authorizedRole.includes(user.roles)) return false;
+  if (user.roles === ROLES.ADMIN) return true;
+  if (user.id !== productOwnerId) return false;
+  else return true;
 };
 
 export const returnRoleName = (role: string): string => {

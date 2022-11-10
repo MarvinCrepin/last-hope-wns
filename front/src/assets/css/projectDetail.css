@@ -1,127 +1,132 @@
-.project-modal {
-    width: 80%;
-    max-height: 800px;
-    height: 80vh;
-}
+/* .project-modal {
+  width: 80%;
+  max-height: 800px;
+  height: 80vh;
+} */
 
 .project-modal > div:last-child {
-    max-height: 100%;
-    height: 800px;
-    border-top-left-radius: 0;
+  max-height: 100%;
+  height: 800px;
+  border-top-left-radius: 0;
 }
 
 .project-modal.add-modal > div:last-child {
-    height: initial;
-    overflow-y: auto;
+  height: initial;
+  overflow-y: auto;
 }
-
+/* 
 .project-modal-inside {
-    width: 100%;
-    height: 100%;
-    display: flex;
-}
+  width: 100%;
+  height: 100%;
+  display: flex;
+} */
 
-.project-modal-infos, .project-modal-stats {
-    overflow-y: scroll;
-}
+/* .project-modal-infos,
+.project-modal-stats {
+  overflow-y: scroll;
+} */
 
-.project-modal-infos {
-    width: 45%;
-}
+/* .project-modal-infos {
+  width: 45%;
+} */
 
 .project-modal-stats {
-    width: 55%;
+  flex-basis: fit-content;
+  /* width: 55%; */
 }
 
-.project-modal-inside hr {
-    height: 90%;
-    border: solid 0.5px black;
-    margin: auto 0;
-}
+/* .project-modal-inside hr {
+  height: 90%;
+  border: solid 0.5px black;
+  margin: auto 0;
+} */
+/* .project-modal-inside::-webkit-scrollbar  */
+/* .project-modal-stats::-webkit-scrollbar,
+.project-modal-infos::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+} */
+/* .project-modal-inside::-webkit-scrollbar-thumb */
+/* .project-modal-stats::-webkit-scrollbar-thumb,
+.project-modal-infos::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  border: 5px solid transparent;
+  background-clip: content-box;
+  background-color: #fe9595;
+} */
 
-.project-modal-stats::-webkit-scrollbar, .project-modal-infos::-webkit-scrollbar, .project-modal-inside::-webkit-scrollbar {
-    width: 16px;
-    height: 16px;
-}
-  
-.project-modal-stats::-webkit-scrollbar-thumb, .project-modal-infos::-webkit-scrollbar-thumb, .project-modal-inside::-webkit-scrollbar-thumb {
-    border-radius: 100px;
-    border: 5px solid transparent;
-    background-clip: content-box;
-    background-color: #fe9595;
-}
-
-.project-modal .section-po .select-product-owner {
-    border-radius: 4px;
+/* .project-modal .section-po .select-product-owner {
+  border-radius: 4px;
 }
 
 .project-modal .section-po .change-po {
-    border-radius: 4px;
-    padding-top: .4em;
-    padding-bottom: .4em;
-}
+  border-radius: 4px;
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
+} */
 
-.project-modal.add-modal .project-modal-inside {
-    overflow-y: scroll;
-}
+/* .project-modal.add-modal .project-modal-inside {
+  overflow-y: scroll;
+} */
 
 @media screen and (max-width: 1000px) {
-    .project-modal > div:first-child {
-        padding: 1em 0 0.5em 0.5em;
-    }
+  /* .project-modal > div:first-child {
+    padding: 1em 0 0.5em 0.5em;
+  } */
 
-    .project-modal.add-modal > div:first-child {
-        padding: 0.75em 0.5em;
-    }
+  /* .project-modal.add-modal > div:first-child {
+    padding: 0.75em 0.5em;
+  }
 
-    .project-modal-infos .list-inside li {
-        padding-right: 0;
-    }
+  .project-modal-infos .list-inside li {
+    padding-right: 0;
+  } */
+  /* .project-modal-stats,  */
+  /* .project-modal-infos {
+    overflow-y: auto;
+    width: 100%;
+  } */
 
-    .project-modal-infos, .project-modal-stats {
-        overflow-y: auto;
-        width: 100%;
-    }
+  /* .project-modal-inside {
+    flex-wrap: wrap;
+    overflow-y: scroll;
+  } */
 
-    .project-modal-inside {
-        flex-wrap: wrap;
-        overflow-y: scroll;
-    }
+  /* .project-modal-inside hr {
+    border: solid 0.5px black;
+    height: 0;
+    width: 90%;
+    margin: 0 auto;
+  } */
 
-    .project-modal-inside hr {
-        border: solid 0.5px black;
-        height: 0;
-        width: 90%;
-        margin: 0 auto;
-    }
-
-    .project-modal-infos .list-inside li p {
-        width: 100%;
-        word-break: break-word;
-    }
+  /* .project-modal-infos .list-inside li p {
+    width: 100%;
+    word-break: break-word;
+  } */
 }
 
 @media screen and (max-width: 600px) {
-    .project-modal-mstats canvas, .project-modal-pstats canvas {
-        min-width: 300px;
-        min-height: 150px;
-    }
-    .project-modal-pstats, .project-modal-mstats {
-        min-width: 350px;
-        min-height: 175px;
-    }
+  /* .project-modal-mstats canvas,
+  .project-modal-pstats canvas {
+    min-width: 300px;
+    min-height: 150px;
+  }
+  .project-modal-pstats,
+  .project-modal-mstats {
+    min-width: 350px;
+    min-height: 175px;
+  } */
 }
 
-@media screen and (max-width: 450px) { 
-    .project-modal .section-members li {
-        display: flex;
-        text-align: center;
-        align-items: flex-start;
-        justify-content: space-between;
-    }
+@media screen and (max-width: 450px) {
+  .project-modal .section-members li {
+    display: flex;
+    text-align: center;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
 
-    .project-modal .section-members li p {
-        display: block;
-    }
+  .project-modal .section-members li p {
+    display: block;
+  }
 }
-

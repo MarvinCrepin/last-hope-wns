@@ -8,6 +8,7 @@ const getAllTicketsNotArchive = gql`
       project {
         id
         title
+        product_owner_id
       }
       description
       due_at

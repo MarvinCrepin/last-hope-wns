@@ -196,7 +196,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
       },
     });
   };
-
+  console.log(task);
   return (
     <>
       <ModalConfirm
@@ -224,15 +224,16 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         />
       )}
 
-      <EditTaskText
-        task={task}
-        closeModal={() => setModalEditTask(false)}
-        isOpen={modalEditTask ? true : false}
-        updatedTask={async (data) => {
-          updateTicket({ variables: { ticketId: task.id, data } });
-          setModalEditTask(false);
-        }}
-      />
+      {modalEditTask && (
+        <EditTaskText
+          task={task}
+          closeModal={() => setModalEditTask(false)}
+          updatedTask={async (data) => {
+            updateTicket({ variables: { ticketId: task.id, data } });
+            setModalEditTask(false);
+          }}
+        />
+      )}
       <div
         className="task-detail fixed z-10 inset-0 overflow-y-auto"
         aria-labelledby="modal-title"
@@ -251,12 +252,15 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
             &#8203;
           </span>
 
-          <div className="p-8 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full">
+          <div className="px-32 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full">
             <div className="flex w-full">
               <div className=" bg-lh-primary text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
                 <div>{`Task detail - ${task.title}`}</div>
               </div>
-              {isAuthorizedToManageProject(userInStore.roles) && (
+              {isAuthorizedToManageProject(
+                userInStore,
+                task.project ? task.project.product_owner_id : null
+              ) && (
                 <Menu as="div" className="relative inline-block text-left">
                   <Menu.Button className=" bg-lh-dark text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
                     <FiMoreHorizontal />
@@ -375,18 +379,18 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
 
                   {/* Description */}
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center">
+                    <div className="flex items-center ">
                       <h3 className="text-lh-primary font-title text-4xl">
-                        {task.title}
+                        Description
                       </h3>
                       <FaPencilAlt
                         size={30}
                         onClick={() => setModalEditTask(true)}
-                        className="text-lh-primary cursor-pointer hover:opacity-90 transition-opacity"
+                        className="text-lh-primary cursor-pointer hover:opacity-90 transition-opacity ml-4"
                       />
                     </div>
                     <div className="h-32 overflow-y-scroll scrollbar-style">
-                      {task.description.lenght > 0 ? (
+                      {task.description ? (
                         <p className="font_weight_400 font-text text-xl	">
                           {task.description}
                         </p>
@@ -398,16 +402,16 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     </div>
                   </div>
 
-                  {/* Assignee */}
+                  {/* Assignee */} 
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center">
+                    <div className="flex items-center">
                       <h3 className="text-lh-primary font-title text-4xl">
                         Assignee
                       </h3>
                       <AiFillSetting
                         onClick={() => openModal("assignee")}
                         size={30}
-                        className="text-lh-primary cursor-pointer hover:opacity-90 transition-opacity"
+                        className="text-lh-primary cursor-pointer hover:opacity-90 transition-opacity ml-4"
                       />
                     </div>
                     {task.hasOwnProperty("participants") &&
@@ -417,7 +421,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                           return (
                             <div
                               key={user.id}
-                              className="font_weight_400 font-text text-xl	flex items-center space-x-1"
+                              className="font_weight_400 font-title text-xl	flex items-center space-x-1 text-lh-dark"
                             >
                               <FaRegUserCircle size={30} />
                               <span>{user.firstname}</span>
@@ -427,7 +431,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                       </div>
                     ) : (
                       <div className="font_weight_400 font-text text-xl	flex items-center space-x-2 italic">
-                        No users found
+                        No members defined
                       </div>
                     )}
                   </div>
@@ -447,12 +451,12 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     <h3 className="text-lh-primary font-title text-4xl">
                       Edit
                     </h3>
-                    <div className="flex  flex-col lg:grid  lg:grid-cols-5 gap-4">
+                    <div className="flex  flex-col lg:grid  lg:grid-cols-8 gap-4">
                       <div className="font_weight_400 font-text text-xl	flex items-center space-x-2  lg:col-span-2 ">
                         <div className="flex items-center">
                           <div className=" space-y-4">
-                            <div className="h-10">From</div>
-                            <div className="h-10">To</div>
+                            <div className="h-10 flex items-center">From</div>
+                            <div className="h-10 flex items-center">To</div>
                           </div>
 
                           <div className="space-y-4">
@@ -528,14 +532,14 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     </div>
 
                     {/* Advancement */}
-                    <div className="flex  flex-col lg:grid  lg:grid-cols-5 gap-4">
+                    <div className="flex  flex-col lg:grid  lg:grid-cols-8 gap-4">
                       <div className="font_weight_400 font-text text-xl	flex items-center space-x-2 lg:col-span-2">
                         <select
                           value={task.advancement}
                           onChange={(e) => changeEnum(e, "int")}
                           name="advancement"
                           id="advancement"
-                          className="bg-lh-light w-1/2 border-2 border-lh-dark rounded-lg px-1.5"
+                          className="bg-lh-light w-full border-2 border-lh-dark rounded-lg px-1.5"
                         >
                           <option value={0}>0%</option>
                           <option value={10}>10%</option>
@@ -557,14 +561,14 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     </div>
 
                     {/* Advancement */}
-                    <div className="flex  flex-col lg:grid  lg:grid-cols-5 gap-4">
-                      <div className="font_weight_400 font-text text-xl	flex items-center space-x-2 lg:col-span-2">
+                    <div className="flex  flex-col lg:grid  lg:grid-cols-8 gap-4">
+                      <div className="w-full font_weight_400 font-text text-xl	flex items-center space-x-2 lg:col-span-2">
                         <select
                           onChange={(e) => changeEnum(e, "char")}
                           defaultValue={task.state_id}
                           name="state_id"
                           id="state_id"
-                          className="bg-lh-light w-1/2 border-2 border-lh-dark rounded-lg px-1.5"
+                          className="bg-lh-light w-full border-2 border-lh-dark rounded-lg px-1.5"
                         >
                           {!loadingState &&
                             dataState.GetAllState.map((state: State) => (
