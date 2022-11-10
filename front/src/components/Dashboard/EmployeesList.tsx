@@ -47,15 +47,6 @@ export default function EmployeesList() {
 
   const [deleteUser] = useMutation(DeleteUser, {
     refetchQueries: [{ query: getAllUsers }],
-    onCompleted: () => {
-      notify("success", "User succesfully deleted");
-    },
-    onError: (error) => {
-      notify(
-        "error",
-        `Something went wrong with the deletion of the user [${error.message}]`
-      );
-    },
   });
 
   useEffect(() => {
@@ -108,7 +99,7 @@ export default function EmployeesList() {
   const deleteEmployee = async (user: any) => {
     const UserId = user.id;
     try {
-      deleteUser({ variables: { userId: UserId } });
+      await deleteUser({ variables: { userId: UserId } });
       displayConfirmModalDelete(false, null);
       notify("success", `${user.user} has been deleted.`);
     } catch (error) {
