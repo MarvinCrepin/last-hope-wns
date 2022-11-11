@@ -105,38 +105,6 @@ export default function HoursPerDayPerUser({ data }: Props) {
     chart.update();
   }, [dataChart]);
 
-  // if (chartRef.current) {
-  //   setDataChart({
-  //     datasets: [
-  //       {
-  //         fill: true,
-  //         backgroundColor: (context: ScriptableContext<"line">) => {
-  //           const ctx = context.chart.ctx;
-  //           const gradient = ctx.createLinearGradient(
-  //             0,
-  //             0,
-  //             0,
-  //             context.chart.height
-  //           );
-  //           gradient.addColorStop(0, "rgba(248,221,156,1)");
-  //           gradient.addColorStop(0.25, "rgba(248,221,156,0.75)");
-  //           gradient.addColorStop(0.5, "rgba(248,221,156,0.5)");
-  //           gradient.addColorStop(0.75, "rgba(248,221,156,0.25)");
-  //           gradient.addColorStop(1, "rgba(248,221,156,0");
-
-  //           return gradient;
-  //         },
-
-  //         tension: 0.5,
-  //         data: data.StatHourPerDayByProject.datas,
-  //         borderColor: "#F8DD9C",
-  //       },
-  //     ],
-  //   });
-  // }
-  // }
-  // }, [data, chartRef]);
-
   return (
     <div className="h-56">
       <Line data={dataChart} options={options.hourPerDay} ref={chartRef} />
