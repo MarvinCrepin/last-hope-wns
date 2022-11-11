@@ -256,7 +256,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
             &#8203;
           </span>
 
-          <div className="px-32 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full">
+          <div className="px-10 lg:px-32 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full">
             <div className="flex w-full">
               <div className=" bg-lh-primary text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
                 <div>{`Task detail - ${task.title}`}</div>
@@ -406,7 +406,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     </div>
                   </div>
 
-                  {/* Assignee */} 
+                  {/* Assignee */}
                   <div className="space-y-4">
                     <div className="flex items-center">
                       <h3 className="text-lh-primary font-title text-4xl">
@@ -455,8 +455,8 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     <h3 className="text-lh-primary font-title text-4xl">
                       Edit
                     </h3>
-                    <div className="flex  flex-col lg:grid  lg:grid-cols-8 gap-4">
-                      <div className="font_weight_400 font-text text-xl	flex items-center space-x-2  lg:col-span-2 ">
+                    <div className="flex  flex-row  ">
+                      <div className="font_weight_400 font-text text-xl	flex items-center space-x-2">
                         <div className="flex items-center">
                           <div className=" space-y-4">
                             <div className="h-10 flex items-center">From</div>
@@ -515,7 +515,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                           </div>
                         </div>
                       </div>
-                      <div className="space-y-4 flex items-center justify-start lg:col-span-3">
+                      <div className="space-y-4 flex items-center justify-start">
                         <button
                           disabled={loadCreate || differenceInHour() <= 0}
                           className={classNames(
@@ -536,7 +536,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     </div>
 
                     {/* Advancement */}
-                    <div className="flex  flex-col lg:grid  lg:grid-cols-8 gap-4">
+                    <div className="flex flex-col-reverse lg:grid  lg:grid-cols-8 gap-2 lg:gap-4">
                       <div className="font_weight_400 font-text text-xl	flex items-center space-x-2 lg:col-span-2">
                         <select
                           value={task.advancement}
@@ -565,7 +565,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     </div>
 
                     {/* Advancement */}
-                    <div className="flex  flex-col lg:grid  lg:grid-cols-8 gap-4">
+                    <div className="flex flex-col-reverse lg:grid  lg:grid-cols-8 gap-2 lg:gap-4">
                       <div className="w-full font_weight_400 font-text text-xl	flex items-center space-x-2 lg:col-span-2">
                         <select
                           onChange={(e) => changeEnum(e, "char")}
