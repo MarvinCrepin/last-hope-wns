@@ -40,7 +40,6 @@ function AddMemberToProject({
         participantsId.push(userProject.user.id);
       });
     }
-    console.log(participantsId);
 
     let usersNew: User[] = [];
 
@@ -147,7 +146,6 @@ function AddMemberToProject({
                         />
                       </span>
                       <span className="text-lh-light font-text text-lg">
-                        
                         {onCreate ? user.firstname : user.user.firstname}
                       </span>
                     </div>

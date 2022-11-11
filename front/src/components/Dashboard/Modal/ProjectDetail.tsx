@@ -46,6 +46,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
   );
 
   const handleSelectChange = ({ target }: any) => {
+    console.log(target.value);
     setProductOwnerId(target.value);
   };
 
@@ -54,12 +55,14 @@ function ProjectDetail({ project, users, closeModal }: Props) {
       setEnableEditProjectManager(false);
       return;
     }
-
+    console.log(productOwnerId);
     try {
       await updateProject({
         variables: {
           projectId: project.id,
-          product_owner_id: productOwnerId,
+          data: {
+            product_owner_id: productOwnerId,
+          },
         },
       });
       notify("success", "Product Owner changed successfully");
@@ -370,9 +373,10 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                                 <span>
                                   {`${user.user.firstname} ${user.user.lastname} -`}
                                 </span>
-                                <span className="text-lh-secondary">{`${returnRoleName(
-                                  user.user.roles
-                                )}`}</span>
+                                <span className="text-lh-secondary">{`${
+                                  user.user.roles &&
+                                  returnRoleName(user.user.roles)
+                                }`}</span>
                               </div>
                             );
                           })}
@@ -497,17 +501,28 @@ function ProjectDetail({ project, users, closeModal }: Props) {
               {/* Right column */}
               <div className="border-l-2 flex flex-col items-center justify-start">
                 <div className="space-y-8 py-4 w-4/5">
-                  {/* Description */}
-                  <div className="space-y-4">
+                  {/*  */}
+                  <StatsPanel project={project} />
+
+                  {/* <div className="space-y-4">
                     <div className="flex items-center ">
                       <h3 className="text-lh-primary font-title text-4xl">
                         Member Statistics
                       </h3>
                     </div>
-                    <StatsPanel />
-                  </div>
+                    <StatsPanel projectId={project.id} />
+                  </div> */}
+                  {/* <div className="space-y-4">
+                    <div className="flex items-center ">
+                      <h3 className="text-lh-primary font-title text-4xl">
+                        Member Statistics
+                      </h3>
+                    </div>
+                    <StatsPanel projectId={project.id} />
+                  </div> */}
                 </div>
               </div>
+
               {/* <div className="project-modal-stats py-8 px-2 sm:pl-6 sm:pr-4 border-l-2">
                 <div className="project-modal-pstats pb-10">
                   <h2 className="text-4xl font-title text-lh-primary ">

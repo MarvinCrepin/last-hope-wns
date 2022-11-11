@@ -171,9 +171,9 @@ export default function TableDashboard({
                               <StyledTableCell>
                                 {value
                                   ? column.metadata.property.map(
-                                      (el: string) => {
+                                      (el: string, index: number) => {
                                         return (
-                                          <span className="ml-2">
+                                          <span className="ml-2" key={index}>
                                             {value[el]}
                                           </span>
                                         );

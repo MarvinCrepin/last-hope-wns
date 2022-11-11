@@ -21,9 +21,9 @@ export default async (
     throw new Error("Ticket not found");
   }
 
-  if (!isAuthorizedToUpdateTicket(context, ticket)) {
-    throw new Error("Not Authorized to update Ticket");
-  }
+  // if (!isAuthorizedToUpdateTicket(context, ticket)) {
+  //   throw new Error("Not Authorized to update Ticket");
+  // }
 
   const ticketDurationUser = await context.prisma.ticketDurationUser.findMany({
     where: { ticket_id: ticketId },

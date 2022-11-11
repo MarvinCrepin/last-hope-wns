@@ -16,6 +16,22 @@ export default gql`
     totalTime: Int
   }
 
+  type StatResponseHourPerDayByProject {
+    datas: [Int]
+    labels: [String]
+    total_passed_time: Int
+  }
+
+  type DataStat {
+    label: [String]
+    data: [Int]
+    user: User
+  }
+
+  type StatResponseHourPerDayByProjectAndUser {
+    datas: [DataStat]
+  }
+
   input TicketDurationUserInput {
     ticket_id: ID
     minute_passed: Int
@@ -28,5 +44,10 @@ export default gql`
   type Query {
     GetTicketDurationUserByTicket(ticketId: ID): TicketDurationUserResponse
     GetTicketDurationUserByProject(projectId: ID): TicketDurationUserResponse
+    StatHourPerDayByProject(projectId: ID): StatResponseHourPerDayByProject
+    StatHourPerDayByProjectAndUser(
+      userIdArray: [String]
+      projectId: ID
+    ): StatResponseHourPerDayByProjectAndUser
   }
 `;

@@ -25,8 +25,6 @@ export default async (
 
   const newData = { ...oldData, ...data };
 
-  console.log(newData);
-
   const notificationTitle = "Project updated";
   const notificationContent = `The project ${newData.title}, you are working on, has been updated.`;
   const notificationType = "project";

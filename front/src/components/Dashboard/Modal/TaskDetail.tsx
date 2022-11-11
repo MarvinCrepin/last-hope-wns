@@ -37,6 +37,7 @@ import {
 import ModalConfirm from "../../common/ModalConfirm";
 import EditTaskText from "./TaskDetailComponent/EditTaskText";
 import getAllProjects from "../../../graphql/queries/Project/GetAllProject";
+import StatHourPerDayByProject from "../../../graphql/queries/TicketDurationUser/StatHourPerDayByProject";
 
 type Props = {
   taskPassed: TaskInList;
@@ -70,6 +71,10 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         },
         {
           query: getAllProjects,
+        },
+        {
+          query: StatHourPerDayByProject,
+          variables: { projectId: taskPassed.project.id },
         },
       ],
     }

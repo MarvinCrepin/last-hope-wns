@@ -29,8 +29,8 @@ export interface UserParticipant {
   id: string;
   firstname: string;
   lastname: string;
-  roles: string;
-  tickerUserId: string;
+  roles?: string;
+  tickerUserId?: string;
 }
 
 export type User = {
