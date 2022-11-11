@@ -198,9 +198,6 @@ function ProjectDetail({ project, users, closeModal }: Props) {
     }
   };
 
-  // const current = new Date();
-  // const currentDate = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
-
   return (
     <>
       {modalEditProject && (
@@ -501,44 +498,8 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                 <div className="space-y-8 py-4 w-4/5">
                   {/*  */}
                   <StatsPanel project={project} />
-
-                  {/* <div className="space-y-4">
-                    <div className="flex items-center ">
-                      <h3 className="text-lh-primary font-title text-4xl">
-                        Member Statistics
-                      </h3>
-                    </div>
-                    <StatsPanel projectId={project.id} />
-                  </div> */}
-                  {/* <div className="space-y-4">
-                    <div className="flex items-center ">
-                      <h3 className="text-lh-primary font-title text-4xl">
-                        Member Statistics
-                      </h3>
-                    </div>
-                    <StatsPanel projectId={project.id} />
-                  </div> */}
                 </div>
               </div>
-
-              {/* <div className="project-modal-stats py-8 px-2 sm:pl-6 sm:pr-4 border-l-2">
-                <div className="project-modal-pstats pb-10">
-                  <h2 className="text-4xl font-title text-lh-primary ">
-                    Project Statistics
-                  </h2>
-                  <div>
-                    <Line data={projectStats} options={options} />
-                  </div>
-                </div>
-                <div className="project-modal-mstats">
-                  <h2 className="text-4xl font-title text-lh-primary ">
-                    Member Statistics
-                  </h2>
-                  <div>
-                    <Line data={memberStats} options={options} />
-                  </div>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>
