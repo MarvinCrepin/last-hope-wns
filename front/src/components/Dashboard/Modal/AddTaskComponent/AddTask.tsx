@@ -9,6 +9,7 @@ import getAllTicketsNotArchive from "../../../../graphql/queries/Ticket/GetAllTi
 import getAllStates from "../../../../graphql/queries/State/GetAllStates";
 import { Project, User, State } from "../../../global";
 import { classNames, notify } from "../../../common/Utils";
+import ButtonForm from "../../../Login/ButtonForm";
 
 type Props = {
   closeModal: () => void;
@@ -263,22 +264,16 @@ export default function AddTask({ closeModal }: Props) {
                   </div>
                 </div>
                 <div className="flex justify-end w-full">
-                  <button
-                    disabled={
+                  <ButtonForm
+                    text="Add Task"
+                    type="submit"
+                    textSize="text-2xl"
+                    textFont="title"
+                    isDisabled={
                       taskInformation.title === "" ||
                       taskInformation.project_id === undefined
                     }
-                    type="submit"
-                    className={classNames(
-                      taskInformation.title === "" ||
-                        taskInformation.project_id === undefined
-                        ? "bg-lh-dark cursor-not-allowed"
-                        : "bg-lh-primary cursor-pointer",
-                      " font-title text-lh-light text-2xl py-1.5 px-3 items-center rounded mt-2"
-                    )}
-                  >
-                    Add Task
-                  </button>
+                  />
                 </div>
               </div>
             </form>

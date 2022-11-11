@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Link, useNavigate } from "react-router-dom";
 import { Fragment } from "react";
 import { useApolloClient, useQuery } from "@apollo/client";
@@ -87,7 +88,7 @@ export default function DropDownNavBar() {
                       onClick={() => setDisplayModalUserDetails(true)}
                       className={classNames(
                         active ? "bg-gray-100 text-gray-900" : "text-lh-dark",
-                        "flex items-center gap-x-2 px-4 py-2 text-md"
+                        "flex items-center gap-x-2 px-4 py-2 text-md cursor-pointer"
                       )}
                     >
                       <VscAccount size={18} color="var(--primary-color)" />

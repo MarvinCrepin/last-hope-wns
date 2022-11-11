@@ -108,7 +108,7 @@ export default function Login() {
               text="Log In"
               textFont="title"
               type="submit"
-              width="w-36"
+              width="w-32"
             />
           </form>
           <div

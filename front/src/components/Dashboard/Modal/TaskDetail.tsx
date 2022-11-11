@@ -406,7 +406,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     </div>
                   </div>
 
-                  {/* Assignee */}
+                  {/* Assignee */} 
                   <div className="space-y-4">
                     <div className="flex items-center">
                       <h3 className="text-lh-primary font-title text-4xl">

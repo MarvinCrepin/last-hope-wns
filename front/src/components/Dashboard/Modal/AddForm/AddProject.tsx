@@ -12,6 +12,7 @@ import AddMemberToProject from "./AddMemberToProject";
 import AddProjectMutation from "../../../../graphql/mutation/Project/AddProjectMutation";
 import getAllProjects from "../../../../graphql/queries/Project/GetAllProject";
 import { notify } from "../../../common/Utils";
+import ButtonForm from "../../../Login/ButtonForm";
 
 type Props = {
   users: User[];
@@ -289,17 +290,13 @@ function AddProject({ users, closeModal }: Props) {
                   </div>
 
                   <div className="add-project-submit flex justify-end w-full mt-2">
-                    <button
+                    <ButtonForm
+                      text="Add project"
                       type="submit"
-                      className={classNames(
-                        addProjectFieldsCheck()
-                          ? "bg-lh-primary cursor-pointer"
-                          : "cursor-not-allowed bg-lh-dark",
-                        "w-fit font-title text-lh-light text-2xl py-1.5 px-3 space-x-2 items-center rounded mt-2"
-                      )}
-                    >
-                      Add project
-                    </button>
+                      textSize="text-2xl"
+                      textFont="title"
+                      isDisabled={!addProjectFieldsCheck()}
+                    />
                   </div>
                 </form>
               </div>

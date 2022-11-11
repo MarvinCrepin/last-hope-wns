@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { classNames } from "../../../common/Utils";
+import ButtonForm from "../../../Login/ButtonForm";
 
 interface IProps {
   project: any;
@@ -34,10 +35,14 @@ export default function EditProjectText({
     return false;
   };
 
-  const updatedTaskIfDifferent = () => {
+  const updatedProjectIfDifferent = () => {
     if (isDifferent()) {
       updatedProject(projectInformation);
     }
+  };
+
+  const closeModalFunction = () => {
+    console.log("close modal");
   };
 
   return (
@@ -112,26 +117,21 @@ export default function EditProjectText({
               </div>
               <div className="flex justify-end ">
                 <div className="space-x-2">
-                  <button
-                    onClick={() => closeModal()}
-                    className={
-                      "bg-lh-primary cursor-pointer font-title text-lh-light text-2xl py-1.5 px-3 items-center rounded mt-2"
-                    }
-                  >
-                    Cancel
-                  </button>
-                  <button
+                  <ButtonForm
+                    text="Cancel"
                     type="button"
-                    className={classNames(
-                      !isDifferent()
-                        ? "bg-lh-dark cursor-not-allowed"
-                        : "bg-lh-primary cursor-pointer",
-                      " font-title text-lh-light text-2xl py-1.5 px-3 items-center rounded mt-2"
-                    )}
-                    onClick={() => updatedTaskIfDifferent()}
-                  >
-                    Modified
-                  </button>
+                    textSize="text-2xl"
+                    action={() => closeModal()}
+                    textFont="title"
+                  />
+                  <ButtonForm
+                    text="Modified"
+                    type="button"
+                    textSize="text-2xl"
+                    action={() => updatedProjectIfDifferent()}
+                    textFont="title"
+                    isDisabled={!isDifferent()}
+                  />
                 </div>
               </div>
             </form>

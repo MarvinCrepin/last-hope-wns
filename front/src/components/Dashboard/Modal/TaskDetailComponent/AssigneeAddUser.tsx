@@ -138,12 +138,12 @@ function AssigneeAddUser({ closeModal, task }: Props) {
                       id="advancement"
                       className="w-1/2 rounded bg-lh-light text-lh-dark p-2 border-[1.5px] border-lh-dark focus-visible:ring-lh-primary"
                     >
+                      <option value={"null"}>Choose a member</option>
                       {usersAvailable.map((user: User) => {
                         return (
                           <option value={user.id}>{user.firstname}</option>
                         );
                       })}
-                      <option value={"null"}>Select</option>
                     </select>
                     {loadCreate || loadDelete ? (
                       <div className="text-lh-secondary cursor-pointer hover:opacity-70">

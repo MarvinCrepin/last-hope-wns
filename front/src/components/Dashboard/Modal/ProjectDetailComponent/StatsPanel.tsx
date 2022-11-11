@@ -8,7 +8,6 @@ import StatHourPerDayByProjectAndUser from "../../../../graphql/queries/TicketDu
 import { user } from "../../../../slicer/authSlice";
 import { isAuthorizedToManageProject, notify } from "../../../common/Utils";
 import { UserParticipant } from "../../../global";
-import ButtonForm from "../../../Login/ButtonForm";
 
 import HoursPerDay from "./Chart/HoursPerDay";
 import HoursPerDayPerUser from "./Chart/HoursPerDayPerUser";

@@ -1,15 +1,14 @@
-import { width } from "@mui/system";
-import React from "react";
 import { classNames } from "../common/Utils";
 
 type Props = {
   type: "button" | "submit" | "reset" | undefined;
-  action?: void | undefined;
+  action?: Function | undefined;
   text: string;
   customClass?: string | undefined;
   textFont?: "title" | "text";
   textSize?: "text-2xl" | "text-xl" | "text-lg" | "text-base" | "text-sm";
   width?: string | undefined;
+  isDisabled?: boolean;
 };
 
 /**
@@ -31,17 +30,22 @@ export default function ButtonForm({
   textFont,
   textSize,
   width,
+  isDisabled,
 }: Props) {
   return (
     <button
+      disabled={isDisabled}
       className={classNames(
-        customClass && customClass,
+        isDisabled
+          ? "bg-lh-dark cursor-not-allowed"
+          : " bg-lh-primary cursor-pointer hover:opacity-70",
+        customClass,
         textSize,
         width && width,
-        ` bg-lh-primary cursor-pointer text-lh-light py-1.5 px-3  items-center rounded font-${textFont} hover:opacity-70`
+        ` text-lh-light py-1.5 px-3  items-center rounded font-${textFont} `
       )}
       type={type}
-      onClick={type === "button" ? () => action : undefined}
+      onClick={type === "button" ? () => action && action() : undefined}
     >
       {text}
     </button>

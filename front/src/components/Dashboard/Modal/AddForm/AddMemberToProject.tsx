@@ -110,10 +110,10 @@ function AddMemberToProject({
                     id="advancement"
                     className="bg-lh-light w-2/3 border-2 border-lh-dark rounded-lg px-1.5 py-2"
                   >
+                    <option value={"null"}>Choose a member</option>
                     {usersAvailable.map((user: User) => {
                       return <option value={user.id}>{user.firstname}</option>;
                     })}
-                    <option value={"null"}>Select</option>
                   </select>
                   <div
                     className={
