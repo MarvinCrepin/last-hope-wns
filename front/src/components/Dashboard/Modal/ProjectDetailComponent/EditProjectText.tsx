@@ -41,10 +41,6 @@ export default function EditProjectText({
     }
   };
 
-  const closeModalFunction = () => {
-    console.log("close modal");
-  };
-
   return (
     <div
       className="task-detail fixed z-20 inset-0 overflow-y-auto"
