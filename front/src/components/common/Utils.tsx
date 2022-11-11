@@ -178,6 +178,6 @@ export const notify = (
   }
 };
 
-export function classNames(...classes: string[]) {
+export function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }

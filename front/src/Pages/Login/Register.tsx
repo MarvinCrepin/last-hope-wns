@@ -87,7 +87,12 @@ export default function Register() {
             />
           </div>
 
-          <ButtonForm text="Log In" type="button" customClass="w-32" />
+          <ButtonForm
+            textFont="title"
+            width="w-32"
+            type="button"
+            text="Log In"
+          />
         </form>
         <div className=" mt-4 text-xs ml-1 text-lh-primary cursor-pointer">
           Already have an account? Log in

@@ -23,8 +23,18 @@ export default function ForgotPassword() {
             />
           </div>
           <div className="flex flex-col space-y-2 sm:space-y-0 sm:flex-row sm:justify-between items-center w-full">
-            <ButtonForm text="Home" type="button" customClass="w-32" />
-            <ButtonForm text="Reset" type="button" customClass="w-32" />
+            <ButtonForm
+              textFont="title"
+              width="w-32"
+              type="button"
+              text="Home"
+            />
+            <ButtonForm
+              text="Reset"
+              textFont="title"
+              width="w-32"
+              type="button"
+            />
           </div>
         </form>
         <div className=" mt-4 text-xs ml-1 text-lh-primary cursor-pointer">
