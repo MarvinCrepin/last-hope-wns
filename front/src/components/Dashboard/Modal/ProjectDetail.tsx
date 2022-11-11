@@ -46,7 +46,6 @@ function ProjectDetail({ project, users, closeModal }: Props) {
   );
 
   const handleSelectChange = ({ target }: any) => {
-    console.log(target.value);
     setProductOwnerId(target.value);
   };
 
@@ -55,7 +54,6 @@ function ProjectDetail({ project, users, closeModal }: Props) {
       setEnableEditProjectManager(false);
       return;
     }
-    console.log(productOwnerId);
     try {
       await updateProject({
         variables: {

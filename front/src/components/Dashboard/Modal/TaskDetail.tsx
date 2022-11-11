@@ -201,7 +201,6 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
       },
     });
   };
-  console.log(task);
   return (
     <>
       <ModalConfirm
