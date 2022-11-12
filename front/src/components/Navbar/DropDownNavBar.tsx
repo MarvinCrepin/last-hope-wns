@@ -8,6 +8,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Notification } from "../global";
 
 import Logo from "../../assets/img/logo_LastHope_inline.png";
+import MobileLogo from "../../assets/img/_LastHope.png";
 import "../../assets/styles/navbar.css";
 import NotificationItem from "./NotificationItem";
 import GetNotificationByUserId from "../../graphql/queries/Notification/GetNotificationByUserId";
@@ -60,9 +61,14 @@ export default function DropDownNavBar() {
   }, [data]);
 
   return (
-    <nav className="py-4 px-10 shadow-md flex justify-between mb-10">
+    <nav className="py-4 px-10 shadow-md flex justify-between items-center mb-10">
       <Link to="/dashboard">
-        <img src={Logo} alt="logo-last-hope" className="w-40" />
+        <img src={Logo} alt="logo-last-hope" className="w-40 hidden sm:block" />
+        <img
+          src={MobileLogo}
+          alt="logo-last-hope"
+          className="h-[3rem]  sm:hidden block"
+        />
       </Link>
       <div className="flex items-stretch ">
         <Menu as="div" className="relative inline-block text-left">

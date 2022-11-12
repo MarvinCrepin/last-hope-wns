@@ -94,7 +94,7 @@ export default function EmployeesList() {
   const displayConfirmModalDelete = (state: boolean, user: any) => {
     setUserSelected(user);
     setModalConfirmDelete(state);
-  }
+  };
 
   const deleteEmployee = async (user: any) => {
     const UserId = user.id;
@@ -127,7 +127,7 @@ export default function EmployeesList() {
           className={`w-full ${theme(
             userRole,
             "dashboard"
-          )}  z-20 py-8 px-2 rounded-tr-md md:h-30`}
+          )}  z-20 py-6 sm:py-8 px-2 rounded-tr-md md:h-30`}
         >
           <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center">
             <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
@@ -159,7 +159,7 @@ export default function EmployeesList() {
                 id="searchInput"
                 name="searchInput"
                 placeholder="Search"
-                className="rounded-md h-8 mx-2 px-8"
+                className="rounded-md h-8 mx-2 px-8 w-full"
                 onChange={(e) => setSearchInput(e.target.value)}
               />
               <FaSearch className="absolute top-2 left-4 text-gray-500" />
@@ -194,7 +194,9 @@ export default function EmployeesList() {
                 loading={loading}
                 columns={columns}
                 handleChangeSelect={(user) => changeStatus(user)}
-                deleteAction={(user) => {displayConfirmModalDelete(true, user);}}
+                deleteAction={(user) => {
+                  displayConfirmModalDelete(true, user);
+                }}
                 updateAction={(user) => console.log(user)}
                 viewAction={(user) => console.log(user)}
               />

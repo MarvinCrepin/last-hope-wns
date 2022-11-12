@@ -10,7 +10,7 @@ import Error from "../common/Error";
 import { role, user } from "../../slicer/authSlice";
 import ProjectDetail from "./Modal/ProjectDetail";
 import { Column, Project, User } from "../global";
-import { theme } from "../common/Utils";
+import { isAuthorizedTakeProjectManagerRole, theme } from "../common/Utils";
 import GetAllUsers from "../../graphql/queries/User/GetAllUsers";
 import AddProject from "./Modal/AddForm/AddProject";
 
@@ -91,10 +91,6 @@ export default function ProjectList() {
         );
       }
 
-      // if (hideDone) {
-      //   dataFiltered = dataFiltered.filter((el) => el.advancement < 100);
-      // }
-
       if (beMy) {
         dataFiltered = dataFiltered.filter(
           (el) => el.product_owner.id === userInStore.id
@@ -121,13 +117,12 @@ export default function ProjectList() {
         className={`w-full ${theme(
           userRole,
           "dashboard"
-        )} z-20 py-8 px-2 rounded-tr-md md:h-30`}
+        )} z-20 py-6 sm:py-8 px-2 rounded-tr-md md:h-30`}
       >
-        <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center h-12">
+        <div className="flex flex-col  md:flex-row justify-between items-center ">
           <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row">
-            {/* A cabler sur le filtre de la liste  */}
-            {userRole === "ROLE_PROJECT_MANAGER" && (
-              <div className="mx-2 flex items-center space-x-1">
+            {isAuthorizedTakeProjectManagerRole(userRole) && (
+              <div className="mx-2 flex items-center space-x-1 mb-2 md:mb-0">
                 <input
                   className="rounded-md h-5 w-5"
                   type="checkbox"
@@ -140,18 +135,6 @@ export default function ProjectList() {
                 </label>
               </div>
             )}
-            {/* <div className="mx-2 flex items-center space-x-1">
-              <input
-                className="rounded-md h-5 w-5"
-                type="checkbox"
-                name="hideDone"
-                id="hideDone"
-                onChange={(e) => setHideDone(e.target.checked)}
-              />
-              <label htmlFor="hideDone" className="text-lh-light">
-                Hide done
-              </label>
-            </div> */}
           </div>
 
           <div className="flex items-center space-x-1 mr-2">
@@ -164,7 +147,7 @@ export default function ProjectList() {
                 id="searchInput"
                 name="searchInput"
                 placeholder="Search"
-                className="rounded-md h-8 mx-2 px-8"
+                className="rounded-md h-8 mx-2 px-8 w-full"
                 onChange={(e) => setSearchInput(e.target.value)}
               />
               <FaSearch className="absolute top-2 left-4 text-gray-500" />
@@ -175,7 +158,7 @@ export default function ProjectList() {
                 className=" flex bg-lh-light font-text font-bold text-lh-primary items-center p-1.5 rounded-md space-x-2"
               >
                 <FaPlus className="" />
-                <div className="">Add project</div>
+                <div className="sm:block hidden">Add project</div>
               </button>
             )}
           </div>
