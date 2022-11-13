@@ -43,7 +43,7 @@ export default function DropDownNavBar() {
 
   const [notificationsUnread, setNotificationsUnread] = useState<Number>(0);
 
-  const logout = () => {
+  const logout = async () => {
     dispatch(LOGOUT_USER);
     localStorage.removeItem("KeyLastHope");
     navigate("/login");
