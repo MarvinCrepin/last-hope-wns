@@ -47,7 +47,7 @@ export default function DropDownNavBar() {
     dispatch(LOGOUT_USER);
     localStorage.removeItem("KeyLastHope");
     navigate("/login");
-    client.resetStore();
+    await await client.resetStore();
   };
 
   useEffect(() => {

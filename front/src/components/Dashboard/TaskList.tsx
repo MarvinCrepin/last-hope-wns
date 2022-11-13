@@ -153,6 +153,7 @@ export default function TaskList() {
       }
       setListTask([...dataFiltered]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, hideDone, myTask, searchInput, projectFiltered]);
 
   return (

@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 
 import AddTicket from "../../../../graphql/mutation/Ticket/AddTicket";
@@ -8,7 +8,7 @@ import AssigneeUser from "./AssigneeUser";
 import getAllTicketsNotArchive from "../../../../graphql/queries/Ticket/GetAllTicketsNotArchive";
 import getAllStates from "../../../../graphql/queries/State/GetAllStates";
 import { Project, User, State } from "../../../global";
-import { classNames, notify } from "../../../common/Utils";
+import { notify } from "../../../common/Utils";
 import ButtonForm from "../../../Login/ButtonForm";
 
 type Props = {

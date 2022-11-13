@@ -1,10 +1,10 @@
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import GetAllUsers from "../../../../graphql/queries/User/GetAllUsers";
 
-import { User, UserParticipant } from "../../../global";
+import { User } from "../../../global";
 
-import { AiOutlineClose, AiOutlineLoading } from "react-icons/ai";
+import { AiOutlineClose } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa";
 import { RiCloseCircleFill } from "react-icons/ri";
 
@@ -27,7 +27,7 @@ function AddMemberToProject({
 
   const [usersAvailable, setUsersAvailable] = useState<User[]>([]);
 
-  const { loading, error, data } = useQuery(GetAllUsers);
+  const { loading, data } = useQuery(GetAllUsers);
 
   useEffect(() => {
     let participantsId: string[] = [];
@@ -54,7 +54,7 @@ function AddMemberToProject({
     setUsersAvailable(usersNew);
 
     setUserSelected("null");
-  }, [usersAssignee, data, loading]);
+  }, [usersAssignee, data, loading, onCreate]);
 
   const handleChangeSelected = (e: any) => {
     const index = usersAvailable.findIndex(

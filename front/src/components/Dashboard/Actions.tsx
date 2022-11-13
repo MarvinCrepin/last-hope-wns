@@ -1,5 +1,4 @@
 import { IconButton } from "@mui/material";
-import { IoMdEye } from "react-icons/io";
 import { TiDelete } from "react-icons/ti";
 
 export type IActions = {

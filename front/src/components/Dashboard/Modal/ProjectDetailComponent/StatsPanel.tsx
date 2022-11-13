@@ -1,5 +1,5 @@
 import { useLazyQuery, useQuery } from "@apollo/client";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import { RiCloseCircleFill } from "react-icons/ri";
 import { useSelector } from "react-redux";
@@ -36,10 +36,8 @@ export default function StatsPanel({ project }: Props) {
     variables: { projectId: project.id },
   });
 
-  const [
-    statHourPerDayByProjectAndUser,
-    { error: errProjectAndUser, data: dataProjectAndUser },
-  ] = useLazyQuery(StatHourPerDayByProjectAndUser);
+  const [statHourPerDayByProjectAndUser, { data: dataProjectAndUser }] =
+    useLazyQuery(StatHourPerDayByProjectAndUser);
 
   useEffect(() => {
     if (project.participants.length > 0) {
@@ -64,7 +62,7 @@ export default function StatsPanel({ project }: Props) {
       let newArray = [currentUserParticipantInformation];
       setArrayUser(newArray);
     }
-  }, [data, currentUserInformation]);
+  }, [data, currentUserInformation, project]);
 
   useEffect(() => {
     if (arrayUser && arrayUser.length > 0) {
@@ -89,7 +87,8 @@ export default function StatsPanel({ project }: Props) {
     } else {
       setCharthHydrated(false);
     }
-  }, [arrayUser, usersAvailableSelected]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [arrayUser, usersAvailableSelected, project]);
 
   if (loading) {
     return <p>Loading...</p>;

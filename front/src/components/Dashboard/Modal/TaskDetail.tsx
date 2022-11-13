@@ -1,10 +1,10 @@
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 
-import moment, { Duration, Moment } from "moment";
+import moment, { Duration } from "moment";
 
 import UpdateTicket from "../../../graphql/mutation/Ticket/UpdateTicket";
 import GetAllState from "../../../graphql/queries/State/GetAllStates";
@@ -55,7 +55,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
       { query: getAllTicketsNotArchive, variables: { isarchive: false } },
     ],
   });
-  const { loading: totalDurationError, data: totalDuration } = useQuery(
+  const {data: totalDuration } = useQuery(
     GetTotalTicketDurationUserByTicket,
     { variables: { ticketId: taskPassed.id } }
   );
@@ -79,7 +79,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
       ],
     }
   );
-  const [deleteTicket, { loading: loadDelete }] = useMutation(DeleteTicket, {
+  const [deleteTicket] = useMutation(DeleteTicket, {
     refetchQueries: [
       { query: getAllTicketsNotArchive, variables: { isarchive: false } },
     ],
@@ -186,14 +186,14 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
   };
 
   const deleteTask = async (id: string) => {
-    deleteTicket({ variables: { ticketId: id } });
+    await deleteTicket({variables: {ticketId: id}});
   };
 
   const archiveTask = async (id: string) => {
-    updateTicket({
+    await updateTicket({
       variables: {
         ticketId: id,
-        data: { isArchived: true },
+        data: {isArchived: true},
       },
       onCompleted() {
         closeModal();
@@ -233,7 +233,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
           task={task}
           closeModal={() => setModalEditTask(false)}
           updatedTask={async (data) => {
-            updateTicket({ variables: { ticketId: task.id, data } });
+            await updateTicket({variables: {ticketId: task.id, data}});
             setModalEditTask(false);
           }}
         />

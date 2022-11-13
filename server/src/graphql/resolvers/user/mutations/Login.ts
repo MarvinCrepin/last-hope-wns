@@ -11,7 +11,7 @@ export default async (
   const user = await context.prisma.user.findUnique({
     where: { mail: loginUserInput.mail },
   });
-  
+
   if (
     !user ||
     !(await bcrypt.compare(loginUserInput.password, user.password))
@@ -29,7 +29,7 @@ export default async (
     },
     process.env.ACCESS_TOKEN_SECRET_KEY,
     {
-      expiresIn: "2h",
+      expiresIn: "7d",
     }
   );
 

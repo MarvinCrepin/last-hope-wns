@@ -13,7 +13,10 @@ import {
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
+  from,
 } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
+
 import { setContext } from "@apollo/client/link/context";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -22,6 +25,17 @@ const httpLink = createHttpLink({
     process.env.NODE_ENV === "development"
       ? "http://localhost:4000"
       : "/graphql",
+});
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    if (graphQLErrors[0].message === "Token expired") {
+      localStorage.removeItem("KeyLastHope");
+      window.location.href = "/login";
+    }
+  }
+
+  if (networkError) console.error(`[Network error]: ${networkError}`);
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -35,7 +49,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: from([errorLink, authLink.concat(httpLink)]),
   cache: new InMemoryCache(),
 });
 

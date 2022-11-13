@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useLazyQuery, useMutation } from "@apollo/client";
+import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 

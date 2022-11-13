@@ -15,45 +15,30 @@ function App() {
 
   const tokenInLocalStorage = localStorage.getItem("KeyLastHope");
 
-  const [verifyToken, { error, data }] = useLazyQuery(VerifyToken);
-
-  useEffect(() => {
-    verifyToken();
-  }, [verifyToken]);
-
-  const checkAuthentication = () => {
-    console.log("checkAuthentication");
-    if (!tokenInLocalStorage) {
-      navigate("/login");
-    }
-
-    if (error) {
-      console.log(error);
-
-      if (error.message === "Token not valid") {
+  const [verifyToken] = useLazyQuery(VerifyToken, {
+    onError: (err) => {
+      if (err.message === "Token not valid") {
+        console.log(err);
         localStorage.removeItem("KeyLastHope");
+        navigate("/login");
       }
-
-      navigate("/login");
-    }
-
-    if (data) {
+    },
+    onCompleted(data) {
       if (data.SessionUser.user) {
         dispatch(
           AUTHENTICATE_USER_IN_STORE({
-              user: data.SessionUser.user,
-              token: tokenInLocalStorage,
+            user: data.SessionUser.user,
+            token: tokenInLocalStorage,
           })
         );
         navigate("/dashboard");
       }
-    }
-  };
+    },
+  });
 
   useEffect(() => {
-    checkAuthentication();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, error]);
+    verifyToken();
+  }, [verifyToken]);
 
   return (
     <Routes>

@@ -87,6 +87,7 @@ function AssigneeAddUser({ closeModal, task }: Props) {
 
   useEffect(() => {
     getAllUsersList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [task]);
 
   return (

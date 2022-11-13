@@ -5,7 +5,7 @@ import { useMutation } from "@apollo/client";
 
 import "../../../../assets/css/addProject.css";
 import { User } from "../../../global";
-import { classNames, roleList } from "../../../common/Utils";
+import { roleList } from "../../../common/Utils";
 
 import { AiFillSetting, AiOutlineClose } from "react-icons/ai";
 import AddMemberToProject from "./AddMemberToProject";
@@ -20,12 +20,9 @@ type Props = {
 };
 
 function AddProject({ users, closeModal }: Props) {
-  const [addProject, { data, loading, error }]: any = useMutation(
-    AddProjectMutation,
-    {
-      refetchQueries: [{ query: getAllProjects }],
-    }
-  );
+  const [addProject]: any = useMutation(AddProjectMutation, {
+    refetchQueries: [{ query: getAllProjects }],
+  });
 
   const [modalAssignee, setModalAssignee] = useState(false);
   const [usersAssignee, setUsersAssignee] = useState<any[]>([]);

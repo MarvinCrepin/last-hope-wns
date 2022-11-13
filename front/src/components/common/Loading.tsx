@@ -1,4 +1,3 @@
-import { Transition } from "@headlessui/react";
 import { RiLoader5Fill } from "react-icons/ri";
 
 export default function Loading() {

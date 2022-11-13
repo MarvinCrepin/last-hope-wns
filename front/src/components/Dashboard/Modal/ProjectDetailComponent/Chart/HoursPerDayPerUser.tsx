@@ -8,7 +8,6 @@ import {
   Tooltip,
   Legend,
   Filler,
-  ScriptableContext,
 } from "chart.js";
 
 import { useEffect, useRef, useState } from "react";

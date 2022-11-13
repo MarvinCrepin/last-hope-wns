@@ -88,10 +88,9 @@ function ProjectDetail({ project, users, closeModal }: Props) {
     }
   };
 
-  const [addUserProject, { loading: loadCreate }] = useMutation(
-    CreateUserProject,
-    { refetchQueries: [{ query: getAllProjects }] }
-  );
+  const [addUserProject] = useMutation(CreateUserProject, {
+    refetchQueries: [{ query: getAllProjects }],
+  });
 
   const addUserToProject = (user: { id: string }) => {
     addUserProject({

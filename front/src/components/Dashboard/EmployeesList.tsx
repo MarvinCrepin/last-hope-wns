@@ -73,7 +73,7 @@ export default function EmployeesList() {
         ...dataFiltered.filter((el: User) => el.id !== myInformation.id),
       ]);
     }
-  }, [data, searchInput, userRoleFilter]);
+  }, [data, searchInput, userRoleFilter, myInformation]);
 
   const changeStatus = (user: any) => {
     const UserId = user.item.id;
