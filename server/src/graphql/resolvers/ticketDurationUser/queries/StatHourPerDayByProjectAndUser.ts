@@ -2,6 +2,7 @@ import isConnected from "../../../../helpers/isConnected";
 import { Context } from "../../types";
 import moment from "moment";
 import isAuthorizedToAdminProject from "../../../../helpers/isAuthorizedToAdminProject";
+import { DataStat, TicketDurationUser, UserStat } from "../types";
 
 export default async (
   _: any,
@@ -25,51 +26,15 @@ export default async (
   let lastWeek: string | number = Date.now() - 168 * 60 * 60 * 1000;
   lastWeek = new Date(lastWeek).toISOString();
 
-  let ticketDurationUser: any[] | null = null;
-
-  let result: any = [];
-
-  // Simple User project
-  if (!(await isAuthorizedToAdminProject(context, projectId))) {
-    const user = {
-      id: context.authenticatedUser.id,
-      fistname: context.authenticatedUser.firstname,
-      lastname: context.authenticatedUser.lastname,
-      mail: context.authenticatedUser.mail,
-    };
-
-    ticketDurationUser = await context.prisma.ticketDurationUser.findMany({
-      where: {
-        AND: [
-          {
-            created_at: {
-              gte: lastWeek,
-            },
-          },
-          { project_id: projectId },
-          { user_id: context.authenticatedUser.id },
-        ],
-      },
-      include: {
-        ticket: true,
-        user: true,
-      },
-    });
-
+  async function transformData(stats: TicketDurationUser[], user: UserStat) {
     let label: string[] = [];
     let treatData: number[] = [];
 
     let count = 0;
     let weekDayNameCurrent: string | null = null;
 
-    if (ticketDurationUser && ticketDurationUser.length > 0) {
-      const stats = ticketDurationUser.sort((a: any, b: any) => {
-        return (
-          new Date(a.created_at).valueOf() - new Date(b.created_at).valueOf()
-        );
-      });
-
-      stats.forEach((ticketDuration: any, index: number) => {
+    stats.map(async (ticketDuration: TicketDurationUser, index: number) => {
+      new Promise<void>((resolve) => {
         const myDate = ticketDuration.created_at;
         const weekDayName = moment(myDate).format("MMM Do YYYY");
 
@@ -90,13 +55,61 @@ export default async (
           label.push(weekDayNameCurrent);
           treatData.push(Math.ceil(count / 60));
         }
+        resolve();
+      });
+    });
+
+    return { label: label, data: treatData, user };
+  }
+
+  // Simple User project
+  if (!(await isAuthorizedToAdminProject(context, projectId))) {
+    let result: DataStat[] = [];
+
+    const user: UserStat = {
+      id: context.authenticatedUser.id,
+      firstname: context.authenticatedUser.firstname,
+      lastname: context.authenticatedUser.lastname,
+      mail: context.authenticatedUser.mail,
+    };
+
+    let ticketDurationUser = await context.prisma.ticketDurationUser.findMany({
+      where: {
+        AND: [
+          {
+            created_at: {
+              gte: lastWeek,
+            },
+          },
+          { project_id: projectId },
+          { user_id: context.authenticatedUser.id },
+        ],
+      },
+      include: {
+        ticket: true,
+        user: true,
+      },
+    });
+
+    if (ticketDurationUser && ticketDurationUser.length > 0) {
+      const stats = ticketDurationUser.sort((a: any, b: any) => {
+        return (
+          new Date(a.created_at).valueOf() - new Date(b.created_at).valueOf()
+        );
       });
 
-      result.push({ label: label, data: treatData, user });
+      let resulForUserCurrent = await transformData(stats, user);
+
+      result.push(resulForUserCurrent);
     }
 
-    //Admin project
-  } else {
+    return {
+      datas: result,
+    };
+  }
+  //Admin project
+  else {
+    let result: DataStat[] = [];
     let userArray: string[] = [];
 
     userArray = userIdArray.reduce((acc: string[], item: string) => {
@@ -106,36 +119,31 @@ export default async (
       return acc;
     }, []);
 
-    userArray.forEach(async (id: string) => {
+    for (const userId of userArray) {
       const userExist = await context.prisma.user.findUnique({
-        where: { id: id },
+        where: { id: userId },
       });
 
       if (userExist) {
-        ticketDurationUser = await context.prisma.ticketDurationUser.findMany({
-          where: {
-            AND: [
-              {
-                created_at: {
-                  gte: lastWeek,
+        let ticketDurationUser =
+          await context.prisma.ticketDurationUser.findMany({
+            where: {
+              AND: [
+                {
+                  created_at: {
+                    gte: lastWeek,
+                  },
                 },
-              },
-              { project_id: projectId },
-              { user_id: userExist.id },
-            ],
-          },
+                { project_id: projectId },
+                { user_id: userExist.id },
+              ],
+            },
 
-          include: {
-            ticket: true,
-            user: true,
-          },
-        });
-
-        let label: string[] = [];
-        let treatData: number[] = [];
-
-        let count = 0;
-        let weekDayNameCurrent: string | null = null;
+            include: {
+              ticket: true,
+              user: true,
+            },
+          });
 
         if (ticketDurationUser && ticketDurationUser.length > 0) {
           const stats = ticketDurationUser.sort((a: any, b: any) => {
@@ -145,40 +153,13 @@ export default async (
             );
           });
 
-          stats.forEach((ticketDuration: any, index: number) => {
-            const myDate = ticketDuration.created_at;
-            const weekDayName = moment(myDate).format("MMM Do YYYY");
-
-            if (weekDayNameCurrent === null) {
-              weekDayNameCurrent = weekDayName;
-            }
-
-            if (weekDayName === weekDayNameCurrent) {
-              count += ticketDuration.minute_passed;
-            } else {
-              treatData.push(Math.ceil(count / 60));
-              label.push(weekDayNameCurrent);
-              count = 0 + ticketDuration.minute_passed;
-              weekDayNameCurrent = weekDayName;
-            }
-
-            if (index === stats.length - 1) {
-              label.push(weekDayNameCurrent);
-              treatData.push(Math.ceil(count / 60));
-            }
-          });
+          let resulForUserCurrent = await transformData(stats, userExist);
+          result.push(resulForUserCurrent);
         }
-
-        result.push({ label: label, data: treatData, user: userExist });
       }
-    });
-
-    while (result.length < userArray.length) {
-      await new Promise((resolve) => setTimeout(resolve, 100));
     }
+    return {
+      datas: result,
+    };
   }
-
-  return {
-    datas: result,
-  };
 };

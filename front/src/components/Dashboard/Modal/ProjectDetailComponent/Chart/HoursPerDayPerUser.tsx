@@ -71,6 +71,8 @@ export default function HoursPerDayPerUser({ data }: Props) {
         });
       });
 
+      console.log(data);
+
       setDataChart({
         labels: labels,
         datasets: data.StatHourPerDayByProjectAndUser.datas.map((data: any) => {
