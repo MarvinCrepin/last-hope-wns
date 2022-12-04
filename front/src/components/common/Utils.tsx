@@ -105,9 +105,9 @@ export const isAuthorizedTakeProjectManagerRole = (userRole: string) => {
 };
 
 /**
- * Retourn true si l'utilisateur est autorisé à manager le projet
+ * Retourne true si l'utilisateur est autorisé à manager le projet
  * @param user
- * @param projectId
+ * @param productOwnerId
  * @returns Boolean
  */
 export const isAuthorizedToManageProject = (

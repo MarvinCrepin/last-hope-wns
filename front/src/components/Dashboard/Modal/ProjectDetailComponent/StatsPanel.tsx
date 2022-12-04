@@ -51,8 +51,10 @@ export default function StatsPanel({ project }: Props) {
 
   useEffect(() => {
     if (
-      data &&
-      !isAuthorizedToManageProject(currentUserInformation, project.id)
+      !isAuthorizedToManageProject(
+        currentUserInformation,
+        project.product_owner.id
+      )
     ) {
       const currentUserParticipantInformation: UserParticipant = {
         id: currentUserInformation.id,
@@ -62,7 +64,7 @@ export default function StatsPanel({ project }: Props) {
       let newArray = [currentUserParticipantInformation];
       setArrayUser(newArray);
     }
-  }, [data, currentUserInformation, project]);
+  }, [currentUserInformation, project]);
 
   useEffect(() => {
     if (arrayUser && arrayUser.length > 0) {
@@ -154,7 +156,10 @@ export default function StatsPanel({ project }: Props) {
           <h3 className="text-lh-primary font-title text-4xl ">
             Member Statistics
           </h3>
-          {isAuthorizedToManageProject(currentUserInformation, project.id) && (
+          {isAuthorizedToManageProject(
+            currentUserInformation,
+            project.product_owner.id
+          ) && (
             <div className="flex space-x-2">
               <select
                 required
@@ -191,52 +196,50 @@ export default function StatsPanel({ project }: Props) {
             </div>
           )}
         </div>
-        {isAuthorizedToManageProject(currentUserInformation, project.id) ? (
+        {isAuthorizedToManageProject(
+          currentUserInformation,
+          project.product_owner.id
+        ) ? (
           charthHydrated ? (
             <>
               <HoursPerDayPerUser data={dataProjectAndUser} />
-              {isAuthorizedToManageProject(
-                currentUserInformation,
-                project.id
-              ) && (
-                <div className="flex ">
-                  {arrayUser
-                    .sort(function (a: UserParticipant, b: UserParticipant) {
-                      if (a.lastname < b.lastname) {
-                        return -1;
-                      }
-                      if (a.lastname > b.lastname) {
-                        return 1;
-                      }
-                      return 0;
-                    })
-                    .map(
-                      (user: {
-                        id: string;
-                        firstname: string;
-                        lastname: string;
-                      }) => (
-                        <div
-                          key={user.id}
-                          className="relative bg-lh-secondary rounded-lg px-5 py-1  w-fit shadow-lg mx-2"
+              <div className="flex ">
+                {arrayUser
+                  .sort(function (a: UserParticipant, b: UserParticipant) {
+                    if (a.lastname < b.lastname) {
+                      return -1;
+                    }
+                    if (a.lastname > b.lastname) {
+                      return 1;
+                    }
+                    return 0;
+                  })
+                  .map(
+                    (user: {
+                      id: string;
+                      firstname: string;
+                      lastname: string;
+                    }) => (
+                      <div
+                        key={user.id}
+                        className="relative bg-lh-secondary rounded-lg px-5 py-1  w-fit shadow-lg mx-2"
+                      >
+                        <span
+                          className="absolute -top-3 -right-2.5 bg-white rounded-full"
+                          onClick={() => deleteUserInGraph(user)}
                         >
-                          <span
-                            className="absolute -top-3 -right-2.5 bg-white rounded-full"
-                            onClick={() => deleteUserInGraph(user)}
-                          >
-                            <RiCloseCircleFill
-                              size={30}
-                              className="text-lh-primary cursor-pointer hover:opacity-70"
-                            />
-                          </span>
-                          <span className="text-lh-light font-text text-base">
-                            {user.firstname + " " + user.lastname}
-                          </span>
-                        </div>
-                      )
-                    )}
-                </div>
-              )}
+                          <RiCloseCircleFill
+                            size={30}
+                            className="text-lh-primary cursor-pointer hover:opacity-70"
+                          />
+                        </span>
+                        <span className="text-lh-light font-text text-base">
+                          {user.firstname + " " + user.lastname}
+                        </span>
+                      </div>
+                    )
+                  )}
+              </div>
             </>
           ) : (
             <div className="flex items-center justify-center h-52">
