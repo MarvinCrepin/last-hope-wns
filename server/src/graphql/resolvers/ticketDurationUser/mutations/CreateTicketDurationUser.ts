@@ -23,10 +23,6 @@ export default async (
     throw new Error("Ticket not found");
   }
 
-  if (!isAuthorizedToUpdateTicket(context, ticket)) {
-    throw new Error("Not Authorized to update Ticket");
-  }
-
   try {
     const ticketDurationUser = await context.prisma.ticketDurationUser.create({
       data: {

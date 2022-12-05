@@ -54,12 +54,13 @@ function ProjectDetail({ project, users, closeModal }: Props) {
       setEnableEditProjectManager(false);
       return;
     }
-
     try {
       await updateProject({
         variables: {
           projectId: project.id,
-          product_owner_id: productOwnerId,
+          data: {
+            product_owner_id: productOwnerId,
+          },
         },
       });
       notify("success", "Product Owner changed successfully");
@@ -87,10 +88,9 @@ function ProjectDetail({ project, users, closeModal }: Props) {
     }
   };
 
-  const [addUserProject, { loading: loadCreate }] = useMutation(
-    CreateUserProject,
-    { refetchQueries: [{ query: getAllProjects }] }
-  );
+  const [addUserProject] = useMutation(CreateUserProject, {
+    refetchQueries: [{ query: getAllProjects }],
+  });
 
   const addUserToProject = (user: { id: string }) => {
     addUserProject({
@@ -197,9 +197,6 @@ function ProjectDetail({ project, users, closeModal }: Props) {
     }
   };
 
-  // const current = new Date();
-  // const currentDate = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
-
   return (
     <>
       {modalEditProject && (
@@ -237,7 +234,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
             &#8203;
           </span>
 
-          <div className="px-32 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full project-modal">
+          <div className="lg:px-32 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full">
             <div className=" bg-lh-primary text-xl h-12 font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
               <div>{`Project detail - ${project.title}`}</div>
             </div>
@@ -359,7 +356,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                     <div className="mt-4">
                       {project.hasOwnProperty("participants") &&
                       project.participants.length > 0 ? (
-                        <div className="flex flex-wrap space-x-4">
+                        <div className="flex flex-wrap gap-1.5">
                           {project.participants.map((user: Participant) => {
                             return (
                               <div
@@ -370,9 +367,10 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                                 <span>
                                   {`${user.user.firstname} ${user.user.lastname} -`}
                                 </span>
-                                <span className="text-lh-secondary">{`${returnRoleName(
-                                  user.user.roles
-                                )}`}</span>
+                                <span className="text-lh-secondary">{`${
+                                  user.user.roles &&
+                                  returnRoleName(user.user.roles)
+                                }`}</span>
                               </div>
                             );
                           })}
@@ -497,35 +495,10 @@ function ProjectDetail({ project, users, closeModal }: Props) {
               {/* Right column */}
               <div className="border-l-2 flex flex-col items-center justify-start">
                 <div className="space-y-8 py-4 w-4/5">
-                  {/* Description */}
-                  <div className="space-y-4">
-                    <div className="flex items-center ">
-                      <h3 className="text-lh-primary font-title text-4xl">
-                        Member Statistics
-                      </h3>
-                    </div>
-                    <StatsPanel />
-                  </div>
+                  {/*  */}
+                  <StatsPanel project={project} />
                 </div>
               </div>
-              {/* <div className="project-modal-stats py-8 px-2 sm:pl-6 sm:pr-4 border-l-2">
-                <div className="project-modal-pstats pb-10">
-                  <h2 className="text-4xl font-title text-lh-primary ">
-                    Project Statistics
-                  </h2>
-                  <div>
-                    <Line data={projectStats} options={options} />
-                  </div>
-                </div>
-                <div className="project-modal-mstats">
-                  <h2 className="text-4xl font-title text-lh-primary ">
-                    Member Statistics
-                  </h2>
-                  <div>
-                    <Line data={memberStats} options={options} />
-                  </div>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>

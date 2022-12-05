@@ -1,19 +1,12 @@
 .user-modal {
-  height: 40vh !important;
-  width: 100%;
-  max-width: 500px;
-  min-width: 325px;
-  margin-top: 18vh;
-  align-items: center;
-  justify-content: center;
   border-radius: 22em;
 }
 
 .close-modal-btn {
-    float:right;
-    margin-top: 0.5rem;
-    margin-right: 0.5rem;
-    justify-content: center;
+  float: right;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+  justify-content: center;
 }
 
 .rounder-user-modal {
@@ -21,7 +14,7 @@
 }
 
 .close-modal-icon {
-  color:var(--primary-color);
+  color: var(--primary-color);
   font-size: 1.5em;
   font-weight: 1500;
 }
@@ -36,10 +29,6 @@
   border-radius: 4px;
   padding: 5px 10px;
   margin-top: 0.375rem;
-}
-
-.save-user {
-  border: none;
 }
 
 .user-modal input:focus {

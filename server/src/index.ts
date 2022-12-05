@@ -26,9 +26,18 @@ const runServer = () => {
             process.env.ACCESS_TOKEN_SECRET_KEY as string
           );
 
-          return { authenticatedUser: payload, prisma: prisma };
-        } catch (err) {
+          return {
+            authenticatedUser: payload,
+            prisma: prisma,
+          };
+        } catch (err: any) {
           console.error(err);
+          if (err.name === "TokenExpiredError") {
+            return {
+              authenticatedUser: "Token expired",
+              prisma: prisma,
+            };
+          }
         }
       }
 

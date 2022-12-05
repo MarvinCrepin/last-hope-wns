@@ -5,13 +5,14 @@ import { useMutation } from "@apollo/client";
 
 import "../../../../assets/css/addProject.css";
 import { User } from "../../../global";
-import { classNames, roleList } from "../../../common/Utils";
+import { roleList } from "../../../common/Utils";
 
 import { AiFillSetting, AiOutlineClose } from "react-icons/ai";
 import AddMemberToProject from "./AddMemberToProject";
 import AddProjectMutation from "../../../../graphql/mutation/Project/AddProjectMutation";
 import getAllProjects from "../../../../graphql/queries/Project/GetAllProject";
 import { notify } from "../../../common/Utils";
+import ButtonForm from "../../../Login/ButtonForm";
 
 type Props = {
   users: User[];
@@ -19,12 +20,9 @@ type Props = {
 };
 
 function AddProject({ users, closeModal }: Props) {
-  const [addProject, { data, loading, error }]: any = useMutation(
-    AddProjectMutation,
-    {
-      refetchQueries: [{ query: getAllProjects }],
-    }
-  );
+  const [addProject]: any = useMutation(AddProjectMutation, {
+    refetchQueries: [{ query: getAllProjects }],
+  });
 
   const [modalAssignee, setModalAssignee] = useState(false);
   const [usersAssignee, setUsersAssignee] = useState<any[]>([]);
@@ -289,17 +287,13 @@ function AddProject({ users, closeModal }: Props) {
                   </div>
 
                   <div className="add-project-submit flex justify-end w-full mt-2">
-                    <button
+                    <ButtonForm
+                      text="Add project"
                       type="submit"
-                      className={classNames(
-                        addProjectFieldsCheck()
-                          ? "bg-lh-primary cursor-pointer"
-                          : "cursor-not-allowed bg-lh-dark",
-                        "w-fit font-title text-lh-light text-2xl py-1.5 px-3 space-x-2 items-center rounded mt-2"
-                      )}
-                    >
-                      Add project
-                    </button>
+                      textSize="text-2xl"
+                      textFont="title"
+                      isDisabled={!addProjectFieldsCheck()}
+                    />
                   </div>
                 </form>
               </div>

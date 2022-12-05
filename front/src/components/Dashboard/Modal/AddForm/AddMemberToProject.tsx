@@ -1,10 +1,10 @@
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import GetAllUsers from "../../../../graphql/queries/User/GetAllUsers";
 
-import { User, UserParticipant } from "../../../global";
+import { User } from "../../../global";
 
-import { AiOutlineClose, AiOutlineLoading } from "react-icons/ai";
+import { AiOutlineClose } from "react-icons/ai";
 import { FaCheck } from "react-icons/fa";
 import { RiCloseCircleFill } from "react-icons/ri";
 
@@ -27,7 +27,7 @@ function AddMemberToProject({
 
   const [usersAvailable, setUsersAvailable] = useState<User[]>([]);
 
-  const { loading, error, data } = useQuery(GetAllUsers);
+  const { loading, data } = useQuery(GetAllUsers);
 
   useEffect(() => {
     let participantsId: string[] = [];
@@ -40,7 +40,6 @@ function AddMemberToProject({
         participantsId.push(userProject.user.id);
       });
     }
-    console.log(participantsId);
 
     let usersNew: User[] = [];
 
@@ -55,7 +54,7 @@ function AddMemberToProject({
     setUsersAvailable(usersNew);
 
     setUserSelected("null");
-  }, [usersAssignee, data, loading]);
+  }, [usersAssignee, data, loading, onCreate]);
 
   const handleChangeSelected = (e: any) => {
     const index = usersAvailable.findIndex(
@@ -111,10 +110,10 @@ function AddMemberToProject({
                     id="advancement"
                     className="bg-lh-light w-2/3 border-2 border-lh-dark rounded-lg px-1.5 py-2"
                   >
+                    <option value={"null"}>Choose a member</option>
                     {usersAvailable.map((user: User) => {
                       return <option value={user.id}>{user.firstname}</option>;
                     })}
-                    <option value={"null"}>Select</option>
                   </select>
                   <div
                     className={
@@ -147,7 +146,6 @@ function AddMemberToProject({
                         />
                       </span>
                       <span className="text-lh-light font-text text-lg">
-                        
                         {onCreate ? user.firstname : user.user.firstname}
                       </span>
                     </div>

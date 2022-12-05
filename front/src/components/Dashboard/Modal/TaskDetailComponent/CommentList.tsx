@@ -29,10 +29,10 @@ const CommentList = ({ taskId, userId }: Props) => {
       { query: GetCommentByTicketId, variables: { ticketId: taskId } },
     ],
   });
-  const [getComment, { data: dataComments, loading: loadingComment }] =
+  const [getComment, { data: dataComments }] =
     useLazyQuery(GetCommentByTicketId);
 
-  const [deleteComment, { loading: loadDelete }] = useMutation(DeleteComment);
+  const [deleteComment] = useMutation(DeleteComment);
 
   const count = Math.ceil(
     dataComments
@@ -88,6 +88,7 @@ const CommentList = ({ taskId, userId }: Props) => {
         },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taskId]);
 
   return (

@@ -3,9 +3,9 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { AiFillCaretDown } from "react-icons/ai";
 import { FaLaptopCode } from "react-icons/fa";
-import { classNames } from "../common/Utils";
+import { classNames } from "../../common/Utils";
 
-export default function Example() {
+export default function DropDownMenu() {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>

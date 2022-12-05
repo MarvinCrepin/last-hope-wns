@@ -80,11 +80,11 @@ function UserDetail({ user, closeModal }: Props) {
 
   const displayConfirmModalPassword = (state: boolean) => {
     setModalConfirmPassword(state);
-  }
+  };
 
   const displayConfirmModalUser = (state: boolean) => {
     setModalConfirmUser(state);
-  }
+  };
 
   const submitUserChange = () => {
     const updatedUser = {
@@ -99,12 +99,14 @@ function UserDetail({ user, closeModal }: Props) {
           ...updatedUser,
         },
       },
-    }).then(() => {
-      displayConfirmModalUser(false);
-    }).catch((error) => {
-      console.error(error);
-      notify("error", "Server error");
-    });
+    })
+      .then(() => {
+        displayConfirmModalUser(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        notify("error", "Server error");
+      });
   };
 
   const [modalConfirmPassword, setModalConfirmPassword] = useState(false);
@@ -136,9 +138,9 @@ function UserDetail({ user, closeModal }: Props) {
         role="dialog"
         aria-modal="true"
       >
-        <div className="flex justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div className="flex justify-center items-center min-h-screen pt-4 px-4 pb-20 sm:p-0">
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity "></div>
-          <div className="inline-block text-left transform transition-all sm:align-middle user-modal">
+          <div className="inline-block text-left transform transition-all sm:align-middle user-modal h-[29em] w-full sm:w-[50%] lg:w-[30%]">
             <div className="flex">
               <div className="text-2xl font-title text-lh-light flex justify-center items-center rounded-t-lg mr-2">
                 <a
@@ -167,12 +169,8 @@ function UserDetail({ user, closeModal }: Props) {
                 </a>
               </div>
             </div>
-            <div
-              className={
-                "bg-white  rounder-user-modal min-h-full p-4 text-center sm:p-0"
-              }
-            >
-              <div className="relative rounded-lg text-left overflow-hidden transform transition-all ">
+            <div className="bg-white  rounder-user-modal h-full p-4 text-center sm:p-0 ">
+              <div className="relative rounded-lg text-left overflow-hidden transform transition-all h-full">
                 <button
                   className="close-modal-btn"
                   onClick={(e) => closeModal()}
@@ -181,24 +179,24 @@ function UserDetail({ user, closeModal }: Props) {
                 </button>
 
                 <div className="py-8 px-2 sm:pl-6 sm:pr-6">
-                  <div>
-                    <div className="flex flex-col justify-center ">
-                      <h1 className="font-title mb-1 text-center text-lh-dark text-4xl">
-                        {user.firstname.concat(" ", user.lastname)}
-                      </h1>
-                      <h2 className="font-title mb-4 text-center text-lh-primary text-2xl">
-                        {returnRoleName(user.roles)}
-                      </h2>
-                      {detailsIsActive && (
-                        <form
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            displayConfirmModalUser(true);
-                          }}
-                          className="flex flex-col justify-center "
-                        >
-                          <div className={"details"}>
-                            <div className="my-2">
+                  <div className="flex flex-col justify-center h-full">
+                    <h1 className="font-title mb-1 text-center text-lh-dark text-4xl">
+                      {user.firstname.concat(" ", user.lastname)}
+                    </h1>
+                    <h2 className="font-title mb-4 text-center text-lh-primary text-2xl">
+                      {returnRoleName(user.roles)}
+                    </h2>
+                    {detailsIsActive && (
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          displayConfirmModalUser(true);
+                        }}
+                        className="flex-1"
+                      >
+                        <div className="flex flex-col justify-between h-full">
+                          <div className="">
+                            <div className="my-2 flex flex-col">
                               <label
                                 htmlFor="email"
                                 className="text-lh-primary text-2xl"
@@ -212,7 +210,7 @@ function UserDetail({ user, closeModal }: Props) {
                                 type="email"
                               />
                             </div>
-                            <div className="mb-2">
+                            <div className="mb-2 flex flex-col">
                               <label
                                 htmlFor="firstname"
                                 className="text-lh-primary text-2xl"
@@ -242,62 +240,69 @@ function UserDetail({ user, closeModal }: Props) {
                                 placeholder="Dupont"
                               />
                             </div>
+                          </div>
+                          <div className="flex justify-end mt-4">
                             <ButtonForm
                               text="Save"
                               type="submit"
-                              customClass="bg-lh-primary cursor-pointer w-32 mt-12 font-title text-lh-light text-2xl py-1.5 px-3 items-center rounded mt-2 save-user"
+                              width="w-32"
+                              textFont="title"
                             />
                           </div>
-                        </form>
-                      )}
-                      <div>
-                        {!detailsIsActive && (
-                          <form
-                            onSubmit={(e) => {
-                              e.preventDefault();
-                              displayConfirmModalPassword(true)
-                            }}
-                          >
-                            <div className={"security"}>
-                              <div className="my-2 relative">
-                                <label
-                                  htmlFor="password"
-                                  className="text-lh-primary text-2xl"
-                                >
-                                  Password
-                                </label>
-                                <input
-                                  onChange={(e) => setPassword(e.target.value)}
-                                  id="password"
-                                  type="password"
-                                />
-                              </div>
-                              <div className="relative">
-                                <label
-                                  htmlFor="confirmPassword"
-                                  className="text-lh-primary text-2xl"
-                                >
-                                  Confirm password
-                                </label>
-                                <input
-                                  onChange={(e) =>
-                                    setPasswordConfirm(e.target.value)
-                                  }
-                                  id="confirmPassword"
-                                  type="password"
-                                />
-                              </div>
+                        </div>
+                      </form>
+                    )}
 
-                              <ButtonForm
-                                text="Save"
-                                type="submit"
-                                customClass="bg-lh-primary cursor-pointer w-32 mt-12 font-title text-lh-light text-2xl py-1.5 px-3 items-center rounded mt-2 save-user"
+                    {!detailsIsActive && (
+                      <form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          displayConfirmModalPassword(true);
+                        }}
+                        className="flex-1"
+                      >
+                        <div className="flex flex-col justify-between h-full">
+                          <div>
+                            <div className="my-2 flex flex-col">
+                              <label
+                                htmlFor="password"
+                                className="text-lh-primary text-2xl"
+                              >
+                                Password
+                              </label>
+                              <input
+                                onChange={(e) => setPassword(e.target.value)}
+                                id="password"
+                                type="password"
                               />
                             </div>
-                          </form>
-                        )}
-                      </div>
-                    </div>
+                            <div className="mb-2 flex flex-col">
+                              <label
+                                htmlFor="confirmPassword"
+                                className="text-lh-primary text-2xl"
+                              >
+                                Confirm password
+                              </label>
+                              <input
+                                onChange={(e) =>
+                                  setPasswordConfirm(e.target.value)
+                                }
+                                id="confirmPassword"
+                                type="password"
+                              />
+                            </div>
+                          </div>
+                          <div className="flex justify-end mt-4">
+                            <ButtonForm
+                              text="Save"
+                              type="submit"
+                              width="w-32"
+                              textFont="title"
+                            />
+                          </div>
+                        </div>
+                      </form>
+                    )}
                   </div>
                 </div>
               </div>

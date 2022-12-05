@@ -87,6 +87,7 @@ function AssigneeAddUser({ closeModal, task }: Props) {
 
   useEffect(() => {
     getAllUsersList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [task]);
 
   return (
@@ -96,19 +97,19 @@ function AssigneeAddUser({ closeModal, task }: Props) {
       role="dialog"
       aria-modal="true"
     >
-      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      <div className="min-h-screen pt-4 px-4  text-center block sm:p-0">
         <div
           className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity "
           onClick={() => closeModal()}
         ></div>
         <span
-          className="hidden sm:inline-block sm:align-middle sm:h-screen"
+          className=" inline-block align-middle h-screen"
           aria-hidden="true"
         >
           &#8203;
         </span>
 
-        <div className="inline-block align-bottom text-left transform transition-all  sm:align-middle sm:w-1/3 w-full  h-full">
+        <div className="inline-block  text-left  sm:w-2/3 lg:w-1/3   w-full  h-full">
           <div className="w-full relative bg-white rounded-lg flex flex-col">
             <div
               className="absolute right-2 top-2 text-lh-primary cursor-pointer"
@@ -138,12 +139,12 @@ function AssigneeAddUser({ closeModal, task }: Props) {
                       id="advancement"
                       className="w-1/2 rounded bg-lh-light text-lh-dark p-2 border-[1.5px] border-lh-dark focus-visible:ring-lh-primary"
                     >
+                      <option value={"null"}>Choose a member</option>
                       {usersAvailable.map((user: User) => {
                         return (
                           <option value={user.id}>{user.firstname}</option>
                         );
                       })}
-                      <option value={"null"}>Select</option>
                     </select>
                     {loadCreate || loadDelete ? (
                       <div className="text-lh-secondary cursor-pointer hover:opacity-70">

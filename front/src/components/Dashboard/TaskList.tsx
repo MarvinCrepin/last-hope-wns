@@ -76,7 +76,6 @@ export default function TaskList() {
   const formatData = (entries: any[]) => {
     let result: TaskInList[] = [];
     entries.forEach((element) => {
-      console.log(element);
       let newData: any = {
         id: element.id,
         title: element.title,
@@ -111,7 +110,6 @@ export default function TaskList() {
 
   useEffect(() => {
     if (data && !loadingInStore) {
-      console.log(data.GetAllTickets);
       let dataFiltered: TaskInList[] = [...formatData(data.GetAllTickets)];
 
       // si une tache est selectionnée, on la met à jour dans le tableau
@@ -155,6 +153,7 @@ export default function TaskList() {
       }
       setListTask([...dataFiltered]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, hideDone, myTask, searchInput, projectFiltered]);
 
   return (
@@ -172,56 +171,59 @@ export default function TaskList() {
         className={`w-full ${theme(
           userRole,
           "dashboard"
-        )}  z-20 py-8 px-2 rounded-tr-md md:h-30`}
+        )}  z-20 py-6 sm:py-8 lg: px-2 rounded-tr-md `}
       >
-        <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row justify-between items-center h-12">
-          <div className="flex items-center flex-col space-y-2 md:space-y-0 md:flex-row ">
+        <div className="flex flex-col-reverse  md:space-y-0 md:flex-row justify-between items-center ">
+          <div className="flex items-center flex-col space-y-3 md:space-y-0 md:flex-row ">
             <label className="sr-only" htmlFor="filterSelect">
               Filter:
             </label>
-
-            <select
-              name="filterSelect"
-              id="filterSelect"
-              className="w-36 rounded-md bg-lh-secondary text-lh-light p-2 mx-2"
-              onChange={(e) => {
-                setProjectFiltered(e.target.value);
-              }}
-            >
-              <option value="all">All Projects</option>
-              {dataProjects &&
-                dataProjects.GetAllProjects.length > 0 &&
-                dataProjects.GetAllProjects.map((el: Project) => {
-                  return (
-                    <option value={el.id} key={el.id}>
-                      {el.title}
-                    </option>
-                  );
-                })}
-            </select>
-            <div className="mx-2 flex items-center space-x-1">
-              <input
-                className="rounded-md h-5 w-5 "
-                type="checkbox"
-                name="onlyMy"
-                id="onlyMy"
-                onChange={(e) => setMyTask(e.target.checked)}
-              />
-              <label htmlFor="onlyMy" className="text-lh-light">
-                Assigned to me only
-              </label>
-            </div>
-            <div className="mx-2 flex items-center space-x-1">
-              <input
-                className="rounded-md h-5 w-5"
-                type="checkbox"
-                name="hideDone"
-                id="hideDone"
-                onChange={(e) => setHideDone(e.target.checked)}
-              />
-              <label htmlFor="hideDone" className="text-lh-light">
-                Hide done
-              </label>
+            <div className="flex flex-row  justify-center items-center sm:justify-start  flex-wrap gap-2">
+              <select
+                name="filterSelect"
+                id="filterSelect"
+                className="w-auto h-8  rounded-md bg-lh-secondary text-lh-light p-2 mx-2"
+                onChange={(e) => {
+                  setProjectFiltered(e.target.value);
+                }}
+              >
+                <option value="all">All Projects</option>
+                {dataProjects &&
+                  dataProjects.GetAllProjects.length > 0 &&
+                  dataProjects.GetAllProjects.map((el: Project) => {
+                    return (
+                      <option value={el.id} key={el.id}>
+                        {el.title}
+                      </option>
+                    );
+                  })}
+              </select>
+              <div className="flex">
+                <div className="mx-2 flex items-center space-x-1">
+                  <input
+                    className="rounded-md h-5 w-5 "
+                    type="checkbox"
+                    name="onlyMy"
+                    id="onlyMy"
+                    onChange={(e) => setMyTask(e.target.checked)}
+                  />
+                  <label htmlFor="onlyMy" className="text-lh-light">
+                    Assigned to me only
+                  </label>
+                </div>
+                <div className="mx-2 flex items-center space-x-1">
+                  <input
+                    className="rounded-md h-5 w-5"
+                    type="checkbox"
+                    name="hideDone"
+                    id="hideDone"
+                    onChange={(e) => setHideDone(e.target.checked)}
+                  />
+                  <label htmlFor="hideDone" className="text-lh-light">
+                    Hide done
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
           <div className="flex items-center space-x-1 mr-2">
@@ -234,7 +236,7 @@ export default function TaskList() {
                 id="searchInput"
                 name="searchInput"
                 placeholder="Search"
-                className="rounded-md h-8 mx-2 px-8 "
+                className="rounded-md h-8 mx-2 px-8  w-full"
                 onChange={(e) => setSearchInput(e.target.value)}
               />
               <FaSearch className="absolute top-2 left-4 text-gray-500" />
@@ -247,7 +249,7 @@ export default function TaskList() {
                 }}
               >
                 <FaPlus className="" />
-                <div className="">Add Task</div>
+                <div className="sm:block hidden">Add Task</div>
               </button>
             )}
           </div>

@@ -1,10 +1,10 @@
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 
-import moment, { Duration, Moment } from "moment";
+import moment, { Duration } from "moment";
 
 import UpdateTicket from "../../../graphql/mutation/Ticket/UpdateTicket";
 import GetAllState from "../../../graphql/queries/State/GetAllStates";
@@ -37,6 +37,7 @@ import {
 import ModalConfirm from "../../common/ModalConfirm";
 import EditTaskText from "./TaskDetailComponent/EditTaskText";
 import getAllProjects from "../../../graphql/queries/Project/GetAllProject";
+import StatHourPerDayByProject from "../../../graphql/queries/TicketDurationUser/StatHourPerDayByProject";
 
 type Props = {
   taskPassed: TaskInList;
@@ -54,7 +55,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
       { query: getAllTicketsNotArchive, variables: { isarchive: false } },
     ],
   });
-  const { loading: totalDurationError, data: totalDuration } = useQuery(
+  const {data: totalDuration } = useQuery(
     GetTotalTicketDurationUserByTicket,
     { variables: { ticketId: taskPassed.id } }
   );
@@ -71,10 +72,14 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
         {
           query: getAllProjects,
         },
+        {
+          query: StatHourPerDayByProject,
+          variables: { projectId: taskPassed.project.id },
+        },
       ],
     }
   );
-  const [deleteTicket, { loading: loadDelete }] = useMutation(DeleteTicket, {
+  const [deleteTicket] = useMutation(DeleteTicket, {
     refetchQueries: [
       { query: getAllTicketsNotArchive, variables: { isarchive: false } },
     ],
@@ -181,14 +186,14 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
   };
 
   const deleteTask = async (id: string) => {
-    deleteTicket({ variables: { ticketId: id } });
+    await deleteTicket({variables: {ticketId: id}});
   };
 
   const archiveTask = async (id: string) => {
-    updateTicket({
+    await updateTicket({
       variables: {
         ticketId: id,
-        data: { isArchived: true },
+        data: {isArchived: true},
       },
       onCompleted() {
         closeModal();
@@ -196,7 +201,6 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
       },
     });
   };
-  console.log(task);
   return (
     <>
       <ModalConfirm
@@ -229,7 +233,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
           task={task}
           closeModal={() => setModalEditTask(false)}
           updatedTask={async (data) => {
-            updateTicket({ variables: { ticketId: task.id, data } });
+            await updateTicket({variables: {ticketId: task.id, data}});
             setModalEditTask(false);
           }}
         />
@@ -252,10 +256,12 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
             &#8203;
           </span>
 
-          <div className="px-32 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full">
-            <div className="flex w-full">
-              <div className=" bg-lh-primary text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
-                <div>{`Task detail - ${task.title}`}</div>
+          <div className="py-2 px-2 lg:py-0 lg:px-32 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full">
+            <div className="flex w-full ">
+              <div className=" bg-lh-primary text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center lg:items-center  flex-col lg:flex-row rounded-t-lg max-w-[14em] lg:max-w-none">
+                <span className="truncate">Task detail</span>
+                <span className="lg:block hidden">&nbsp;- &nbsp;</span>
+                <span>{task.title}</span>
               </div>
               {isAuthorizedToManageProject(
                 userInStore,
@@ -334,7 +340,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
               <div className="flex flex-col items-center justify-start">
                 <div className="space-y-8 py-4 w-4/5">
                   {/* ZONE TIME */}
-                  <div className="flex space-x-3 font-text text-xl	">
+                  {/* <div className="flex space-x-3 font-text text-xl	">
                     <div className="space-y-2">
                       <div className="space-x-3 flex items-center inset-1">
                         <BsHourglass size={20} />
@@ -375,11 +381,98 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                         } `}
                       </div>
                     </div>
+                  </div> */}
+
+                  <div className="font-text text-xl space-y-4 lg:space-y-0">
+                    <div className="flex flex-col lg:grid lg:grid-cols-3 xl:grid-cols-6 gap-2">
+                      <div className="space-x-3 flex items-center inset-1 lg:col-span-2 xl:col-span-3">
+                        <BsHourglass size={20} />
+                        <div className="">Initial Time Spent Estimee</div>
+                      </div>
+                      <div className="text-lh-dark font-semibold lg:col-span-1 xl:col-span-2">
+                        {task.estimated_time
+                          ? `${task.estimated_time} Hours`
+                          : "Non-défini"}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col lg:grid lg:grid-cols-3 xl:grid-cols-6 gap-2">
+                      <div className="space-x-3 flex items-center inset-1 lg:col-span-2 xl:col-span-3">
+                        <BsHourglassBottom size={20} />
+                        <div className="">Total Time Spent</div>
+                      </div>
+                      <div className="text-lh-dark font-semibold lg:col-span-1 xl:col-span-2">
+                        {`${
+                          totalDuration
+                            ? moment
+                                .duration(
+                                  totalDuration.GetTicketDurationUserByTicket
+                                    .totalTime,
+                                  "minutes"
+                                )
+                                .asHours()
+                                .toFixed(0)
+                            : 0
+                        } Hours  ${
+                          totalDuration && task.estimated_time
+                            ? `( ${(
+                                (totalDuration.GetTicketDurationUserByTicket
+                                  .totalTime *
+                                  100) /
+                                (task.estimated_time * 60)
+                              ).toFixed(2)} %)`
+                            : ""
+                        } `}
+                      </div>
+                    </div>
                   </div>
+
+                  {/* <div className="flex space-x-3 font-text text-xl	">
+                    <div className="space-y-2">
+                      <div className="space-x-3 flex items-center inset-1">
+                        <BsHourglass size={20} />
+                        <div className="">Initial Time Spent Estimee</div>
+                      </div>
+                      <div className="space-x-3 flex items-center inset-1">
+                        <BsHourglassBottom size={20} />
+                        <div className="">Total Time Spent</div>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="text-lh-dark font-semibold ">
+                        {task.estimated_time
+                          ? `${task.estimated_time} Hours`
+                          : "Non-défini"}
+                      </div>
+                      <div className="text-lh-primary font-semibold">
+                        {`${
+                          totalDuration
+                            ? moment
+                                .duration(
+                                  totalDuration.GetTicketDurationUserByTicket
+                                    .totalTime,
+                                  "minutes"
+                                )
+                                .asHours()
+                                .toFixed(0)
+                            : 0
+                        } Hours  ${
+                          totalDuration && task.estimated_time
+                            ? `( ${(
+                                (totalDuration.GetTicketDurationUserByTicket
+                                  .totalTime *
+                                  100) /
+                                (task.estimated_time * 60)
+                              ).toFixed(2)} %)`
+                            : ""
+                        } `}
+                      </div>
+                    </div>
+                  </div> */}
 
                   {/* Description */}
                   <div className="space-y-4">
-                    <div className="flex items-center ">
+                    <div className="flex items-center justify-between sm:justify-start">
                       <h3 className="text-lh-primary font-title text-4xl">
                         Description
                       </h3>
@@ -402,9 +495,9 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     </div>
                   </div>
 
-                  {/* Assignee */} 
+                  {/* Assignee */}
                   <div className="space-y-4">
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-between sm:justify-start">
                       <h3 className="text-lh-primary font-title text-4xl">
                         Assignee
                       </h3>
@@ -451,9 +544,9 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     <h3 className="text-lh-primary font-title text-4xl">
                       Edit
                     </h3>
-                    <div className="flex  flex-col lg:grid  lg:grid-cols-8 gap-4">
-                      <div className="font_weight_400 font-text text-xl	flex items-center space-x-2  lg:col-span-2 ">
-                        <div className="flex items-center">
+                    <div className="flex flex-col space-y-2 sm:space-x-0 sm:flex-row ">
+                      <div className="font_weight_400 font-text text-xl	flex items-center space-x-2 ">
+                        <div className="flex items-center justify-between w-full sm:w-auto">
                           <div className=" space-y-4">
                             <div className="h-10 flex items-center">From</div>
                             <div className="h-10 flex items-center">To</div>
@@ -511,12 +604,12 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                           </div>
                         </div>
                       </div>
-                      <div className="space-y-4 flex items-center justify-start lg:col-span-3">
+                      <div className="space-y-4 flex items-center justify-start">
                         <button
                           disabled={loadCreate || differenceInHour() <= 0}
                           className={classNames(
                             loadCreate ? "grayscale cursor-progress" : "",
-                            "bg-lh-secondary font-text text-lh-light py-1.5 px-3 flex space-x-2 items-center rounded-lg "
+                            "bg-lh-secondary font-text text-lh-light py-1.5 px-3 flex space-x-2 items-center rounded-lg w-full sm:w-auto"
                           )}
                           onClick={() => addSpentTime()}
                         >
@@ -532,7 +625,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     </div>
 
                     {/* Advancement */}
-                    <div className="flex  flex-col lg:grid  lg:grid-cols-8 gap-4">
+                    <div className="flex flex-col-reverse lg:grid  lg:grid-cols-8 gap-2 lg:gap-4">
                       <div className="font_weight_400 font-text text-xl	flex items-center space-x-2 lg:col-span-2">
                         <select
                           value={task.advancement}
@@ -561,7 +654,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     </div>
 
                     {/* Advancement */}
-                    <div className="flex  flex-col lg:grid  lg:grid-cols-8 gap-4">
+                    <div className="flex flex-col-reverse lg:grid  lg:grid-cols-8 gap-2 lg:gap-4">
                       <div className="w-full font_weight_400 font-text text-xl	flex items-center space-x-2 lg:col-span-2">
                         <select
                           onChange={(e) => changeEnum(e, "char")}

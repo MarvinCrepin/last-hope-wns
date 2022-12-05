@@ -10,7 +10,6 @@ async function addSpentTime(projects: any) {
         totalDuration += ticketDurationUser.minute_passed;
       });
     });
-
     project["time_spent"] = totalDuration;
 
     project["advancement"] = project.estimated_time
@@ -72,6 +71,11 @@ export default async (_obj: any, _args: any, context: Context) => {
         },
       },
       product_owner: true,
+      tickets: {
+        include: {
+          ticketDurationUser: true,
+        },
+      },
     },
   });
 

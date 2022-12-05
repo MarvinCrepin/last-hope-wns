@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useLazyQuery, useMutation } from "@apollo/client";
+import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -100,11 +100,16 @@ export default function Login() {
                 placeholder="password"
               />
             </div>
-            <div className="mb-5 text-xs ml-1 text-lh-primary cursor-pointer">
+            <div className="mb-5 text-xs ml-1 text-lh-primary cursor-pointer ">
               Forgot your password? Reset it here
             </div>
 
-            <ButtonForm text="Log In" type="submit" customClass="w-32" />
+            <ButtonForm
+              text="Log In"
+              textFont="title"
+              type="submit"
+              width="w-32"
+            />
           </form>
           <div
             onClick={() => navigate("/login/register")}
