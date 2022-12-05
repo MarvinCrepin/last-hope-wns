@@ -234,7 +234,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
             &#8203;
           </span>
 
-          <div className="px-32 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full project-modal">
+          <div className="lg:px-32 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full">
             <div className=" bg-lh-primary text-xl h-12 font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
               <div>{`Project detail - ${project.title}`}</div>
             </div>
@@ -356,7 +356,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                     <div className="mt-4">
                       {project.hasOwnProperty("participants") &&
                       project.participants.length > 0 ? (
-                        <div className="flex flex-wrap space-x-4">
+                        <div className="flex flex-wrap gap-1.5">
                           {project.participants.map((user: Participant) => {
                             return (
                               <div
