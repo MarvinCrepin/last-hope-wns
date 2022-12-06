@@ -182,7 +182,7 @@ export default function TaskList() {
               <select
                 name="filterSelect"
                 id="filterSelect"
-                className="w-auto h-8  rounded-md bg-lh-secondary text-lh-light p-2 mx-2"
+                className="w-auto h-8 rounded-md bg-lh-secondary text-lh-light pl-2 mx-2 cursor-pointer"
                 onChange={(e) => {
                   setProjectFiltered(e.target.value);
                 }}
@@ -201,7 +201,7 @@ export default function TaskList() {
               <div className="flex">
                 <div className="mx-2 flex items-center space-x-1">
                   <input
-                    className="rounded-md h-5 w-5 "
+                    className="rounded-md h-5 w-5 cursor-pointer"
                     type="checkbox"
                     name="onlyMy"
                     id="onlyMy"
@@ -213,7 +213,7 @@ export default function TaskList() {
                 </div>
                 <div className="mx-2 flex items-center space-x-1">
                   <input
-                    className="rounded-md h-5 w-5"
+                    className="rounded-md h-5 w-5 cursor-pointer"
                     type="checkbox"
                     name="hideDone"
                     id="hideDone"
