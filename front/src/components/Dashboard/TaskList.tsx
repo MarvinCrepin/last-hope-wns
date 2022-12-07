@@ -249,7 +249,7 @@ export default function TaskList() {
                 }}
               >
                 <FaPlus className="" />
-                <div className="sm:block hidden">Add Task</div>
+                <div className="sm:block hidden w-max">Add Task</div>
               </button>
             )}
           </div>

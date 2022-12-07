@@ -61,7 +61,7 @@ export default function DropDownNavBar() {
   }, [data]);
 
   return (
-    <nav className="py-4 px-10 shadow-md flex justify-between items-center mb-10">
+    <nav className="py-4 px-8 shadow-md flex justify-between items-center mb-10">
       <Link to="/dashboard">
         <img src={Logo} alt="logo-last-hope" className="w-40 hidden sm:block" />
         <img

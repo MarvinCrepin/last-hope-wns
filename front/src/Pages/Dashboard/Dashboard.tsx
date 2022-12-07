@@ -21,8 +21,8 @@ export default function Dashboard() {
         <DropDownNavBar />
       </header>
 
-      <div className="py-4 px-4 flex items-center justify-center space-x-4 text-6xl text-lh-dark font-title ">
-        <span>{titleByRole(userRole)}</span>
+      <div className="py-4 px-10 flex items-center justify-center space-x-4 text-4xl sm:text-5xl md:text-6xl text-lh-dark font-title ">
+        <span className="text-center">{titleByRole(userRole)}</span>
         <FaPencilAlt size={45} />
       </div>
       <main className="mb-8 mx-2 md:mx-12 lg:mx-28">
