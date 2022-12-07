@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import ButtonForm from "../../components/Login/ButtonForm";
 import Logo from "../../assets/img/logo_LastHope.png";
@@ -17,6 +18,8 @@ export default function Register() {
       [e.target.name]: e.target.value,
     });
   };
+
+  const navigate = useNavigate();
 
   return (
     <div className="flex min-h-screen justify-center items-center flex-col">
@@ -91,10 +94,10 @@ export default function Register() {
             textFont="title"
             width="w-32"
             type="button"
-            text="Log In"
+            text="Sign up"
           />
         </form>
-        <div className=" mt-4 text-xs ml-1 text-lh-primary cursor-pointer">
+        <div onClick={() => navigate("/login")} className=" mt-4 text-xs ml-1 text-lh-primary cursor-pointer">
           Already have an account? Log in
         </div>
       </div>
