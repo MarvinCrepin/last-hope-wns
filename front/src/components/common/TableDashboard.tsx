@@ -11,6 +11,9 @@ import {
 } from "@mui/material";
 import { ToastContainer } from "react-toastify";
 
+// import global css
+import "./../../assets/css/global.css";
+
 import { styled } from "@mui/material/styles";
 import Moment from "react-moment";
 import React from "react";
@@ -216,7 +219,7 @@ export default function TableDashboard({
                                       })
                                     }
                                     id={item.id}
-                                    className="w-36 rounded-md bg-lh-light text-lh-dark p-2 mx-2"
+                                    className="w-36 rounded-md bg-lh-light text-lh-dark p-2 mx-2 cursor-pointer"
                                   >
                                     {roleList.map((roleName, index) => (
                                       <option key={index} value={roleName}>

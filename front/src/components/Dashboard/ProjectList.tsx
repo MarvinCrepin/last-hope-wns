@@ -124,7 +124,7 @@ export default function ProjectList() {
             {isAuthorizedTakeProjectManagerRole(userRole) && (
               <div className="mx-2 flex items-center space-x-1 mb-2 md:mb-0">
                 <input
-                  className="rounded-md h-5 w-5"
+                  className="rounded-md h-5 w-5 cursor-pointer"
                   type="checkbox"
                   name="beMy"
                   id="beMy"

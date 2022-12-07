@@ -138,7 +138,7 @@ export default function EmployeesList() {
                 value={userRoleFilter}
                 name="filterSelect"
                 id="filterSelect"
-                className="w-36 rounded-md bg-lh-secondary text-lh-light p-2 mx-2"
+                className="w-auto h-8 rounded-md bg-lh-secondary text-lh-light pl-2 mx-2 cursor-pointer"
                 onChange={(e) => userRoleFilterSet(e.target.value)}
               >
                 <option value={"all"}>All</option>
