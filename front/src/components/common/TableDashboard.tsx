@@ -9,9 +9,7 @@ import {
   TablePagination,
   LinearProgress,
 } from "@mui/material";
-import { ToastContainer } from "react-toastify";
 
-// import global css
 import "./../../assets/css/global.css";
 
 import { styled } from "@mui/material/styles";
@@ -256,19 +254,6 @@ export default function TableDashboard({
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </StyledTableContainer>
-      {/* A refactorisé */}
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      {/* A refactorisé */}
     </div>
   );
 }

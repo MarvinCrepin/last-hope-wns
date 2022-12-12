@@ -121,7 +121,7 @@ export default function EditTaskText({
                     textFont="title"
                   />
                   <ButtonForm
-                    text="Modified"
+                    text="Save"
                     type="button"
                     textSize="text-2xl"
                     action={() => updatedTaskIfDifferent()}

@@ -1,7 +1,11 @@
 services:
   api:
     environment:
-      - CHOKIDAR_USEPOLLING=true
+      CHOKIDAR_USEPOLLING: true
+      NODE_ENV: dev
+      DB_PORT: 3306
+      DB_NAME: mydb
+      DB_HOST: db
     build: ./server
     ports:
       - 4000:4000
