@@ -61,8 +61,12 @@ function AddMemberToProject({
       (user: User) => user.id === e.target.value
     );
 
+    console.log(e.target.value);
+
     setUserSelected(usersAvailable[index]);
   };
+
+  console.log(userSelected);
 
   return (
     <div
@@ -105,14 +109,23 @@ function AddMemberToProject({
                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                       handleChangeSelected(e);
                     }}
-                    value={userSelected}
+                    value={userSelected.id}
                     name="advancement"
                     id="advancement"
                     className="bg-lh-light w-2/3 border-2 border-lh-dark rounded-lg px-1.5 py-2"
                   >
-                    <option value={"null"}>Choose a member</option>
+                    <option selected={userSelected === "null"} value={"null"}>
+                      Choose a member
+                    </option>
                     {usersAvailable.map((user: User) => {
-                      return <option value={user.id}>{user.firstname}</option>;
+                      return (
+                        <option
+                          selected={userSelected.id === user.id}
+                          value={user.id}
+                        >
+                          {user.firstname}
+                        </option>
+                      );
                     })}
                   </select>
                   <div

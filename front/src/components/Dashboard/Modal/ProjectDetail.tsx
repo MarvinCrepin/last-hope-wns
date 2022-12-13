@@ -25,6 +25,7 @@ import CreateUserProject from "../../../graphql/mutation/UserProject/CreateUserP
 import DeleteUserProject from "../../../graphql/mutation/UserProject/DeleteUserProject";
 import EditProjectText from "./ProjectDetailComponent/EditProjectText";
 import StatsPanel from "./ProjectDetailComponent/StatsPanel";
+import { NavLink } from "react-router-dom";
 
 type Props = {
   project: Project;
@@ -235,9 +236,23 @@ function ProjectDetail({ project, users, closeModal }: Props) {
           </span>
 
           <div className="lg:px-32 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full">
-            <div className=" bg-lh-primary text-xl h-12 font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
-              <div>{`Project detail - ${project.title}`}</div>
+            <div className="flex w-full ">
+              <div className=" bg-lh-primary text-xl h-12 font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
+                <div>{`Project detail - ${project.title}`}</div>
+              </div>
+              <div className=" bg-lh-dark text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
+                <div>
+                  <NavLink
+                    to="/dashboard/task"
+                    className="text-lh-light text-xl font-text"
+                    state={{ projectId: project.id }}
+                  >
+                    Tasks list
+                  </NavLink>
+                </div>
+              </div>
             </div>
+
             <div className="relative bg-white rounded-b-lg rounded-tr-lg flex flex-col lg:grid lg:grid-cols-2 py-8 ">
               <div
                 className="absolute right-2 top-2 text-lh-primary cursor-pointer"

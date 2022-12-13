@@ -1,15 +1,23 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import ButtonForm from "../../components/Login/ButtonForm";
 import Logo from "../../assets/img/logo_LastHope.png";
+import { useMutation } from "@apollo/client";
+import AddUser from "../../graphql/mutation/auth/Register";
+import { notify } from "../../components/common/Utils";
 
 export default function Register() {
+  const navigate = useNavigate();
+
   const [registerInformation, setRegisterInformation] = useState({
     firstname: "",
     lastname: "",
     password: "",
     mail: "",
   });
+
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRegisterInformation({
@@ -18,13 +26,39 @@ export default function Register() {
     });
   };
 
+  const [registerMutation] = useMutation(AddUser, {
+    variables: {
+      createUserInput: registerInformation,
+    },
+    onCompleted(data) {
+      navigate("/login");
+    },
+    onError(error) {
+      console.error(error);
+    },
+  });
+
+  const onSubmitRegister = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    if (registerInformation.password === confirmPassword) {
+      registerMutation();
+    } else {
+      notify("error", "both password should be the same");
+    }
+  };
+
   return (
     <div className="flex min-h-screen justify-center items-center flex-col">
       <img src={Logo} alt="banner" className="pb-10" />
 
       <div className="flex flex-col justify-center items-center">
         <h1 className="font-title text-lh-dark text-5xl">Register</h1>
-        <form className="flex flex-col justify-center items-center">
+        <form
+          onSubmit={(e) => {
+            onSubmitRegister(e);
+          }}
+          className="flex flex-col justify-center items-center"
+        >
           <div className="my-4">
             <label className="sr-only" htmlFor="email">
               Email
@@ -35,6 +69,8 @@ export default function Register() {
               id="email"
               type="email"
               placeholder="user@gmail.com"
+              name="mail"
+              required
             />
           </div>
           <div className="mb-4">
@@ -47,6 +83,8 @@ export default function Register() {
               id="firstname"
               type="firstname"
               placeholder="Jean"
+              name="firstname"
+              required
             />
           </div>
           <div className="mb-4">
@@ -59,6 +97,8 @@ export default function Register() {
               id="lastname"
               type="lastname"
               placeholder="Dupont"
+              name="lastname"
+              required
             />
           </div>
 
@@ -72,6 +112,8 @@ export default function Register() {
               id="password"
               type="password"
               placeholder="password"
+              name="password"
+              required
             />
           </div>
 
@@ -80,21 +122,26 @@ export default function Register() {
               Confirm Password
             </label>
             <input
+              onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full sm:w-96 appearance-none border border-lh-dark rounded-lg py-2 px-3 text-gray-700 font-text leading-tight focus:outline-none focus:shadow-outline"
               id="confirmPassword"
               type="password"
               placeholder="confirm password"
+              required
             />
           </div>
 
           <ButtonForm
             textFont="title"
             width="w-32"
-            type="button"
-            text="Log In"
+            type="submit"
+            text="Sign up"
           />
         </form>
-        <div className=" mt-4 text-xs ml-1 text-lh-primary cursor-pointer">
+        <div
+          onClick={() => navigate("/login")}
+          className=" mt-4 text-xs ml-1 text-lh-primary cursor-pointer"
+        >
           Already have an account? Log in
         </div>
       </div>

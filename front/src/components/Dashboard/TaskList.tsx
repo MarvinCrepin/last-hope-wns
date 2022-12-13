@@ -16,6 +16,7 @@ import AddTask from "./Modal/AddTaskComponent/AddTask";
 
 import { Column, Project, TaskInList } from "../global";
 import { theme } from "../common/Utils";
+import { useLocation } from "react-router-dom";
 
 const columns: Column[] = [
   { id: "title", label: "Subject", style: "text", metadata: {} },
@@ -40,6 +41,7 @@ export default function TaskList() {
   const me = useSelector(user);
   const userRole = useSelector(role);
   const loadingInStore = useSelector(load);
+  const location = useLocation();
 
   const { loading, error, data } = useQuery(getAllTicketsNotArchive, {
     variables: { isarchive: false },
@@ -105,6 +107,14 @@ export default function TaskList() {
   };
 
   useEffect(() => {
+    const projectId:any = location.state;
+
+    if (projectId) {
+      setProjectFiltered(projectId.projectId);
+    }
+  }, [location]);
+
+  useEffect(() => {
     if (data && dataProjects) dispatch(TOOGLE_LOAD(false));
   }, [data, dataProjects, dispatch]);
 
@@ -149,7 +159,7 @@ export default function TaskList() {
           dataFiltered = dataFiltered.filter(
             (el) => el.project.id === projectFiltered
           );
-        }
+        }        
       }
       setListTask([...dataFiltered]);
     }
@@ -178,7 +188,7 @@ export default function TaskList() {
             <label className="sr-only" htmlFor="filterSelect">
               Filter:
             </label>
-            <div className="flex flex-row  justify-center items-center sm:justify-start  flex-wrap gap-2">
+            <div className="flex flex-row justify-center items-center sm:justify-start  flex-wrap gap-2">
               <select
                 name="filterSelect"
                 id="filterSelect"
@@ -192,7 +202,7 @@ export default function TaskList() {
                   dataProjects.GetAllProjects.length > 0 &&
                   dataProjects.GetAllProjects.map((el: Project) => {
                     return (
-                      <option value={el.id} key={el.id}>
+                      <option selected={projectFiltered === el.id} value={el.id} key={el.id}>
                         {el.title}
                       </option>
                     );

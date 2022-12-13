@@ -9,6 +9,8 @@ import LoginRouter from "./Pages/Login/LoginRouter";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import { AUTHENTICATE_USER_IN_STORE } from "./slicer/authSlice";
 
+import { ToastContainer } from "react-toastify";
+
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,10 +43,23 @@ function App() {
   }, [verifyToken]);
 
   return (
-    <Routes>
-      <Route path="/login/*" element={<LoginRouter />} />
-      <Route path="/dashboard/*" element={<Dashboard />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/login/*" element={<LoginRouter />} />
+        <Route path="/dashboard/*" element={<Dashboard />} />
+      </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </>
   );
 }
 
