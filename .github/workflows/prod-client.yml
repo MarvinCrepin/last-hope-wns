@@ -41,4 +41,4 @@ jobs:
           context: ./front
           file: ./front/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/prod-wns-client:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/lh-prod-front

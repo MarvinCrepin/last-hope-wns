@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { classNames } from "../../../common/Utils";
 import ButtonForm from "../../../Login/ButtonForm";
 
 interface IProps {
@@ -121,7 +120,7 @@ export default function EditTaskText({
                     textFont="title"
                   />
                   <ButtonForm
-                    text="Modified"
+                    text="Save"
                     type="button"
                     textSize="text-2xl"
                     action={() => updatedTaskIfDifferent()}
