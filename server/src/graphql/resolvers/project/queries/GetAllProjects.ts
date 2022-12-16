@@ -5,16 +5,19 @@ import { ROLES } from "../../../../Constant";
 async function addSpentTime(projects: any) {
   await projects.forEach((project: any) => {
     let totalDuration = 0;
+    let totalPercentage = 0;
     project.tickets.forEach((ticket: any) => {
       ticket.ticketDurationUser.forEach((ticketDurationUser: any) => {
         totalDuration += ticketDurationUser.minute_passed;
       });
+      totalPercentage += ticket.advancement;
     });
     project["time_spent"] = totalDuration;
 
-    project["advancement"] = project.estimated_time
-      ? Math.round((totalDuration / project.estimated_time) * 100)
-      : 0;
+    project["advancement"] =
+      project.tickets.length > 0
+        ? Math.round(totalPercentage / project.tickets.length)
+        : 0;
   });
 
   return projects;
