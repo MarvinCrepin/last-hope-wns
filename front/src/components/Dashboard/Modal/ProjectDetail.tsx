@@ -229,7 +229,7 @@ function ProjectDetail({ project, users, closeModal }: Props) {
       <ModalConfirm
         textButtonConfirm="Delete"
         textButtonCancel="Cancel"
-        title="Delete Task ?"
+        title="Delete this project?"
         text="Are you sure you want to delete this project? This action cannot be canceled."
         onConfirm={() => deleteThisProject(project.id)}
         onCancel={() => setModalConfirmDelete(false)}
