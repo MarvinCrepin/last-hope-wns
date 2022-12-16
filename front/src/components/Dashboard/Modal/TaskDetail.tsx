@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 import React, { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { useEffect, useState } from "react";
@@ -5,6 +6,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useDispatch, useSelector } from "react-redux";
 
 import moment, { Duration } from "moment";
+import Moment from "react-moment";
 
 import UpdateTicket from "../../../graphql/mutation/Ticket/UpdateTicket";
 import GetAllState from "../../../graphql/queries/State/GetAllStates";
@@ -38,6 +40,8 @@ import ModalConfirm from "../../common/ModalConfirm";
 import EditTaskText from "./TaskDetailComponent/EditTaskText";
 import getAllProjects from "../../../graphql/queries/Project/GetAllProject";
 import StatHourPerDayByProject from "../../../graphql/queries/TicketDurationUser/StatHourPerDayByProject";
+import { FcCalendar } from "react-icons/fc";
+import { MdDone, MdOutlineEdit } from "react-icons/md";
 
 type Props = {
   taskPassed: TaskInList;
@@ -103,6 +107,28 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
   const [modalConfirmDelete, setModalConfirmDelete] = useState(false);
   const [modalConfirmArchive, setModalConfirmArchive] = useState(false);
   const [modalEditTask, setModalEditTask] = useState(false);
+
+  const [inputDueDate, setInputDueDate] = useState(false);
+
+  const [updateDate] = useMutation(UpdateTicket, {
+    variables: {
+      ticketId: task.id,
+      data: {
+        due_at: task.due_at,
+      },
+    },
+  });
+
+  const handleChangeDueAt = async () => {
+    setInputDueDate(false);
+    try {
+      await updateDate();
+      notify("success", "Due date successfuly changed!");
+    } catch (error) {
+      notify("error", "An error occured while changing due date!");
+      console.error(error);
+    }
+  };
 
   const openModal = (modal: string) => {
     if (modal === "assignee") {
@@ -272,9 +298,9 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
           <div className="py-2 px-2 lg:py-0 lg:px-32 inline-block align-bottom text-left transform transition-all  sm:align-middle  w-full h-full">
             <div className="flex w-full ">
               <div className=" bg-lh-primary text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center lg:items-center  flex-col lg:flex-row rounded-t-lg max-w-[14em] lg:max-w-none">
-                <span className="truncate">Task detail</span>
-                <span className="lg:block hidden">&nbsp;- &nbsp;</span>
-                <span>{task.title}</span>
+                <span className="truncate">
+                  Task detail <span>&nbsp;- &nbsp;</span> {task.title}
+                </span>
               </div>
               {isAuthorizedToManageProject(
                 userInStore,
@@ -342,7 +368,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                 </Menu>
               )}
             </div>
-            <div className="relative bg-white rounded-b-lg rounded-tr-lg flex flex-col lg:grid lg:grid-cols-2 py-8 ">
+            <div className="relative bg-white rounded-b-lg rounded-tr-lg flex flex-col lg:grid lg:grid-cols-2 py-3 ">
               <div
                 className="absolute right-2 top-2 text-lh-primary cursor-pointer"
                 onClick={() => closeModal()}
@@ -353,49 +379,6 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
               <div className="flex flex-col items-center justify-start">
                 <div className="space-y-8 py-4 w-4/5">
                   {/* ZONE TIME */}
-                  {/* <div className="flex space-x-3 font-text text-xl	">
-                    <div className="space-y-2">
-                      <div className="space-x-3 flex items-center inset-1">
-                        <BsHourglass size={20} />
-                        <div className="">Initial Time Spent Estimee</div>
-                      </div>
-                      <div className="space-x-3 flex items-center inset-1">
-                        <BsHourglassBottom size={20} />
-                        <div className="">Total Time Spent</div>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="text-lh-dark font-semibold ">
-                        {task.estimated_time
-                          ? `${task.estimated_time} Hours`
-                          : "Non-défini"}
-                      </div>
-                      <div className="text-lh-primary font-semibold">
-                        {`${
-                          totalDuration
-                            ? moment
-                                .duration(
-                                  totalDuration.GetTicketDurationUserByTicket
-                                    .totalTime,
-                                  "minutes"
-                                )
-                                .asHours()
-                                .toFixed(0)
-                            : 0
-                        } Hours  ${
-                          totalDuration && task.estimated_time
-                            ? `( ${(
-                                (totalDuration.GetTicketDurationUserByTicket
-                                  .totalTime *
-                                  100) /
-                                (task.estimated_time * 60)
-                              ).toFixed(2)} %)`
-                            : ""
-                        } `}
-                      </div>
-                    </div>
-                  </div> */}
-
                   <div className="font-text text-xl space-y-4 lg:space-y-0">
                     <div className="flex flex-col lg:grid lg:grid-cols-3 xl:grid-cols-6 gap-2">
                       <div className="space-x-3 flex items-center inset-1 lg:col-span-2 xl:col-span-3">
@@ -440,49 +423,6 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                     </div>
                   </div>
 
-                  {/* <div className="flex space-x-3 font-text text-xl	">
-                    <div className="space-y-2">
-                      <div className="space-x-3 flex items-center inset-1">
-                        <BsHourglass size={20} />
-                        <div className="">Initial Time Spent Estimee</div>
-                      </div>
-                      <div className="space-x-3 flex items-center inset-1">
-                        <BsHourglassBottom size={20} />
-                        <div className="">Total Time Spent</div>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="text-lh-dark font-semibold ">
-                        {task.estimated_time
-                          ? `${task.estimated_time} Hours`
-                          : "Non-défini"}
-                      </div>
-                      <div className="text-lh-primary font-semibold">
-                        {`${
-                          totalDuration
-                            ? moment
-                                .duration(
-                                  totalDuration.GetTicketDurationUserByTicket
-                                    .totalTime,
-                                  "minutes"
-                                )
-                                .asHours()
-                                .toFixed(0)
-                            : 0
-                        } Hours  ${
-                          totalDuration && task.estimated_time
-                            ? `( ${(
-                                (totalDuration.GetTicketDurationUserByTicket
-                                  .totalTime *
-                                  100) /
-                                (task.estimated_time * 60)
-                              ).toFixed(2)} %)`
-                            : ""
-                        } `}
-                      </div>
-                    </div>
-                  </div> */}
-
                   {/* Description */}
                   <div className="space-y-4">
                     <div className="flex items-center justify-between sm:justify-start">
@@ -495,7 +435,7 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                         className="text-lh-primary cursor-pointer hover:opacity-90 transition-opacity ml-4"
                       />
                     </div>
-                    <div className="h-32 overflow-y-scroll scrollbar-style">
+                    <div className="min-h-[2rem] overflow-y-scroll scrollbar-style">
                       {task.description ? (
                         <p className="font_weight_400 font-text text-xl	">
                           {task.description}
@@ -687,6 +627,51 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
                       </div>
                       <div className="space-y-4 flex items-center justify-start lg:col-span-3">
                         <label htmlFor="state_id">Status</label>
+                      </div>
+                    </div>
+
+                    {/* DATE */}
+                    <div className="pt-4 pb-6">
+                      <div className="text-gray-700 text-xl h-8 flex items-center space-x-2">
+                        <FcCalendar size={30} />
+                        <p>Due date:</p>
+                        {inputDueDate ? (
+                          <>
+                            <input
+                              className="rounded bg-lh-light text-lh-dark border-[1.5px] border-lh-dark focus-visible:ring-lh-primary"
+                              type="date"
+                              name="due_at"
+                              value={
+                                task.due_at
+                                  ? moment(task.due_at).format("YYYY-MM-DD")
+                                  : "Not Defined"
+                              }
+                              onChange={(e: any) => setTask({ ...task, due_at: e.target.value })}
+                            />
+                            <MdDone
+                              onClick={() => {
+                                handleChangeDueAt();
+                              }}
+                              size={25}
+                              className="cursor-pointer ml-2"
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <span className="">
+                              {task.due_at ? (
+                                <Moment format="MM/DD/YYYY">{task.due_at}</Moment>
+                              ) : (
+                                "Not Defined"
+                              )}
+                            </span>
+                            <MdOutlineEdit
+                              onClick={() => setInputDueDate(true)}
+                              size={25}
+                              className="cursor-pointer "
+                            />
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>

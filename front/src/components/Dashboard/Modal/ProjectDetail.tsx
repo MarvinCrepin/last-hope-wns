@@ -1,9 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import Moment from "react-moment";
 import { useMutation } from "@apollo/client";
 import { useSelector } from "react-redux";
 
-import { FaCheck, FaPencilAlt, FaRegUserCircle } from "react-icons/fa";
+import {
+  FaArchive,
+  FaCheck,
+  FaPencilAlt,
+  FaRegUserCircle,
+  FaTrashAlt,
+} from "react-icons/fa";
 import { MdOutlineEdit, MdDone } from "react-icons/md";
 import { FcCalendar } from "react-icons/fc";
 import { AiFillSetting, AiOutlineClose } from "react-icons/ai";
@@ -11,6 +17,7 @@ import { AiFillSetting, AiOutlineClose } from "react-icons/ai";
 import "../../../assets/css/projectDetail.css";
 import { user } from "../../../slicer/authSlice";
 import {
+  classNames,
   isAuthorizedToManageProject,
   notify,
   returnRoleName,
@@ -26,6 +33,12 @@ import DeleteUserProject from "../../../graphql/mutation/UserProject/DeleteUserP
 import EditProjectText from "./ProjectDetailComponent/EditProjectText";
 import StatsPanel from "./ProjectDetailComponent/StatsPanel";
 import { NavLink } from "react-router-dom";
+import { Menu, Transition } from "@headlessui/react";
+import { FiMoreHorizontal } from "react-icons/fi";
+import ModalConfirm from "../../common/ModalConfirm";
+import DeleteProject from "../../../graphql/mutation/Project/DeleteProject";
+import getAllTickets from "../../../graphql/queries/Ticket/GetAllTicket";
+import getAllTicketsNotArchive from "../../../graphql/queries/Ticket/GetAllTicketsNotArchive";
 
 type Props = {
   project: Project;
@@ -36,6 +49,19 @@ type Props = {
 function ProjectDetail({ project, users, closeModal }: Props) {
   // GENERAL
   const userInfo = useSelector(user);
+  const [modalConfirmDelete, setModalConfirmDelete] = useState(false);
+
+  const deleteThisProject = async (id: string) => {
+    await deleteProject({ variables: { projectId: project.id } });
+  };
+
+  const [deleteProject] = useMutation(DeleteProject, {
+    refetchQueries: [{ query: getAllProjects }, { query: getAllTicketsNotArchive, variables: { isarchive: false } }],
+    onCompleted() {
+      closeModal();
+      notify("success", "Delete project success");
+    },
+  });
 
   const [updateProject] = useMutation(UpdateProject, {
     refetchQueries: [{ query: getAllProjects }],
@@ -200,6 +226,15 @@ function ProjectDetail({ project, users, closeModal }: Props) {
 
   return (
     <>
+      <ModalConfirm
+        textButtonConfirm="Delete"
+        textButtonCancel="Cancel"
+        title="Delete this project?"
+        text="Are you sure you want to delete this project? This action cannot be canceled."
+        onConfirm={() => deleteThisProject(project.id)}
+        onCancel={() => setModalConfirmDelete(false)}
+        isOpen={modalConfirmDelete ? true : false}
+      />
       {modalEditProject && (
         <EditProjectText
           project={project}
@@ -240,20 +275,79 @@ function ProjectDetail({ project, users, closeModal }: Props) {
               <div className=" bg-lh-primary text-xl h-12 font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
                 <div>{`Project detail - ${project.title}`}</div>
               </div>
-              <div className=" bg-lh-dark text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
-                <div>
-                  <NavLink
-                    to="/dashboard/task"
-                    className="text-lh-light text-xl font-text"
-                    state={{ projectId: project.id }}
+              {isAuthorizedToManageProject(userInfo, project.participants) && (
+                <Menu as="div" className="relative inline-block text-left">
+                  <Menu.Button className=" bg-lh-dark text-xl h-12  font-text text-lh-light w-fit px-3 flex justify-center items-center rounded-t-lg">
+                    <FiMoreHorizontal />
+                  </Menu.Button>
+
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
                   >
-                    Tasks list
-                  </NavLink>
-                </div>
-              </div>
+                    <Menu.Items className="absolute right-0 z-10 mt-2  max-w-lg min-w-[11rem] origin-top-right rounded-md bg-lh-light shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <div className="py-1">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <div
+                              className={classNames(
+                                active
+                                  ? "bg-gray-100 text-gray-900"
+                                  : "text-lh-dark",
+                                "flex items-center gap-x-2 px-4 py-2 text-md cursor-pointer w-full"
+                              )}
+                            >
+                              <NavLink
+                                to="/dashboard/task"
+                                className={classNames(
+                                  active
+                                    ? "bg-gray-100 text-gray-900"
+                                    : "text-lh-dark",
+                                  "flex gap-x-2 text-md cursor-pointer  w-full"
+                                )}
+                                state={{ projectId: project.id }}
+                              >
+                                <FaArchive
+                                  size={22}
+                                  color="var(--primary-color)"
+                                />
+                                Tasks list
+                              </NavLink>
+                            </div>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <div
+                              onClick={() => setModalConfirmDelete(true)}
+                              className={classNames(
+                                active
+                                  ? "bg-gray-100 text-gray-900"
+                                  : "text-lh-dark",
+                                "flex items-center gap-x-2 px-4 py-2 text-md cursor-pointer"
+                              )}
+                            >
+                              <FaTrashAlt
+                                size={22}
+                                color="var(--primary-color)"
+                              />
+                              Delete project
+                            </div>
+                          )}
+                        </Menu.Item>
+                      </div>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+              )}
             </div>
 
-            <div className="relative bg-white rounded-b-lg rounded-tr-lg flex flex-col lg:grid lg:grid-cols-2 py-8 ">
+            <div className="relative bg-white rounded-b-lg rounded-tr-lg flex flex-col lg:grid lg:grid-cols-2 py-3">
               <div
                 className="absolute right-2 top-2 text-lh-primary cursor-pointer"
                 onClick={() => closeModal()}
@@ -413,11 +507,14 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                               className="rounded bg-lh-light text-lh-dark border-[1.5px] border-lh-dark focus-visible:ring-lh-primary"
                               type="date"
                               name="start_at"
-                              value={startAt.toString()}
+                              value={
+                                startAt ? startAt.toString() : "Not Defined"
+                              }
                               onChange={(e: any) => {
                                 if (
                                   !endAt ||
-                                  new Date(e.target.value) <= new Date(endAt)
+                                  new Date(e.target.value) <= new Date(endAt) ||
+                                  e.target.value === ""
                                 ) {
                                   setStartAt(e.target.value);
                                 } else {
@@ -462,11 +559,13 @@ function ProjectDetail({ project, users, closeModal }: Props) {
                               className="rounded bg-lh-light text-lh-dark border-[1.5px] border-lh-dark focus-visible:ring-lh-primary"
                               type="date"
                               name="end_at"
-                              value={endAt.toString()}
+                              value={endAt ? endAt.toString() : "Not Defined"}
                               onChange={(e: any) => {
                                 if (
                                   !startAt ||
-                                  new Date(e.target.value) >= new Date(startAt)
+                                  new Date(e.target.value) >=
+                                    new Date(startAt) ||
+                                  e.target.value === ""
                                 ) {
                                   setEndAt(e.target.value);
                                 } else {

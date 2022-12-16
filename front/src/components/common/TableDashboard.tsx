@@ -185,9 +185,11 @@ export default function TableDashboard({
                             )}
                             {column.style === "date" && (
                               <StyledTableCell>
+                                {value ?
                                 <Moment format={column.metadata.format}>
-                                  {new Date(value)}
+                                  {new Date(value)} 
                                 </Moment>
+                                 : "Not defined"}
                               </StyledTableCell>
                             )}
                             {column.style === "actions" && (

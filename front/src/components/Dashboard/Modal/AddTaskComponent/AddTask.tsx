@@ -224,9 +224,31 @@ export default function AddTask({ closeModal }: Props) {
                     </select>
                   )}
                 </div>
+
                 <AssigneeUser
                   setParticipants={(value: User[]) => setParticipants(value)}
                 />
+
+                {/* DATE */}
+                <div className="my-4 flex flex-col">
+                  <label className="text-lh-primary mb-1.5 text-2xl start-date">
+                    Due date
+                  </label>
+                  <input
+                    className="rounded bg-lh-light text-lh-dark p-1 border-[1px] border-lh-dark focus-visible:ring-lh-primary cursor-pointer"
+                    style={{ width: "150px" }}
+                    onChange={(e) => {
+                      setTaskInformation({
+                        ...taskInformation,
+                        [e.target.name]: e.target.value,
+                      });
+                    }}
+                    type="date"
+                    name="due_at"
+                    id="due_at"
+                  />
+                </div>
+
                 <div className="mb-4 relative flex flex-col">
                   <label
                     htmlFor="estimated-time"
@@ -263,6 +285,7 @@ export default function AddTask({ closeModal }: Props) {
                     </div>
                   </div>
                 </div>
+
                 <div className="flex justify-end w-full">
                   <ButtonForm
                     text="Add Task"
