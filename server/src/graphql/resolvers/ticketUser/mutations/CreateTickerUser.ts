@@ -46,7 +46,7 @@ export default async (
     const newTicketUser = await context.prisma.ticketUser.create({
       data: {
         ...args.data,
-        project_id: ticket.project.id,
+        ticketId: ticket.id,
       },
       include: {
         ticket: {
