@@ -67,7 +67,7 @@ function AssigneeUser({ setParticipants }: Props) {
 
   return (
     <>
-      <h3 className="text-lh-primary font-text text-3xl mb-1.5">Assignee</h3>
+      <h3 className="text-lh-primary font-text text-2xl mb-1.5 cursor-default">Assignee</h3>
       <div className=" w-full">
         <div className="flex w-full justify-between items-center">
           <select

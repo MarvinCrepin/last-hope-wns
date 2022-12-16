@@ -28,6 +28,7 @@ function AddProject({ users, closeModal }: Props) {
   const [usersAssignee, setUsersAssignee] = useState<any[]>([]);
   const [dataProject, setDataProject] = useState<any>({});
   const [estimatedTime, setEstimatedTime] = useState({ hour: 0, min: 0 });
+  const [goodEndDate, setGoodEndDate] = useState(true);
 
   const parseAndSetTime = (target: HTMLInputElement) => {
     let value = parseInt(target.value);
@@ -38,7 +39,24 @@ function AddProject({ users, closeModal }: Props) {
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
-  ) => {
+  ) => {  
+    if (e.target.name === "end_at") {
+      if (e.target.value < dataProject.start_at) {
+        notify("error", "End date must be equal or greater than start date");
+        setGoodEndDate(false);
+        return;
+      } else {
+        setGoodEndDate(true);
+      }
+    } else if (e.target.name === "start_at") {
+      if (e.target.value > dataProject.end_at) {
+        notify("error", "Start date must be equal or lower than end date");
+        setGoodEndDate(false);
+        return;
+      } else {
+        setGoodEndDate(true);
+      }
+    }
     setDataProject({ ...dataProject, [e.target.name]: e.target.value });
   };
 
@@ -95,7 +113,7 @@ function AddProject({ users, closeModal }: Props) {
   };
 
   const addProjectFieldsCheck = () => {
-    if (dataProject.title && dataProject.product_owner_id) {
+    if (dataProject.title && dataProject.product_owner_id && goodEndDate === true) {
       return true;
     }
     return false;

@@ -41,16 +41,9 @@ export default function Register() {
 
   const onSubmitRegister = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log("avant la boucle");
-
-    console.log(registerInformation.password);
-    console.log(confirmPassword);
-
     if(registerInformation.password === confirmPassword) {
-      console.log("passé");
       registerMutation();
     } else {
-      console.log("pas passé");
       notify("error", "both password should be the same");
     }
   };
