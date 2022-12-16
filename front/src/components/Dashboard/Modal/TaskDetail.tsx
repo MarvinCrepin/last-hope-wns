@@ -54,16 +54,23 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
 
   // Query
   const { loading: loadingState, data: dataState } = useQuery(GetAllState);
+
+  // Mutation
   const [updateTicket, { data }] = useMutation(UpdateTicket, {
     refetchQueries: [
       { query: getAllTicketsNotArchive, variables: { isarchive: false } },
     ],
+    onCompleted() {
+      notify("success", "Update ticket success");
+    },
+    onError(error) {
+      notify("error", error.message);
+    },
   });
   const { data: totalDuration } = useQuery(GetTotalTicketDurationUserByTicket, {
     variables: { ticketId: taskPassed.id },
   });
 
-  // Mutation
   const [createTicketDurationUser, { loading: loadCreate }] = useMutation(
     CreateTicketDurationUser,
     {
@@ -197,17 +204,19 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
     type: String
   ) => {
     dispatch(TOOGLE_LOAD(true));
-
-    await updateTicket({
-      variables: {
-        ticketId: task.id,
-        data: {
-          [e.target.name]:
-            type === "int" ? parseInt(e.target.value) : e.target.value,
+    try {
+      await updateTicket({
+        variables: {
+          ticketId: task.id,
+          data: {
+            [e.target.name]:
+              type === "int" ? parseInt(e.target.value) : e.target.value,
+          },
         },
-      },
-    });
-    notify("success", "Updtate ticket success");
+      });
+    } finally {
+      dispatch(TOOGLE_LOAD(false));
+    }
   };
 
   const deleteTask = async (id: string) => {
@@ -258,8 +267,13 @@ export default function TaskDetail({ taskPassed, closeModal }: Props) {
           task={task}
           closeModal={() => setModalEditTask(false)}
           updatedTask={async (data) => {
-            await updateTicket({ variables: { ticketId: task.id, data } });
-            setModalEditTask(false);
+            try {
+              await updateTicket({ variables: { ticketId: task.id, data } });
+            } catch (e) {
+              console.error(e);
+            } finally {
+              setModalEditTask(false);
+            }
           }}
         />
       )}

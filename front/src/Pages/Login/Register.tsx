@@ -34,14 +34,13 @@ export default function Register() {
       navigate("/login");
     },
     onError(error) {
-      // setError({ message: error.message, display: true });
       console.error(error);
     },
   });
 
   const onSubmitRegister = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if(registerInformation.password === confirmPassword) {
+    if (registerInformation.password === confirmPassword) {
       registerMutation();
     } else {
       notify("error", "both password should be the same");
@@ -54,9 +53,12 @@ export default function Register() {
 
       <div className="flex flex-col justify-center items-center">
         <h1 className="font-title text-lh-dark text-5xl">Register</h1>
-        <form onSubmit={(e) => {
-          onSubmitRegister(e);
-        }} className="flex flex-col justify-center items-center">
+        <form
+          onSubmit={(e) => {
+            onSubmitRegister(e);
+          }}
+          className="flex flex-col justify-center items-center"
+        >
           <div className="my-4">
             <label className="sr-only" htmlFor="email">
               Email
@@ -136,7 +138,10 @@ export default function Register() {
             text="Sign up"
           />
         </form>
-        <div onClick={() => navigate("/login")} className=" mt-4 text-xs ml-1 text-lh-primary cursor-pointer">
+        <div
+          onClick={() => navigate("/login")}
+          className=" mt-4 text-xs ml-1 text-lh-primary cursor-pointer"
+        >
           Already have an account? Log in
         </div>
       </div>

@@ -10,7 +10,6 @@ import {
   LinearProgress,
 } from "@mui/material";
 
-// import global css
 import "./../../assets/css/global.css";
 
 import { styled } from "@mui/material/styles";
