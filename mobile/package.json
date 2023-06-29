@@ -18,7 +18,7 @@
     "expo": "~46.0.13",
     "expo-font": "~10.2.0",
     "expo-secure-store": "~11.3.0",
-    "expo-splash-screen": "~0.16.2",
+    "expo-splash-screen": "~0.20.2",
     "expo-status-bar": "~1.4.0",
     "graphql": "^15.8.0",
     "nativewind": "^2.0.11",
